@@ -603,7 +603,7 @@ export default function Audience() {
           </div>
         </div>
       </div> */}
-      <div className="hidden sm:block group fix-wide mt-5">
+      <div className="hidden sm:block group  mt-5">
         <div className="overflow-hidden pt-[8px] w-screen">
           <div className="flex w-max gap-4 [animation:gr-ticker_45s_linear_infinite] group-hover:[animation-play-state:paused]">
             {TRADES.concat(TRADES).map((trade, i) => (
