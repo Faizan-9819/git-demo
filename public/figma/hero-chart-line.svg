@@ -1,0 +1,21 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 140.8 67.2" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Line" clip-path="url(#clip0_66_6)">
+<mask id="mask0_66_6" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-1" y="-2" width="143" height="71">
+<path id="Vector 1" d="M140.8 35.8757L115.829 67.2L93.4116 0L71.9043 52.5418L43.3231 35.8757L16.547 52.5418L0 44.7108" stroke="var(--stroke-0, black)" stroke-width="0.8"/>
+</mask>
+<g mask="url(#mask0_66_6)">
+<g id="Gradient">
+<rect width="142.4" height="67.2" fill="url(#paint0_linear_66_6)"/>
+</g>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_66_6" x1="-5.86591" y1="18.6" x2="142.235" y2="52.521" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0037C5"/>
+<stop offset="1" stop-color="#D9009C"/>
+</linearGradient>
+<clipPath id="clip0_66_6">
+<rect width="140.8" height="67.2" fill="white"/>
+</clipPath>
+</defs>
+</svg>

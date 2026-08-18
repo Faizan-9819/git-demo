@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node shot.js \"http://localhost:3000/\" \"home-en3\")",
+      "Bash(node shot.js \"http://localhost:3000/nl\" \"home-nl\")",
+      "Bash(node shot3.js)",
+      "Bash(node -e ' *)",
+      "Bash(node shot.js \"http://localhost:3000/nl\" \"nl-final\")",
+      "Bash(node shot2.js \"http://localhost:3000/\")",
+      "Bash(awk 'NR==347{print length\\($0\\)}' \"Growth Rocket homepage wireframe/LandingPage.dc.html\")",
+      "Bash(curl -s \"http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__0lk-rfl._.css\" -o /tmp/gr.css)",
+      "Bash(curl -s \"http://localhost:3000/_next/static/chunks/[root-of-the-server]__0lk-rfl._.css\" -o /tmp/gr.css)",
+      "Bash(timeout 15 npm view playwright-core version)",
+      "Bash(mkdir -p \"C:\\\\Users\\\\Noor\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Noor-Desktop-work-getgrowthrocket13aug-ggr\\\\5d135ec5-db44-41c5-8d89-44eb976ed606\\\\scratchpad\\\\pw\" && cd \"C:\\\\Users\\\\Noor\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Noor-Desktop-work-getgrowthrocket13aug-ggr\\\\5d135ec5-db44-41c5-8d89-44eb976ed606\\\\scratchpad\\\\pw\" && npm init -y >/dev/null 2>&1 && timeout 60 npm install playwright-core@1.62.1 2>&1 | tail -20)",
+      "Bash(node shot.js 375 http://localhost:3001/)",
+      "Bash(node sections.js 375 http://localhost:3000/ . before)",
+      "Bash(rm -f before-375-*.png)",
+      "Bash(node chunks.js 375 http://localhost:3000/ . before)",
+      "Bash(node -e \"require.resolve\\('playwright'\\)\")",
+      "Bash(npx --no-install playwright install-deps --dry-run)",
+      "Read(//c//**)",
+      "Bash(node \"C:\\\\Users\\\\Noor\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Noor-Desktop-work-getgrowthrocket13aug-ggr\\\\2cfb83a4-305a-4e4d-8556-bc11186fcfc3\\\\scratchpad\\\\screenshot.js\")",
+      "Bash(node \"C:\\\\Users\\\\Noor\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Noor-Desktop-work-getgrowthrocket13aug-ggr\\\\2cfb83a4-305a-4e4d-8556-bc11186fcfc3\\\\scratchpad\\\\screenshot3.js\")"
+    ]
+  }
+}
