@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Reveal from "../../Reveal";
 import EyebrowLabel from "../../ui/EyebrowLabel";
@@ -32,7 +33,7 @@ const CASES: { name: string; meta: Translation; image: string }[] = [
   },
   {
     name: "Seabulk International Trading",
-    meta: { en: "Trade & logistics · Dubai", nl: "Handel & logistiek · Dubai" },
+    meta: { en: "Trade & logistics · UAE", nl: "Handel & logistiek · UAE" },
     image: "/home/case-seabulk.png",
   },
   {
@@ -62,9 +63,13 @@ function ArrowButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === "prev" ? "Previous" : "Next"}
-      className="flex h-11 w-11 items-center justify-center rounded-full border border-white/22 bg-white/6 font-poppins text-[18px] text-white transition-colors hover:bg-white/12 disabled:pointer-events-none disabled:opacity-40"
+      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/22 bg-white/6 text-white transition-colors hover:bg-white/12 disabled:pointer-events-none disabled:opacity-40"
     >
-      {dir === "prev" ? "‹" : "›"}
+      {dir === "prev" ? (
+        <ChevronLeft size={18} strokeWidth={2.25} />
+      ) : (
+        <ChevronRight size={18} strokeWidth={2.25} />
+      )}
     </button>
   );
 }
@@ -73,8 +78,7 @@ export default function Examples() {
   const { t } = useLanguage();
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
-    dragFree: true,
-    containScroll: "trimSnaps",
+    loop: true,
   });
 
   const [canPrev, setCanPrev] = useState(false);
@@ -115,10 +119,12 @@ export default function Examples() {
             )}
           </h2>
           <p className="m-0 text-[16px] leading-[1.6] text-white/68">
-            {t({
-              en: "Your website is professionally built for you — as part of Growth Rocket.",
-              nl: "Je website wordt professioneel voor je gemaakt — als onderdeel van Growth Rocket.",
-            })}
+            {withBreaks(
+              t({
+                en: "Your website is professionally built for you — as part of Growth Rocket.",
+                nl: "Je website wordt professioneel voor je gemaakt — <br/> als onderdeel van Growth Rocket.",
+              }),
+            )}
           </p>
         </div>
         <div className="flex gap-[10px] w-full justify-end">
@@ -129,31 +135,32 @@ export default function Examples() {
 
       <div className="fix-wide pb-6">
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-5">
+          <div className="flex -ml-5">
             {CASES.map((c, i) => (
-              <Reveal
-                key={c.name}
-                delay={Math.min(i * 0.05, 0.2)}
-                className="shrink-0 w-full sm:w-100 flex flex-col gap-4 rounded-[28px] border border-white/10 bg-white/6 p-5"
-              >
-                <div className="relative rounded-[16px] overflow-hidden bg-white shadow-[0_12px_30px_rgba(10,5,22,0.08)] aspect-[3/2]">
-                  <Image
-                    src={c.image}
-                    alt={c.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 400px"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex flex-col gap-[2px] px-[6px] pb-[6px]">
-                  <span className="font-poppins text-[17px] font-semibold text-white">
-                    {c.name}
-                  </span>
-                  <span className="font-sans text-[13px] text-white/60">
-                    {t(c.meta)}
-                  </span>
-                </div>
-              </Reveal>
+              <div key={c.name} className="shrink-0 w-full pl-5 sm:w-1/3">
+                <Reveal
+                  delay={Math.min(i * 0.05, 0.2)}
+                  className="flex h-full flex-col gap-4 rounded-[28px] border border-white/10 bg-white/6 p-5"
+                >
+                  <div className="relative rounded-[16px] overflow-hidden bg-white shadow-[0_12px_30px_rgba(10,5,22,0.08)] aspect-[3/2]">
+                    <Image
+                      src={c.image}
+                      alt={c.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 400px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px] px-[6px] pb-[6px]">
+                    <span className="font-poppins text-[17px] font-semibold text-white">
+                      {c.name}
+                    </span>
+                    <span className="font-sans text-[13px] text-white/60">
+                      {t(c.meta)}
+                    </span>
+                  </div>
+                </Reveal>
+              </div>
             ))}
           </div>
         </div>

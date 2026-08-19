@@ -410,7 +410,7 @@ function ArrowButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === "prev" ? "Previous" : "Next"}
-      className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-slate-200)] bg-white font-poppins text-[18px] text-[var(--color-haiti)] transition-colors hover:bg-[var(--color-violet-98)] disabled:pointer-events-none disabled:opacity-40"
+      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-[var(--color-slate-200)] bg-white font-poppins text-[18px] text-[var(--color-haiti)] transition-colors hover:bg-[var(--color-violet-98)] disabled:pointer-events-none disabled:opacity-40"
     >
       {dir === "prev" ? "‹" : "›"}
     </button>
@@ -420,53 +420,43 @@ function ArrowButton({
 const TRADES: { name: Translation; image: string }[] = [
   {
     name: { en: "Electrician", nl: "Elektricien" },
-    image:
-      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=70",
+    image: "/home2/elec.jpg",
   },
   {
     name: { en: "Plumber", nl: "Loodgieter" },
-    image:
-      "https://images.unsplash.com/photo-1676210134188-4c05dd172f89?auto=format&fit=crop&w=600&q=70",
+    image: "/home2/plumber.jpg",
   },
   {
     name: { en: "Cleaning company", nl: "Schoonmaakbedrijf" },
-    image:
-      "https://images.unsplash.com/photo-1686178827149-6d55c72d81df?auto=format&fit=crop&w=600&q=70",
+    image: "/home2/cleaning.jpg",
   },
   {
     name: { en: "Consultant", nl: "Consultant" },
-    image:
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=70",
+    image: "/home2/consultant.jpg",
   },
   {
     name: { en: "Accountant", nl: "Accountant" },
-    image:
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=70",
+    image: "/home2/accountant.jpg",
   },
   {
     name: { en: "Hairdresser / salon", nl: "Kapper / salon" },
-    image:
-      "https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?auto=format&fit=crop&w=600&q=70",
+    image: "/home2/hairdresser].jpg",
   },
   {
     name: { en: "Coach", nl: "Coach" },
-    image:
-      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=70",
+    image: "/home2/coach.jpg",
   },
   {
     name: { en: "Healthcare professional", nl: "Zorgprofessional" },
-    image:
-      "https://images.unsplash.com/photo-1649751361457-01d3a696c7e6?auto=format&fit=crop&w=600&q=70",
+    image: "/home2/healthcare.jpg",
   },
   {
     name: { en: "Handyman business", nl: "Klusbedrijf" },
-    image:
-      "https://images.unsplash.com/photo-1646640381839-02748ae8ddf0?auto=format&fit=crop&w=600&q=70",
+    image: "/home2/handyman.jpg",
   },
   {
     name: { en: "Business service provider", nl: "Zakelijke dienstverlener" },
-    image:
-      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=70",
+    image: "/home2/business-service .jpg",
   },
 ];
 
@@ -511,14 +501,14 @@ export default function Audience() {
             {withBreaks(
               t({
                 en: "Built for entrepreneurs like you.",
-                nl: "Gemaakt voor ondernemers zoals jij.",
+                nl: "Gemaakt voor <br/> ondernemers zoals jij.",
               }),
             )}
           </h2>
         </div>
         <Reveal
           delay={0.1}
-          className="self-start justify-self-end pt-[0px] max-w-95"
+          className="self-center justify-self-end pt-[0px] max-w-95"
         >
           <p className="m-0 text-[16px] leading-[1.6] text-[var(--color-dolphin)] ">
             {t({
@@ -528,7 +518,7 @@ export default function Audience() {
           </p>
         </Reveal>
       </div>
-
+      {/*  */}
       {/* Mobile: unchanged drag carousel */}
       <div className="fix-wide pt-[8px] pb-7 sm:hidden">
         <div className="overflow-hidden" ref={emblaRef}>

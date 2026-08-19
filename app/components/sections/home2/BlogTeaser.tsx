@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Reveal from "../../Reveal";
 import EyebrowLabel from "../../ui/EyebrowLabel";
@@ -55,9 +56,13 @@ function ArrowButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === "prev" ? "Previous" : "Next"}
-      className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-slate-200)] bg-white font-poppins text-[18px] text-[var(--color-haiti)] transition-colors hover:bg-[var(--color-violet-98)] disabled:pointer-events-none disabled:opacity-40"
+      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-[var(--color-slate-200)] bg-white text-[var(--color-haiti)] transition-colors hover:bg-[var(--color-violet-98)] disabled:pointer-events-none disabled:opacity-40"
     >
-      {dir === "prev" ? "‹" : "›"}
+      {dir === "prev" ? (
+        <ChevronLeft size={18} strokeWidth={2.25} />
+      ) : (
+        <ChevronRight size={18} strokeWidth={2.25} />
+      )}
     </button>
   );
 }
@@ -66,8 +71,7 @@ export default function BlogTeaser() {
   const { t, locale } = useLanguage();
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
-    dragFree: true,
-    containScroll: "trimSnaps",
+    loop: true,
   });
 
   const [canPrev, setCanPrev] = useState(false);
@@ -110,35 +114,39 @@ export default function BlogTeaser() {
       </div>
 
       <div className="overflow-hidden pb-1" ref={emblaRef}>
-        <div className="flex gap-5">
-          {POSTS.map((post, i) => (
-            <Reveal
-              key={post.title.en}
-              delay={Math.min(i * 0.05, 0.2)}
-              className="shrink-0 w-full sm:w-95 flex flex-col gap-4 rounded-[26px] border border-[var(--color-mist)] bg-white p-5 pb-[26px]"
+        <div className="flex -ml-5">
+          {POSTS.concat(POSTS).map((post, i) => (
+            <div
+              key={`${post.title.en}-${i}`}
+              className="shrink-0 w-full pl-5 sm:w-1/3"
             >
-              <div className="relative rounded-[18px] overflow-hidden h-[190px]">
-                <Image
-                  src={post.image}
-                  alt={t(post.title)}
-                  fill
-                  sizes="(max-width: 640px) 100vw, 380px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-1 flex-col gap-3 px-[6px]">
-                <h3
-                  className="m-0 text-[20px] font-semibold leading-[1.25] tracking-[-0.3px] font-poppins text-[var(--color-haiti)]"
-                  dangerouslySetInnerHTML={{ __html: t(post.title) }}
-                ></h3>
-                <Link
-                  href={localizedHref("/blog", locale)}
-                  className="mt-auto font-poppins text-[14px] font-semibold text-[var(--color-violet-42)]"
-                >
-                  {t({ en: "Read more →", nl: "Lees meer →" })}
-                </Link>
-              </div>
-            </Reveal>
+              <Reveal
+                delay={Math.min(i * 0.05, 0.2)}
+                className="flex h-full flex-col gap-4 rounded-[26px] border border-[var(--color-mist)] bg-white p-5 pb-[26px]"
+              >
+                <div className="relative rounded-[18px] overflow-hidden h-[190px]">
+                  <Image
+                    src={post.image}
+                    alt={t(post.title)}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 380px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col gap-3 px-[6px]">
+                  <h3
+                    className="m-0 text-[20px] font-semibold leading-[1.25] tracking-[-0.3px] font-poppins text-[var(--color-haiti)]"
+                    dangerouslySetInnerHTML={{ __html: t(post.title) }}
+                  ></h3>
+                  <Link
+                    href={localizedHref("/blog", locale)}
+                    className="mt-auto font-poppins text-[14px] font-semibold text-[var(--color-violet-42)]"
+                  >
+                    {t({ en: "Read more →", nl: "Lees meer →" })}
+                  </Link>
+                </div>
+              </Reveal>
+            </div>
           ))}
         </div>
       </div>

@@ -438,13 +438,12 @@ export default function CookieConsent() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed z-[1400] bottom-[120px] right-4 sm:bottom-[80px] top-auto sm:right-6 group w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-violet-42)]"
-        style={{ background: "var(--grad-brand)" }}
+        className="fixed z-[1400] bottom-[120px] right-4 sm:bottom-[80px] top-auto sm:right-6 group w-12 h-12 rounded-full flex items-center justify-center shadow-lg border border-[var(--color-mist)] bg-white transition-transform hover:scale-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-violet-42)]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 32 32"
-          className="w-6 h-6 text-white fill-white"
+          className="w-6 h-6 text-[var(--color-violet-42)] fill-[var(--color-violet-42)]"
           aria-hidden
         >
           <path d="M16 2C8.268 2 2 8.268 2 16c0 2.52.664 4.882 1.822 6.928L2 30l7.302-1.79A13.9 13.9 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2Zm0 25.4a11.47 11.47 0 0 1-5.852-1.606l-.42-.25-4.332 1.064 1.094-4.21-.273-.432A11.384 11.384 0 0 1 4.6 16C4.6 9.7 9.7 4.6 16 4.6S27.4 9.7 27.4 16 22.3 27.4 16 27.4Zm6.26-8.48c-.342-.172-2.024-1-2.338-1.112-.314-.114-.542-.172-.77.172-.228.342-.884 1.112-1.082 1.342-.2.228-.4.258-.742.086-.342-.172-1.444-.532-2.75-1.696-1.016-.906-1.702-2.026-1.902-2.368-.2-.342-.022-.526.15-.698.156-.154.342-.4.514-.6.17-.2.228-.342.342-.57.114-.228.056-.428-.028-.6-.086-.172-.77-1.856-1.056-2.542-.278-.668-.56-.578-.77-.588l-.656-.012c-.228 0-.6.086-.914.428s-1.2 1.172-1.2 2.856 1.228 3.312 1.4 3.542c.17.228 2.416 3.688 5.854 5.172.818.354 1.456.566 1.954.724.82.262 1.568.226 2.158.138.658-.1 2.024-.828 2.31-1.626.284-.8.284-1.484.2-1.626-.086-.142-.314-.228-.656-.4Z" />
@@ -468,10 +467,9 @@ export default function CookieConsent() {
             <button
               onClick={() => setPanelOpen(true)}
               aria-label={t({ en: "Manage cookies", nl: "Cookies beheren" })}
-              className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg shadow-[var(--color-violet-42)]/25 transition-transform hover:scale-110 active:scale-95 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-violet-42)]"
-              style={{ background: "var(--grad-brand)" }}
+              className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg shadow-[var(--color-violet-42)]/25 border border-[var(--color-mist)] bg-white transition-transform hover:scale-110 active:scale-95 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-violet-42)]"
             >
-              <TbCookie className="w-5 h-5 text-white" />
+              <TbCookie className="w-5 h-5 text-[var(--color-violet-42)]" />
             </button>
             {/* Tooltip */}
             <span className="pointer-events-none absolute right-full mr-2 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[var(--color-haiti)] px-3 py-1.5 text-[12px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity duration-150 shadow-md">

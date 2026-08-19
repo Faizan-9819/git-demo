@@ -51,7 +51,7 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
       className="grid grid-cols-1 lg:grid-cols-2 gap-3.5 items-stretch pt-19"
     >
       {/* Left: headline card */}
-      <div className="relative overflow-hidden rounded-[28px] bg-white px-5 sm:px-10 lg:px-8 xl:px-[94px] py-12 sm:py-16 lg:py-14 xl:py-24 flex items-center">
+      <div className="relative overflow-hidden rounded-[28px] bg-white px-5 sm:px-10 lg:px-8 xl:px-[94px] 2xl:pl-[140px] min-[1900px]:pl-[200px]! py-12 sm:py-16 lg:py-14 xl:py-24 flex items-center">
         <div
           aria-hidden
           className="pointer-events-none absolute -top-[140px] -left-[120px] w-[420px] h-[420px] rounded-full opacity-35"
@@ -156,7 +156,7 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
         />
 
         <FloatingPill
-          className="top-[12px] right-[8px] sm:top-[100px] sm:right-[10px] lg:top-[56%] lg:right-0 pr-[10px] pl-[6px] sm:pr-[22px] sm:pl-[8px]"
+          className="top-[12px] right-[8px] sm:top-[100px] sm:right-[10px] lg:top-[56%] lg:right-12 pr-[10px] pl-[6px] sm:pr-[22px] sm:pl-[8px]"
           iconPosition="start"
           label={t({ en: "Professional website", nl: "Professionele website" })}
           icon={

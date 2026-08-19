@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import { Star } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Reveal from "../../Reveal";
 import EyebrowLabel from "../../ui/EyebrowLabel";
@@ -23,9 +23,13 @@ function ArrowButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === "prev" ? "Previous" : "Next"}
-      className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-slate-200)] bg-white font-poppins text-[18px] text-[var(--color-haiti)] transition-colors hover:bg-[var(--color-violet-98)] disabled:pointer-events-none disabled:opacity-40"
+      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-[var(--color-slate-200)] bg-white text-[var(--color-haiti)] transition-colors hover:bg-[var(--color-violet-98)] disabled:pointer-events-none disabled:opacity-40"
     >
-      {dir === "prev" ? "‹" : "›"}
+      {dir === "prev" ? (
+        <ChevronLeft size={18} strokeWidth={2.25} />
+      ) : (
+        <ChevronRight size={18} strokeWidth={2.25} />
+      )}
     </button>
   );
 }
@@ -77,8 +81,7 @@ export default function Testimonials() {
   const { t } = useLanguage();
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
-    dragFree: true,
-    containScroll: "trimSnaps",
+    loop: true,
   });
 
   const [canPrev, setCanPrev] = useState(false);
@@ -111,7 +114,7 @@ export default function Testimonials() {
             {withBreaks(
               t({
                 en: "What entrepreneurs say about Growth Rocket",
-                nl: "Wat ondernemers over Growth Rocket zeggen",
+                nl: "Wat ondernemers over <br/> Growth Rocket zeggen",
               }),
             )}
           </h2>
@@ -130,36 +133,40 @@ export default function Testimonials() {
 
       <div className="fix-wide pb-6">
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-[18px]">
-            {QUOTES.map((q, i) => (
-              <Reveal
-                key={q.text.en}
-                delay={Math.min(i * 0.05, 0.2)}
-                className="shrink-0 w-full sm:w-85 flex flex-col gap-[18px] rounded-[26px] border border-[var(--color-slate-200)] bg-white px-7 py-[30px]"
+          <div className="flex -ml-[18px]">
+            {QUOTES.concat(QUOTES).map((q, i) => (
+              <div
+                key={`${q.text.en}-${i}`}
+                className="shrink-0 w-full pl-[18px] sm:w-1/3"
               >
-                <div className="flex gap-1">
-                  {Array.from({ length: 5 }).map((_, s) => (
-                    <Star
-                      key={s}
-                      size={16}
-                      color="var(--color-amber-500)"
-                      fill="var(--color-amber-500)"
-                      strokeWidth={0}
-                    />
-                  ))}
-                </div>
-                <p className="m-0 text-[16px] leading-[26px] font-medium text-[var(--color-haiti)] font-poppins">
-                  {t(q.text)}
-                </p>
-                <div className="mt-auto flex flex-col">
-                  <span className="font-poppins text-[14px] font-semibold text-[var(--color-haiti)]">
-                    {t(q.meta).split(" · ")[0]}
-                  </span>
-                  <span className="font-sans text-[12px] text-[var(--color-dolphin)]">
-                    {t(q.meta).split(" · ").slice(1).join(" · ")}
-                  </span>
-                </div>
-              </Reveal>
+                <Reveal
+                  delay={Math.min(i * 0.05, 0.2)}
+                  className="flex h-full flex-col gap-[18px] rounded-[26px] border border-[var(--color-slate-200)] bg-white px-7 py-[30px]"
+                >
+                  <div className="flex gap-1">
+                    {Array.from({ length: 5 }).map((_, s) => (
+                      <Star
+                        key={s}
+                        size={16}
+                        color="var(--color-amber-500)"
+                        fill="var(--color-amber-500)"
+                        strokeWidth={0}
+                      />
+                    ))}
+                  </div>
+                  <p className="m-0 text-[16px] leading-[26px] font-medium text-[var(--color-haiti)] font-poppins">
+                    {t(q.text)}
+                  </p>
+                  <div className="mt-auto flex flex-col">
+                    <span className="font-poppins text-[14px] font-semibold text-[var(--color-haiti)]">
+                      {t(q.meta).split(" · ")[0]}
+                    </span>
+                    <span className="font-sans text-[12px] text-[var(--color-dolphin)]">
+                      {t(q.meta).split(" · ").slice(1).join(" · ")}
+                    </span>
+                  </div>
+                </Reveal>
+              </div>
             ))}
           </div>
         </div>

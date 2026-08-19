@@ -368,7 +368,7 @@ export default function Solution() {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-40 -right-30 w-[460px] h-[460px] rounded-full opacity-45"
+        className="pointer-events-none absolute -top-40 -right-30 w-[460px] h-[460px] rounded-full opacity-15"
         style={{ background: "var(--color-violet-58)", filter: "blur(140px)" }}
       />
       <div
@@ -390,7 +390,7 @@ export default function Solution() {
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="m-0 max-w-160 text-center font-poppins text-[17px] leading-[1.55] text-white/68">
+          <p className="m-0  text-center font-poppins text-[17px] leading-[1.55] text-white/68">
             {t({
               en: "From your online presence to your customers and admin — managed from a single place.",
               nl: "Van je online aanwezigheid tot je klanten en administratie — geregeld vanuit één plek.",
