@@ -470,7 +470,7 @@ export default function Footer() {
 
   return (
     <div
-      className={`px-3.5 pb-3.5  ${isHome ? "bg-[var(--color-sand)]!" : ""}`}
+      className={`px-3.5 p  b-3.5  ${isHome ? "bg-[var(--color-sand)]!" : ""}`}
     >
       <footer className="relative overflow-hidden rounded-[28px] bg-[var(--color-footer-bg)] mx-auto max-w-473">
         <Ticker />
