@@ -3,24 +3,23 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { TbCookie } from "react-icons/tb";
 import { lenisStop, lenisStart } from "./LenisProvider";
 import { useLanguage } from "../i18n/LanguageProvider";
 
 export const COOKIE_CONSENT_NAME = "gr_cookie_consent";
 export const COOKIE_CONSENT_EVENT = "gr-cookie-consent-changed";
 export const OPEN_COOKIE_PREFERENCES_EVENT = "gr-open-cookie-preferences";
-
-export function openCookiePreferences() {
-  if (typeof window === "undefined") return;
-  window.dispatchEvent(new CustomEvent(OPEN_COOKIE_PREFERENCES_EVENT));
-}
 export type ConsentValue = "granted" | "denied" | "pending";
 export type ConsentPrefs = {
   analytics: boolean;
   marketing: boolean;
   functional: boolean;
 };
+
+export function openCookiePreferences() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent(OPEN_COOKIE_PREFERENCES_EVENT));
+}
 
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
@@ -310,7 +309,6 @@ export default function CookieConsent() {
   const { t } = useLanguage();
   const [bannerOpen, setBannerOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const [prefs, setPrefs] = useState<Prefs>(DEFAULT_PREFS);
 
   useEffect(() => {
@@ -318,7 +316,6 @@ export default function CookieConsent() {
     if (consent === "pending") {
       setBannerOpen(true);
     } else {
-      setHasInteracted(true);
       setPrefs(stored);
     }
   }, []);
@@ -348,7 +345,6 @@ export default function CookieConsent() {
     broadcast(consent, p);
     setBannerOpen(false);
     setPanelOpen(false);
-    setHasInteracted(true);
     setPrefs(p);
   }
 
@@ -455,7 +451,7 @@ export default function CookieConsent() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed z-[1400] bottom-[120px] right-4 sm:bottom-[80px] top-auto sm:right-6 group w-12 h-12 rounded-full flex items-center justify-center shadow-lg border border-[var(--color-mist)] bg-white transition-transform hover:scale-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-violet-42)]"
+        className="fixed z-[1400] bottom-[calc(52px+12px)] right-4 sm:bottom-6 top-auto sm:right-6 group w-12 h-12 rounded-full flex items-center justify-center shadow-lg border border-[var(--color-mist)] bg-white transition-transform hover:scale-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-violet-42)]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -469,32 +465,6 @@ export default function CookieConsent() {
           WhatsApp
         </span>
       </a>
-
-      {/* FAB — always visible after first interaction, also shown while banner is open so user can jump straight to panel */}
-      <AnimatePresence>
-        {(hasInteracted || bannerOpen) && !panelOpen && (
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ type: "spring", duration: 0.4, bounce: 0.3 }}
-            // Desktop: bottom-right. Mobile: above the 52px sticky bar.
-            className="fixed z-[1400] bottom-[calc(52px+12px)] right-4 sm:bottom-6 sm:right-6 group"
-          >
-            <button
-              onClick={() => setPanelOpen(true)}
-              aria-label={t({ en: "Manage cookies", nl: "Cookies beheren" })}
-              className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg shadow-[var(--color-violet-42)]/25 border border-[var(--color-mist)] bg-white transition-transform hover:scale-110 active:scale-95 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-violet-42)]"
-            >
-              <TbCookie className="w-5 h-5 text-[var(--color-violet-42)]" />
-            </button>
-            {/* Tooltip */}
-            <span className="pointer-events-none absolute right-full mr-2 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[var(--color-haiti)] px-3 py-1.5 text-[12px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity duration-150 shadow-md">
-              {t({ en: "Manage cookies", nl: "Cookies beheren" })}
-            </span>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }

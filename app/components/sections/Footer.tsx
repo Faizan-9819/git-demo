@@ -349,6 +349,7 @@ import {
 } from "react-icons/fa6";
 import { RiTwitterXFill } from "react-icons/ri";
 import { CONTACT_INFO, phoneHref } from "@/app/lib/contact";
+import { openCookiePreferences } from "../CookieConsent";
 
 const TICKER_TEXT: Translation = {
   en: "Get started in 7 days",
@@ -637,6 +638,14 @@ export default function Footer() {
             >
               {t({ en: "Cookies", nl: "Cookies" })}
             </Link>
+            <span className="opacity-45">·</span>
+            <button
+              type="button"
+              onClick={openCookiePreferences}
+              className="text-[#352c4a] hover:text-[var(--color-violet-42)] cursor-pointer"
+            >
+              {t({ en: "Cookie settings", nl: "Cookie-instellingen" })}
+            </button>
             <span className="opacity-45">·</span>
             <Link
               href={localizedHref("/terms-and-conditions", locale)}
