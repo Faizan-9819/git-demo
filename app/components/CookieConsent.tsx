@@ -9,6 +9,12 @@ import { useLanguage } from "../i18n/LanguageProvider";
 
 export const COOKIE_CONSENT_NAME = "gr_cookie_consent";
 export const COOKIE_CONSENT_EVENT = "gr-cookie-consent-changed";
+export const OPEN_COOKIE_PREFERENCES_EVENT = "gr-open-cookie-preferences";
+
+export function openCookiePreferences() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent(OPEN_COOKIE_PREFERENCES_EVENT));
+}
 export type ConsentValue = "granted" | "denied" | "pending";
 export type ConsentPrefs = {
   analytics: boolean;
@@ -324,6 +330,17 @@ export default function CookieConsent() {
       return () => lenisStart();
     }
   }, [panelOpen]);
+
+  // Allow other parts of the app (e.g. the footer "Cookie settings" link) to open the panel
+  useEffect(() => {
+    const handler = () => {
+      setBannerOpen(false);
+      setPanelOpen(true);
+    };
+    window.addEventListener(OPEN_COOKIE_PREFERENCES_EVENT, handler);
+    return () =>
+      window.removeEventListener(OPEN_COOKIE_PREFERENCES_EVENT, handler);
+  }, []);
 
   function commit(consent: "granted" | "denied", p: Prefs) {
     writeStored(consent, p);
