@@ -368,7 +368,7 @@ export default function BlogLandingClient({ posts }: { posts: BlogPost[] }) {
     >
       {/* Hero */}
       <div
-        className="relative pt-[40px] lg:pt-[77px] pb-[32px] lg:pb-[45px] fix"
+        className="relative pt-[40px] lg:pt-[160px] pb-[32px] lg:pb-[45px] fix"
         style={{
           background:
             "linear-gradient(90deg, rgb(242, 238, 252) 0%, rgb(242, 238, 252) 100%)",

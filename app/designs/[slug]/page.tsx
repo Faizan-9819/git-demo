@@ -100,7 +100,7 @@ export default async function TemplateDetailPage({
       {/* 1. Hero */}
       {/* <section className="relative overflow-hidden bg-[radial-gradient(at_center_center,_#922698_0%,_#5B219F_89%)] lg:pb-16 pb-10 lg:pt-24 pt-12"> */}
       <section
-        className="relative overflow-hidden pb-[80px] pt-[130px]"
+        className="relative overflow-hidden pb-[80px] pt-[160px]"
         style={{
           background:
             "linear-gradient(174deg, var(--color-violet-42) 0%, var(--color-violet-23) 100%)",

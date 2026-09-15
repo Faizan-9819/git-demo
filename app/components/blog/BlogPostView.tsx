@@ -206,7 +206,7 @@ export default async function BlogPostView({
       />
       {faqSchema ? <JsonLd data={faqSchema} /> : null}
 
-      <section className="fix pt-12 lg:pt-20">
+      <section className="fix pt-12 lg:pt-40">
         <HeroComponent {...blog.hero.props} />
       </section>
 

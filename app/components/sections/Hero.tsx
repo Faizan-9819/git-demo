@@ -109,7 +109,7 @@ export default function Hero({
         }}
       />
 
-      <div className="md:max-w-[1400px] md:mx-auto fix border-x-2 border-[rgba(148,163,184,.2)] relative lg:pt-[60px] pt-[60px]">
+      <div className="md:max-w-[1400px] md:mx-auto fix border-x-2 border-[rgba(148,163,184,.2)] relative lg:pt-[120px] pt-[60px]">
         {/* Calendar widget — inline to receive mouse values */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}

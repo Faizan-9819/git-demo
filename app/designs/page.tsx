@@ -14,7 +14,7 @@ export default function TemplatesPage() {
   return (
     <main className="bg-[var(--bg)] text-[var(--fg)]">
       <div className="w-full bg-[#F2EEFC]">
-        <section className="fix pt-[64px] pb-[44px]  md:pt-[126px] md:pb-[56px]">
+        <section className="fix pt-[64px] pb-[44px]  md:pt-[160px] md:pb-[56px]">
           {/* <h1 className="mx-auto mb-4 font-inter text-[30px] sm:text-[40px] lg:text-[56px] font-bold tracking-[-1px] lg:tracking-[-2px] leading-tight text-[var(--color-haiti)]">
           Customizable HTML{" "}
           <span className="text-grad-brand">

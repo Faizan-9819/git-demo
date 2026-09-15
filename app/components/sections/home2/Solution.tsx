@@ -857,7 +857,7 @@ import Button from "../../ui/Button";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 import type { Translation } from "../../../i18n/config";
 
-const ACCENT = "#E3FF54";
+const ACCENT = "#E3FF64";
 
 type FeatureItem = { label: Translation; icon: ReactNode };
 
@@ -1023,7 +1023,7 @@ function OfferCard({
   tagline,
   features,
   iconChipClass,
-  headerIconClass = "bg-[#E3FF54] text-[#5b2dce] rounded-2xl",
+  headerIconClass = "bg-[#E3FF54] text-[#7b39ea] rounded-2xl",
   footNote,
   linkLabel,
   delay,
