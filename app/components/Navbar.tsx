@@ -11,9 +11,7 @@ import { localizedHref } from "../i18n/locale-href";
 import type { Locale } from "../i18n/config";
 
 const home2Anchor = (anchor: string, locale: Locale) =>
-  locale === "nl"
-    ? localizedHref(`/#${anchor}`, locale)
-    : `/home2#${anchor}`;
+  locale === "nl" ? `/nl/home2#${anchor}` : `/home2#${anchor}`;
 
 const getLinks = (t: any, locale: Locale) => [
   {
