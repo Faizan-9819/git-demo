@@ -10,22 +10,31 @@ import { useLanguage } from "../i18n/LanguageProvider";
 import { localizedHref } from "../i18n/locale-href";
 import type { Locale } from "../i18n/config";
 
+const home2Anchor = (anchor: string, locale: Locale) =>
+  locale === "nl"
+    ? localizedHref(`/#${anchor}`, locale)
+    : `/home2#${anchor}`;
+
 const getLinks = (t: any, locale: Locale) => [
   {
     label: t({ en: "Features", nl: "Features" }),
-    href: localizedHref("/#oplossing", locale),
+    href: home2Anchor("oplossing", locale),
   },
   {
     label: t({ en: "Who it's for", nl: "Voor wie" }),
-    href: localizedHref("/#voorwie", locale),
+    href: home2Anchor("voorwie", locale),
   },
   {
     label: t({ en: "Examples", nl: "Voorbeelden" }),
-    href: localizedHref("/#voorbeelden", locale),
+    href: home2Anchor("voorbeelden", locale),
   },
   {
     label: t({ en: "Pricing", nl: "Prijzen" }),
-    href: localizedHref("/#prijzen", locale),
+    href: home2Anchor("prijzen", locale),
+  },
+  {
+    label: t({ en: "Designs", nl: "Designs" }),
+    href: "/designs",
   },
   {
     label: t({ en: "About", nl: "Over ons" }),

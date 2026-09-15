@@ -1,19 +1,15 @@
 "use client";
 
-import HomeShell from "./components/sections/home2/HomeShell";
-import Hero2 from "./components/sections/home2/Hero2";
-import Problem from "./components/sections/home2/Problem";
-import Solution from "./components/sections/home2/Solution";
-import Audience from "./components/sections/home2/Audience";
-import WhyUs from "./components/sections/home2/WhyUs";
-import HowItWorks from "./components/sections/home2/HowItWorks";
-import Testimonials from "./components/sections/home2/Testimonials";
-import Examples from "./components/sections/home2/Examples";
-import FinalCta from "./components/sections/home2/FinalCta";
-import Faq2 from "./components/sections/home2/Faq2";
-import BlogTeaser from "./components/sections/home2/BlogTeaser";
+import Hero from "./components/sections/Hero";
+import ThreePillars from "./components/sections/ThreePillars";
+import Evolution from "./components/sections/Evolution";
+import FeatureGrid from "./components/sections/FeatureGrid";
+import Pricing from "./components/sections/Pricing";
+import TradesShowcase from "./components/sections/TradesShowcase";
+import CTA from "./components/sections/CTA";
+import FAQ from "./components/sections/FAQ";
 import JsonLd from "./components/JsonLd";
-import { buildFaqJsonLd, HOME_FAQS } from "./lib/faqs";
+import { buildFaqJsonLd } from "./lib/faqs";
 import { buildPageSchema } from "./lib/seo";
 import LocaleMeta from "./components/LocaleMeta";
 
@@ -24,8 +20,14 @@ export default function HomeClient() {
     }
   };
 
+  const openBookingForm = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("open-booking-form"));
+    }
+  };
+
   return (
-    <main className="relative min-h-screen lg:pb-0">
+    <main className="relative min-h-screen overflow-x-hidden bg-white lg:pb-0">
       <JsonLd
         data={buildPageSchema(
           "/",
@@ -33,7 +35,7 @@ export default function HomeClient() {
           "A professional website for your small business — built, hosted and managed for you. Fixed yearly price, live in 7 days. See how it works.",
         )}
       />
-      <JsonLd data={buildFaqJsonLd(HOME_FAQS)} />
+      <JsonLd data={buildFaqJsonLd()} />
       <LocaleMeta
         title={{
           en: "Professional Websites for Small Businesses | Growth Rocket",
@@ -44,19 +46,14 @@ export default function HomeClient() {
           nl: "A professional website for your small business — built, hosted and managed for you. Fixed yearly price, live in 7 days. See how it works.",
         }}
       />
-      <HomeShell>
-        <Hero2 onStartClick={openLeadForm} />
-        <Problem />
-        <Solution />
-        <Audience />
-        <WhyUs />
-        <HowItWorks />
-        <Testimonials />
-        <Examples />
-        <FinalCta onStartClick={openLeadForm} />
-        <Faq2 />
-        <BlogTeaser />
-      </HomeShell>
+      <Hero onStartClick={openLeadForm} onBookClick={openBookingForm} />
+      <ThreePillars />
+      <Evolution />
+      <FeatureGrid />
+      <Pricing onStartClick={openLeadForm} />
+      <TradesShowcase />
+      <CTA onStartClick={openLeadForm} />
+      <FAQ onBookClick={openBookingForm} />
     </main>
   );
 }
