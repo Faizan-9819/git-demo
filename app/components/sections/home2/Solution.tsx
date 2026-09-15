@@ -1046,7 +1046,7 @@ function OfferCard({
   return (
     <Reveal
       delay={delay}
-      className={`relative flex h-full flex-col rounded-[28px] border border-white/10 p-6 sm:p-8 ${gradient}`}
+      className={`relative flex h-full flex-col rounded-[28px] border border-white/10 p-6 sm:p-12 ${gradient}`}
     >
       <div className="flex items-start justify-between gap-4">
         <h3 className="m-0 font-poppins text-[22px] sm:text-[24px] font-bold leading-[1.2] text-white">
@@ -1159,7 +1159,7 @@ export default function Solution() {
           </Reveal>
         </div>
 
-        <div className="relative grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 md:gap-10">
+        <div className="relative grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 md:gap-4">
           <OfferCard
             delay={0.05}
             // gradient="bg-[linear-gradient(180deg,#181330_0%,#0d0a1d_100%)]"
