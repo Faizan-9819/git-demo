@@ -1093,7 +1093,11 @@ function OfferCard({
         className="m-0  flex items-center gap-2 border-t border-white/10 pt-4 font-poppins text-[14px] text-white/50"
         style={{ color: ACCENT }}
       >
-        <span aria-hidden="true" style={{ color: ACCENT }}>
+        <span
+          aria-hidden="true"
+          className="text-[25px]"
+          style={{ color: ACCENT }}
+        >
           ✳
         </span>
         {t(footNote)}
