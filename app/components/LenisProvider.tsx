@@ -13,6 +13,20 @@ export function lenisStart() {
   _lenis?.start();
 }
 
+/** Smooth-scroll to a target through Lenis so it doesn't fight the library's
+ * own scroll loop (native scrollIntoView/scrollTo jerks while Lenis is active). */
+export function lenisScrollTo(
+  target: string | number | HTMLElement | null | undefined,
+  options?: { offset?: number; duration?: number; immediate?: boolean },
+) {
+  if (target === null || target === undefined) return;
+  if (_lenis) {
+    _lenis.scrollTo(target, options);
+  } else if (typeof target !== "string" && typeof target !== "number") {
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 export default function LenisProvider({ children }: { children: ReactNode }) {
   const setRef = useCallback((node: LenisRef | null) => {
     _lenis = node?.lenis ?? null;

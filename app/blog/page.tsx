@@ -4,11 +4,11 @@ import BlogLandingClient from "../components/blog/BlogLandingClient";
 import JsonLd from "../components/JsonLd";
 import { buildPageSchema } from "../lib/seo";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Blogs - Growth Rocket",
-  description: "Live Growth Rocket blog posts loaded from the WordPress API.",
+  description: "Practical guides on growing a service business online, written by Growth Rocket.",
   alternates: {
     canonical: "/blog",
   },
@@ -22,7 +22,7 @@ export default async function BlogLandingPage() {
         data={buildPageSchema(
           "/blog",
           "Blogs - Growth Rocket",
-          "Live Growth Rocket blog posts loaded from the WordPress API."
+          "Practical guides on growing a service business online, written by Growth Rocket."
         )}
       />
       <BlogLandingClient posts={posts} />

@@ -231,7 +231,7 @@ export default function Hero({
               </li>
             ))}
           </ul>
-        </Reveal> 
+        </Reveal>
 
         <div className="mt-[36px]">
           {/* <Parallax offset={30}> */}

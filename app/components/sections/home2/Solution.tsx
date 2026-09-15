@@ -1,502 +1,422 @@
-// "use client";
-// import { useEffect, useRef, useState } from "react";
-// import { motion, useInView } from "framer-motion";
-// import { Check } from "lucide-react";
-// import Reveal from "../../Reveal";
-// import EyebrowLabel from "../../ui/EyebrowLabel";
-// import { useLanguage } from "../../../i18n/LanguageProvider";
-// import type { Translation } from "../../../i18n/config";
-
-// const EASE = [0.22, 1, 0.36, 1] as const;
-
-// type PackageItem = { label: Translation; indent?: 0 | 1 | 2 | 3 };
-
-// const WEBSITE_ITEMS: PackageItem[] = [
-//   { label: { en: "8–10 page website", nl: "Website van 8-10 pagina's" } },
-//   { label: { en: "Mobile-friendly website", nl: "Mobielvriendelijke website" } },
-//   { label: { en: "Request & contact forms", nl: "Aanvraag- en contactformulieren" } },
-//   { label: { en: "Your own domain name", nl: "Eigen domeinnaam" }, indent: 1 },
-//   { label: { en: "Hosting & SSL", nl: "Hosting & SSL" }, indent: 2 },
-//   { label: { en: "Maintenance & updates", nl: "Onderhoud & updates" }, indent: 3 },
-// ];
-
-// const HUB_ITEMS: PackageItem[] = [
-//   { label: { en: "Manage leads", nl: "Leads beheren" } },
-//   { label: { en: "Online booking system", nl: "Online afsprakensysteem" }, indent: 1 },
-//   { label: { en: "Organize client contacts", nl: "Klantcontacten organiseren" }, indent: 1 },
-//   {
-//     label: { en: "Create & send quotes and invoices", nl: "Offertes en facturen maken en versturen" },
-//     indent: 1,
-//   },
-//   { label: { en: "Manage everything from one place", nl: "Alles beheren vanuit één plek" }, indent: 1 },
-// ];
-
-// const INDENT_CLASS = ["pl-0", "pl-6", "pl-11", "pl-16"];
-
-// function PackageHandle() {
-//   return (
-//     <div
-//       aria-hidden
-//       className="absolute -top-[26px] left-1/2 -translate-x-1/2 h-[42px] w-[86px] rounded-t-full border-[9px] border-b-0 border-[var(--color-amber-300)]"
-//     />
-//   );
-// }
-
-// function PackageCard({
-//   badge,
-//   title,
-//   items,
-//   gradient,
-// }: {
-//   badge: string;
-//   title: string;
-//   items: PackageItem[];
-//   gradient: string;
-// }) {
-//   const { t } = useLanguage();
-//   return (
-//     <div
-//       className="relative w-full max-w-[470px] rounded-[32px] px-8 pt-11 pb-9 flex flex-col gap-5 mt-[26px]"
-//       style={{ background: gradient }}
-//     >
-//       <PackageHandle />
-//       <span className="self-center rounded-full bg-[var(--color-kournikova)]/15 px-4 py-[6px] font-poppins text-[12px] font-semibold tracking-[0.5px] text-[var(--color-amber-200)]">
-//         {badge}
-//       </span>
-//       <h3 className="m-0 text-center font-poppins text-[22px] font-bold text-white">
-//         {title}
-//       </h3>
-//       <ul className="flex flex-col gap-3">
-//         {items.map((item) => (
-//           <li
-//             key={item.label.en}
-//             className={`flex items-center gap-[10px] ${INDENT_CLASS[item.indent ?? 0]}`}
-//           >
-//             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--color-kournikova)]/20">
-//               <Check size={12} strokeWidth={3} className="text-[var(--color-amber-200)]" />
-//             </span>
-//             <span className="font-sans text-[14px] text-white/80">{t(item.label)}</span>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// }
-
-// function useStackedLayout() {
-//   const [stacked, setStacked] = useState(false);
-//   useEffect(() => {
-//     const mq = window.matchMedia("(max-width: 819px)");
-//     const apply = () => setStacked(mq.matches);
-//     apply();
-//     mq.addEventListener("change", apply);
-//     return () => mq.removeEventListener("change", apply);
-//   }, []);
-//   return stacked;
-// }
-
-// export default function Solution() {
-//   const { t } = useLanguage();
-//   const stacked = useStackedLayout();
-
-//   return (
-//     <section
-//       id="oplossing"
-//       className="relative overflow-hidden rounded-[28px] bg-[var(--color-haiti)] fix-wide pt-16 lg:pt-28 pb-16 lg:pb-24 flex flex-col items-center gap-[18px]"
-//     >
-//       <div
-//         aria-hidden
-//         className="pointer-events-none absolute -top-40 -right-30 w-[460px] h-[460px] rounded-full opacity-45"
-//         style={{ background: "var(--color-violet-58)", filter: "blur(140px)" }}
-//       />
-//       <div
-//         aria-hidden
-//         className="pointer-events-none absolute -bottom-50 -left-35 w-[420px] h-[420px] rounded-full opacity-40"
-//         style={{ background: "var(--color-violet-42)", filter: "blur(140px)" }}
-//       />
-
-//       <div className="relative flex flex-col items-center gap-4">
-//         <EyebrowLabel color="var(--color-violet-75)">
-//           {t({ en: "The solution", nl: "De oplossing" })}
-//         </EyebrowLabel>
-//         <Reveal delay={0.05}>
-//           <h2 className="m-0 max-w-[820px] text-center font-poppins font-bold text-[clamp(28px,3.4vw,42px)] leading-[1.12] tracking-[-1px] text-white">
-//             {t({
-//               en: "Everything comes together in Growth Rocket.",
-//               nl: "Alles komt samen in Growth Rocket.",
-//             })}
-//           </h2>
-//         </Reveal>
-//         <Reveal delay={0.1}>
-//           <p className="m-0 max-w-160 text-center font-poppins text-[17px] leading-[1.55] text-white/68">
-//             {t({
-//               en: "From your online presence to your customers and admin — managed from a single place.",
-//               nl: "Van je online aanwezigheid tot je klanten en administratie — geregeld vanuit één plek.",
-//             })}
-//           </p>
-//         </Reveal>
-//       </div>
-
-//       <SolutionReveal stacked={stacked} />
-
-//       <Reveal delay={0.15} className="relative w-full max-w-[1058px] mt-4">
-//         <div className="flex items-center justify-center rounded-full border border-white/12 bg-white/6 px-8 py-5">
-//           <span className="text-center font-poppins text-[20px] font-medium text-white">
-//             {t({
-//               en: "One complete package, from €69 per month.",
-//               nl: "Eén compleet pakket, vanaf €69 per maand.",
-//             })}
-//           </span>
-//         </div>
-//       </Reveal>
-//     </section>
-//   );
-// }
-
-// function SolutionReveal({ stacked }: { stacked: boolean }) {
-//   const { t } = useLanguage();
-//   const wrapRef = useRef<HTMLDivElement>(null);
-//   const inView = useInView(wrapRef, { once: true, amount: 0.3 });
-
-//   const startD1 = stacked ? { y: 24, x: 0 } : { x: "calc(50% + 9px)", y: 0 };
-//   const startD2 = stacked ? { y: -24, x: 0 } : { x: "calc(-50% - 9px)", y: 0 };
-
-//   return (
-//     <div
-//       ref={wrapRef}
-//       className="relative w-full max-w-[1320px] mt-8 lg:mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch"
-//     >
-//       <motion.div
-//         initial={startD1}
-//         animate={inView ? { x: 0, y: 0 } : startD1}
-//         transition={{ duration: 1, ease: EASE }}
-//         className="relative z-[2] flex flex-col items-center justify-center gap-5"
-//       >
-//         <PackageCard
-//           badge={t({ en: "PART 1", nl: "DEEL 01" })}
-//           title={t({ en: "Professional website", nl: "Professionele website" })}
-//           items={WEBSITE_ITEMS}
-//           gradient="radial-gradient(120% 100% at 30% 0%, #241a3d 0%, var(--color-haiti) 100%)"
-//         />
-//         <a
-//           href="#"
-//           className="inline-flex items-center gap-[6px] font-poppins font-semibold text-[15px] tracking-[-0.2px] text-[var(--color-amber-500)]"
-//         >
-//           {t({ en: "See what's included →", nl: "See what's included →" })}
-//         </a>
-//       </motion.div>
-
-//       <motion.div
-//         initial={startD2}
-//         animate={inView ? { x: 0, y: 0 } : startD2}
-//         transition={{ duration: 1, ease: EASE }}
-//         className="relative z-[1] flex flex-col items-center justify-center gap-5"
-//       >
-//         <PackageCard
-//           badge={t({ en: "PART 2", nl: "DEEL 02" })}
-//           title="Growth Rocket Hub"
-//           items={HUB_ITEMS}
-//           gradient="radial-gradient(120% 100% at 70% 0%, #58147a 0%, #2a0a3d 100%)"
-//         />
-//         <a
-//           href="#"
-//           className="inline-flex items-center gap-[6px] font-poppins font-semibold text-[15px] tracking-[-0.2px] text-[var(--color-amber-500)]"
-//         >
-//           {t({ en: "See all features →", nl: "See all features →" })}
-//         </a>
-//       </motion.div>
-
-//       <motion.img
-//         src="/home/circle-titles.svg"
-//         alt={t({
-//           en: "Marketing website + business tools in one",
-//           nl: "Marketingwebsite + bedrijfstools in één",
-//         })}
-//         initial={{ opacity: 0, scale: 0.8 }}
-//         animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-//         transition={{ duration: 0.8, delay: 0.26, ease: EASE }}
-//         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[3] w-[160px] sm:w-[220px] h-[160px] sm:h-[220px] block"
-//         style={{ filter: "drop-shadow(0 24px 60px rgba(91,33,182,0.45))" }}
-//       />
-//     </div>
-//   );
-// }
-//
-//
-//
-//
-//
-
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { Check } from "lucide-react";
+import type { ReactNode } from "react";
+import { Plus } from "lucide-react";
 import Reveal from "../../Reveal";
-import EyebrowLabel from "../../ui/EyebrowLabel";
+import Button from "../../ui/Button";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 import type { Translation } from "../../../i18n/config";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+const ACCENT = "#E3FF54";
 
-type PackageItem = { label: Translation; indent?: 0 | 1 | 2 | 3 };
+type FeatureItem = { label: Translation; icon: ReactNode };
 
-const WEBSITE_ITEMS: PackageItem[] = [
-  { label: { en: "8–10 page website", nl: "Website van 8–10 pagina's" } },
-  {
-    label: { en: "Mobile-friendly website", nl: "Mobielvriendelijke website" },
-  },
-  {
-    label: {
-      en: "Request & contact forms",
-      nl: "Aanvraag- en contactformulieren",
-    },
-  },
-  { label: { en: "Your own domain name", nl: "Eigen domeinnaam" }, indent: 1 },
-  { label: { en: "Hosting & SSL", nl: "Hosting & SSL" }, indent: 2 },
-  {
-    label: { en: "Maintenance & updates", nl: "Onderhoud & updates" },
-    indent: 3,
-  },
-];
-
-const HUB_ITEMS: PackageItem[] = [
-  { label: { en: "Manage leads", nl: "Leads beheren" } },
-  {
-    label: { en: "Online booking system", nl: "Online afsprakensysteem" },
-    indent: 1,
-  },
-  {
-    label: { en: "Organize client contacts", nl: "Klantcontacten organiseren" },
-    indent: 1,
-  },
-  {
-    label: {
-      en: "Create & send quotes and invoices",
-      nl: "Offertes en facturen maken en versturen",
-    },
-    indent: 1,
-  },
-  {
-    label: {
-      en: "Manage everything from one place",
-      nl: "Alles beheren vanuit één plek",
-    },
-    indent: 1,
-  },
-];
-
-const INDENT_CLASS = ["pl-0", "pl-4", "pl-8", "pl-12"];
-
-function PackageHandle() {
+function FeatureIcon({ children }: { children: ReactNode }) {
   return (
-    <div
-      aria-hidden
-      className="absolute -top-[36px] left-1/2 -translate-x-1/2 h-[52px] w-[140px] rounded-t-[20px] border-[14px] border-b-0 border-[#f2d89c]"
-      style={{
-        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-      }}
-    />
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#E3FF54"
+      strokeWidth={1.65}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="h-[17px] w-[17px]"
+    >
+      {children}
+    </svg>
   );
 }
 
-function PackageCard({
-  badge,
-  title,
-  items,
+function HeaderIcon({ children }: { children: ReactNode }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="h-[26px] w-[26px]"
+    >
+      {children}
+    </svg>
+  );
+}
+
+const WEBSITE_FEATURES: FeatureItem[] = [
+  {
+    label: {
+      en: "8–10 pages, built for your business",
+      nl: "8–10 pagina's, gebouwd voor jouw bedrijf",
+    },
+    icon: (
+      <FeatureIcon>
+        <rect x="6" y="3" width="14" height="16" rx="2" />
+        <path d="M3 7v12a3 3 0 0 0 3 3h10M10 8h6M10 12h6" />
+      </FeatureIcon>
+    ),
+  },
+  {
+    label: {
+      en: "A mobile-friendly website",
+      nl: "Een mobielvriendelijke website",
+    },
+    icon: (
+      <FeatureIcon>
+        <rect x="6" y="2" width="12" height="20" rx="3" />
+        <path d="M10 5h4M11 18h2" />
+      </FeatureIcon>
+    ),
+  },
+  {
+    label: {
+      en: "Enquiry & contact forms",
+      nl: "Aanvraag- en contactformulieren",
+    },
+    icon: (
+      <FeatureIcon>
+        <rect x="3" y="3" width="18" height="18" rx="3" />
+        <path d="M7 8h10M7 12h5M14 16h3M7 16h2" />
+      </FeatureIcon>
+    ),
+  },
+  {
+    label: { en: "Your own domain name", nl: "Je eigen domeinnaam" },
+    icon: (
+      <FeatureIcon>
+        <circle cx="12" cy="12" r="9" />
+        <ellipse cx="12" cy="12" rx="4" ry="9" />
+        <path d="M3 12h18" />
+      </FeatureIcon>
+    ),
+  },
+  {
+    label: { en: "Hosting & SSL included", nl: "Hosting & SSL inbegrepen" },
+    icon: (
+      <FeatureIcon>
+        <path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z" />
+        <path d="m8 12 3 3 5-6" />
+      </FeatureIcon>
+    ),
+  },
+  {
+    label: { en: "Maintenance & updates", nl: "Onderhoud & updates" },
+    icon: (
+      <FeatureIcon>
+        <path d="M20 8a8 8 0 0 0-14-3L3 8m0-5v5h5M4 16a8 8 0 0 0 14 3l3-3m0 5v-5h-5" />
+      </FeatureIcon>
+    ),
+  },
+];
+
+const HUB_FEATURES: FeatureItem[] = [
+  {
+    label: {
+      en: "Lead & enquiry management",
+      nl: "Beheer van leads & aanvragen",
+    },
+    icon: (
+      <FeatureIcon>
+        <path d="m5 4-3 9v7h20v-7l-3-9H5Z" />
+        <path d="M2 13h6l2 3h4l2-3h6M12 3v7m-3-3 3 3 3-3" />
+      </FeatureIcon>
+    ),
+  },
+  {
+    label: { en: "Online appointment booking", nl: "Online afsprakensysteem" },
+    icon: (
+      <FeatureIcon>
+        <rect x="3" y="5" width="18" height="16" rx="3" />
+        <path d="M7 2v6M17 2v6M3 11h18m-13 5 2 2 4-4" />
+      </FeatureIcon>
+    ),
+  },
+  {
+    label: {
+      en: "Customer & contact records",
+      nl: "Klant- en contactgegevens",
+    },
+    icon: (
+      <FeatureIcon>
+        <circle cx="9" cy="7" r="3" />
+        <path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6m2 4a5 5 0 0 1 3 4v3" />
+      </FeatureIcon>
+    ),
+  },
+  {
+    label: { en: "Create & send quotes", nl: "Offertes maken & versturen" },
+    icon: (
+      <FeatureIcon>
+        <path d="M14 2H5v20h14V7l-5-5Zm0 0v5h5M8 12h8M8 16h5" />
+      </FeatureIcon>
+    ),
+  },
+  {
+    label: { en: "Create & send invoices", nl: "Facturen maken & versturen" },
+    icon: (
+      <FeatureIcon>
+        <rect x="3" y="3" width="18" height="18" rx="3" />
+        <path d="M16 7h-5a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3h5M6 10h8M6 14h7" />
+      </FeatureIcon>
+    ),
+  },
+];
+
+function OfferCard({
   gradient,
+  headerIcon,
+  titlePrefix,
+  titleHighlight,
+  titleLine2,
+  tagline,
+  features,
+  iconChipClass,
+  footNote,
+  linkLabel,
+  delay,
 }: {
-  badge: string;
-  title: string;
-  items: PackageItem[];
   gradient: string;
+  headerIcon: ReactNode;
+  titlePrefix?: Translation;
+  titleHighlight: Translation | string;
+  titleLine2: Translation;
+  tagline: Translation;
+  features: FeatureItem[];
+  iconChipClass: string;
+  footNote: Translation;
+  linkLabel: Translation;
+  delay: number;
 }) {
   const { t } = useLanguage();
+
   return (
-    <div
-      className="relative w-full max-w-[470px] rounded-[40px] px-2 lg:px-8 pt-10 pb-12 flex flex-col items-center gap-5 mt-[36px] border border-white/10 shadow-2xl"
-      style={{ background: gradient }}
+    <Reveal
+      delay={delay}
+      className={`relative flex h-full flex-col rounded-[28px] border border-white/10 p-6 sm:p-8 ${gradient}`}
     >
-      <PackageHandle />
+      <div className="flex items-start justify-between gap-4">
+        <h3 className="m-0 font-poppins text-[22px] sm:text-[24px] font-bold leading-[1.2] text-white">
+          {titlePrefix ? t(titlePrefix) : ""}
+          <span style={{ color: ACCENT }}>
+            {typeof titleHighlight === "string"
+              ? titleHighlight
+              : t(titleHighlight)}
+          </span>
+          .
+          <br />
+          {t(titleLine2)}
+        </h3>
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#E3FF54] text-[#21182f]">
+          {headerIcon}
+        </span>
+      </div>
 
-      <span className="self-center rounded-full bg-white/10 border border-white/10 px-5 py-[5px] font-poppins text-[11.4px] font-semibold tracking-[0.8px] text-amber-200/90 uppercase">
-        {badge}
-      </span>
+      <p className="m-0 mt-3 font-poppins text-[14px] leading-[1.5] text-[#D9CDEA]">
+        {t(tagline)}
+      </p>
 
-      <h3 className="m-0 text-center font-poppins text-[22px] font-semibold text-white mb-2">
-        {title}
-      </h3>
-
-      <ul className="flex flex-col gap-3.5  w-full items-center">
-        {items.map((item) => (
+      <ul className="mt-6 flex flex-col">
+        {features.map((item) => (
           <li
             key={item.label.en}
-            className={`flex items-center justify-center gap-2.5 w-full ${INDENT_CLASS[item.indent ?? 0]}`}
+            className="flex items-center gap-3 border-t border-white/10 !py-3.5 first:pt-0 last:pb-0"
           >
-            <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-amber-200/20">
-              <Check size={10} strokeWidth={3} className="text-amber-200" />
+            <span
+              className={`flex h-9 w-9 shrink-0 text-[#E3FF54] items-center justify-center rounded-xl ${iconChipClass}`}
+            >
+              {item.icon}
             </span>
-            <span className="font-poppins text-[14px] text-white/80 ">
+            <span className="font-poppins text-[18px] leading-[1.4] text-white">
               {t(item.label)}
             </span>
           </li>
         ))}
       </ul>
-    </div>
-  );
-}
 
-function useStackedLayout() {
-  const [stacked, setStacked] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 819px)");
-    const apply = () => setStacked(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
-  return stacked;
+      <p
+        className="m-0 mt-4 flex items-center gap-2 border-t border-white/10 pt-4 font-poppins text-[14px] text-white/50"
+        style={{ color: ACCENT }}
+      >
+        <span aria-hidden="true" style={{ color: ACCENT }}>
+          ✳
+        </span>
+        {t(footNote)}
+      </p>
+
+      {/* <a
+        href="#"
+        className="mt-5 inline-flex items-center gap-[6px] self-start font-poppins text-[14px] font-semibold"
+        style={{ color: ACCENT }}
+      >
+        {t(linkLabel)} →
+      </a> */}
+    </Reveal>
+  );
 }
 
 export default function Solution() {
   const { t } = useLanguage();
-  const stacked = useStackedLayout();
 
   return (
     <section
       id="oplossing"
-      className="relative overflow-hidden rounded-[28px] bg-[var(--color-haiti)] fix-wide py-[50px] lg:pt-28 lg:pb-24 flex flex-col items-center gap-[18px]"
+      className="relative overflow-hidden rounded-[28px]"
+      style={{ background: ACCENT }}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 -right-30 w-[460px] h-[460px] rounded-full opacity-15"
-        style={{ background: "var(--color-violet-58)", filter: "blur(140px)" }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-50 -left-35 w-[420px] h-[420px] rounded-full opacity-40"
-        style={{ background: "var(--color-violet-42)", filter: "blur(140px)" }}
-      />
+      <div className="fix flex flex-col gap-10 py-[50px] lg:gap-12 lg:py-24">
+        <div className="flex flex-col items-start justify-between gap-5 lg:flex-row lg:items-end lg:gap-10">
+          <div>
+            <Reveal>
+              <p className="m-0 font-poppins text-[13px] font-semibold uppercase tracking-[1.5px] text-[var(--color-haiti)]/70">
+                {t({
+                  en: "01 / The complete picture",
+                  nl: "01 / Het complete plaatje",
+                })}
+              </p>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <h2 className="m-0 mt-2 max-w-[560px] font-poppins text-[clamp(28px,3.6vw,42px)] font-bold leading-[1.12] tracking-[-1px] text-[var(--color-haiti)]">
+                {t({
+                  en: "Good on the outside.",
+                  nl: "Goed aan de buitenkant.",
+                })}
+                <br />
+                <span className="text-[var(--color-violet-42)]">
+                  {t({
+                    en: "Connected on the inside.",
+                    nl: "Verbonden aan de binnenkant.",
+                  })}
+                </span>
+              </h2>
+            </Reveal>
+          </div>
+          <Reveal delay={0.1} className="max-w-[360px] lg:text-right">
+            <p className="m-0 font-poppins text-[15px] leading-[1.55] text-[var(--color-haiti)]/70">
+              {t({
+                en: "A professional website ",
+                nl: "Een professionele website ",
+              })}
+              <strong className="text-[var(--color-haiti)]">
+                {t({ en: "and", nl: "en" })}
+              </strong>
+              {t({
+                en: " the tools to run the business behind it. Here's what comes together in your package.",
+                nl: " de tools om het bedrijf erachter te runnen. Dit komt samen in jouw pakket.",
+              })}
+            </p>
+          </Reveal>
+        </div>
 
-      <div className="relative flex flex-col items-center gap-4">
-        <EyebrowLabel color="var(--color-violet-75)">
-          {t({ en: "The solution", nl: "De oplossing" })}
-        </EyebrowLabel>
-        <Reveal delay={0.05}>
-          <h2 className="m-0 max-w-[820px] text-center font-poppins font-bold text-[clamp(28px,3.4vw,42px)] leading-[1.12] tracking-[-1px] text-white">
-            {t({
-              en: "Everything comes together in Growth Rocket.",
-              nl: "Alles komt samen in Growth Rocket.",
-            })}
-          </h2>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <p className="m-0  text-center font-poppins text-[17px] leading-[1.55] text-white/68">
-            {t({
-              en: "From your online presence to your customers and admin — managed from a single place.",
-              nl: "Van je online aanwezigheid tot je klanten en administratie — geregeld vanuit één plek.",
-            })}
-          </p>
+        <div className="relative grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 md:gap-10">
+          <OfferCard
+            delay={0.05}
+            gradient="bg-[linear-gradient(180deg,#181330_0%,#0d0a1d_100%)]"
+            headerIcon={
+              <HeaderIcon>
+                <rect x="2" y="4" width="20" height="16" rx="3" />
+                <path d="M2 9h20M6 6.5h.1M9 6.5h.1M7 14h10M7 17h6" />
+              </HeaderIcon>
+            }
+            titlePrefix={{ en: "Your ", nl: "Jouw " }}
+            titleHighlight={{ en: "Website", nl: "Website" }}
+            titleLine2={{
+              en: "Made for your business.",
+              nl: "Gemaakt voor jouw bedrijf.",
+            }}
+            tagline={{
+              en: "We write it. We build it. We look after it.",
+              nl: "Wij schrijven het. Wij bouwen het. Wij onderhouden het.",
+            }}
+            features={WEBSITE_FEATURES}
+            iconChipClass="bg-white/10 text-white/80"
+            footNote={{
+              en: "Built for you. Looked after for you.",
+              nl: "Voor jou gebouwd. Voor jou onderhouden.",
+            }}
+            linkLabel={{
+              en: "See what's included",
+              nl: "Bekijk wat inbegrepen is",
+            }}
+          />
+
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1/2 z-10 hidden h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-4 border-[#e3ff54] bg-[var(--color-haiti)] md:flex"
+            style={{ color: ACCENT }}
+          >
+            <Plus size={38} strokeWidth={2.5} />
+          </span>
+
+          <OfferCard
+            delay={0.1}
+            gradient="bg-[linear-gradient(180deg,#53117d_0%,#290842_100%)]"
+            headerIcon={
+              <HeaderIcon>
+                <rect x="8" y="8" width="8" height="8" rx="2" />
+                <path d="M12 2v6M12 16v6M2 12h6M16 12h6M5 5l3 3m8 8 3 3M19 5l-3 3m-8 8-3 3" />
+              </HeaderIcon>
+            }
+            titleHighlight="Growth Rocket Hub"
+            titleLine2={{
+              en: "Your work, in one place.",
+              nl: "Jouw werk, op één plek.",
+            }}
+            tagline={{
+              en: "Manage customers, bookings, quotes and invoices.",
+              nl: "Beheer klanten, boekingen, offertes en facturen.",
+            }}
+            features={HUB_FEATURES}
+            iconChipClass="bg-white/15 text-white"
+            footNote={{
+              en: "Your everyday work. All in one place.",
+              nl: "Jouw dagelijkse werk. Alles op één plek.",
+            }}
+            linkLabel={{ en: "See all features", nl: "Bekijk alle functies" }}
+          />
+        </div>
+
+        <Reveal
+          delay={0.15}
+          className="flex flex-col items-center gap-6 border-[var(--color-haiti)]/15  sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="flex items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-haiti)]/10 text-[16px] text-[var(--color-violet-42)]"
+            >
+              ✳
+            </span>
+            <div>
+              <p className="m-0 font-poppins text-[12px] font-semibold uppercase tracking-[1.5px] text-[var(--color-haiti)]/70">
+                {t({
+                  en: "Two parts. One complete package.",
+                  nl: "Twee onderdelen. Eén compleet pakket.",
+                })}
+              </p>
+              <h3 className="m-0 mt-1 font-poppins text-[18px] font-bold text-[var(--color-haiti)]">
+                {t({
+                  en: "Your website + your business hub.",
+                  nl: "Jouw website + jouw bedrijfshub.",
+                })}
+              </h3>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-5">
+            <p className="m-0 font-poppins text-[15px] text-[var(--color-haiti)]">
+              {t({ en: "From ", nl: "Vanaf " })}
+              <strong className="text-[22px]">€69</strong>
+              <span className="text-[var(--color-haiti)]/60">
+                {t({ en: " / month", nl: " / maand" })}
+              </span>
+            </p>
+            <Button href="#pricing" variant="dark" arrow="up-right">
+              {t({ en: "Explore the package", nl: "Bekijk het pakket" })}
+            </Button>
+          </div>
         </Reveal>
       </div>
-
-      <SolutionReveal stacked={stacked} />
-
-      <Reveal delay={0.15} className="relative w-full max-w-[1058px] mt-4">
-        <div className="flex items-center justify-center rounded-2xl lg:rounded-full border border-white/12 bg-white/6 px-8 py-5">
-          <span className="text-center font-poppins text-[14px] lg:text-[20px] font-medium text-white">
-            {t({
-              en: "One complete package, from €69 per month.",
-              nl: "Eén compleet pakket, vanaf €69 per maand.",
-            })}
-          </span>
-        </div>
-      </Reveal>
     </section>
-  );
-}
-
-function SolutionReveal({ stacked }: { stacked: boolean }) {
-  const { t } = useLanguage();
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(wrapRef, { once: true, amount: 0.3 });
-
-  const startD1 = stacked ? { y: 24, x: 0 } : { x: "calc(50% + 9px)", y: 0 };
-  const startD2 = stacked ? { y: -24, x: 0 } : { x: "calc(-50% - 9px)", y: 0 };
-
-  return (
-    <div
-      ref={wrapRef}
-      className="relative w-full max-w-[1320px] mt-8 lg:mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch"
-    >
-      <motion.div
-        initial={startD1}
-        animate={inView ? { x: 0, y: 0 } : startD1}
-        transition={{ duration: 1, ease: EASE }}
-        className="relative z-[2] flex flex-col items-center justify-center gap-5"
-      >
-        <PackageCard
-          badge={t({ en: "PART 1", nl: "DEEL 01" })}
-          title={t({ en: "Professional website", nl: "Professionele website" })}
-          items={WEBSITE_ITEMS}
-          gradient="linear-gradient(180deg, #181330 0%, #0d0a1d 100%)"
-        />
-        <a
-          href="#"
-          className="inline-flex items-center gap-[6px] font-poppins font-semibold text-[15px] tracking-[-0.2px] text-[var(--color-amber-500)]"
-        >
-          {t({ en: "See what's included →", nl: "See what's included →" })}
-        </a>
-      </motion.div>
-
-      {/* On mobile the badge sits in normal flow, overlapping the seam between
-          the stacked cards. From md up it becomes an absolutely centered
-          circle straddling the two side-by-side cards, as on desktop. */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-        transition={{ duration: 0.8, delay: 0.26, ease: EASE }}
-        className="relative z-[3] mx-auto my-6 sm:my-8 md:mt-0 md:mb-0 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 w-[160px] sm:w-[220px] h-[160px] sm:h-[220px] flex items-center justify-center rounded-full md:rounded-full pointer-events-none text-center"
-        style={{
-          background: "#b3a5fa",
-          border: "8px solid #ebe3de",
-          filter: "drop-shadow(0 24px 60px rgba(91,33,182,0.45))",
-        }}
-      >
-        <span className="flex flex-col items-center gap-0.5 px-4 font-poppins leading-tight mt-5 font-semibold">
-          <span className="text-[15px] sm:text-[20px]  text-[var(--color-violet-42)]">
-            {t({ en: "Marketing website", nl: "Marketingwebsite" })}
-          </span>
-          <span className="text-[16px] sm:text-[20px]  text-[var(--color-haiti)]">
-            +
-          </span>
-          <span className="text-[15px] sm:text-[19px]  text-[var(--color-violet-42)]">
-            {t({ en: "business tools", nl: "bedrijfstools" })}
-          </span>
-          <span className="text-[14px] sm:text-[17px]  text-[var(--color-haiti)]">
-            {t({ en: "in one", nl: "in één" })}
-          </span>
-        </span>
-      </motion.div>
-
-      <motion.div
-        initial={startD2}
-        animate={inView ? { x: 0, y: 0 } : startD2}
-        transition={{ duration: 1, ease: EASE }}
-        className="relative z-[1] flex flex-col items-center justify-center gap-5"
-      >
-        <PackageCard
-          badge={t({ en: "PART 2", nl: "DEEL 02" })}
-          title="Growth Rocket Hub"
-          items={HUB_ITEMS}
-          gradient="linear-gradient(180deg, #53117d 0%, #290842 100%)"
-        />
-        <a
-          href="#"
-          className="inline-flex items-center gap-[6px] font-poppins font-semibold text-[15px] tracking-[-0.2px] text-[var(--color-amber-500)]"
-        >
-          {t({ en: "See all features →", nl: "See all features →" })}
-        </a>
-      </motion.div>
-    </div>
   );
 }

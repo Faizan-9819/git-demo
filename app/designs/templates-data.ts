@@ -40,7 +40,7 @@ export const templates: Template[] = [
     href: "https://dentist-template-web.vercel.app/",
     img: "/templates/dentist.jpg",
     hoverImg: "/templates/dentist2.jpg",
-    logo: "/templates/dentist-logo.svg",
+    logo: "/templates/dentist-logo.png",
     tagline: "A calm, welcoming website for modern dental practices.",
     description:
       "DentalCare gives your practice a friendly, professional presence online. It's designed to put nervous patients at ease while making it effortless to book an appointment or ask a question.",
@@ -101,7 +101,7 @@ export const templates: Template[] = [
     href: "https://cleaning-template-web.vercel.app/",
     img: "/templates/cleaning1.jpg",
     hoverImg: "/templates/cleaning2.jpg",
-    logo: "/templates/favicon.png",
+    logo: "/templates/Cleaning-logo.png",
     tagline: "A spotless, booking-ready site for cleaning businesses.",
     description:
       "ShineSquad is built to convert — with clear pricing, service packages, and an easy quote request flow, it helps cleaning businesses fill their calendar without chasing every enquiry by phone.",
@@ -189,7 +189,7 @@ export const templates: Template[] = [
     href: "https://realestate-template-beta.vercel.app/",
     img: "/templates/construction1.jpg",
     hoverImg: "/templates/construction2.jpg",
-    logo: HOUSE_LOGO,
+    logo: "/templates/realestate-logo.png",
     tagline: "A polished showcase for listings and agents.",
     description:
       "PrimeAbode presents property listings with the polish buyers expect, alongside agent profiles and enquiry tools that make it easy for leads to reach out about a specific property.",
@@ -274,8 +274,9 @@ export const templates: Template[] = [
     href: "https://logistics-template-web.vercel.app/",
     img: "/templates/logistic1.jpg",
     hoverImg: "/templates/logistic2.jpg",
-    logo: "/templates/favicon.png",
-    tagline: "A reliable, track-ready website for logistics and freight companies.",
+    logo: "/templates/logistics-logo.png",
+    tagline:
+      "A reliable, track-ready website for logistics and freight companies.",
     description:
       "SwiftLine gives logistics and freight operators a professional online presence built around trust and speed, with shipment tracking, service coverage, and quote requests front and centre so new clients can reach you fast.",
     features: [
@@ -291,7 +292,8 @@ export const templates: Template[] = [
       },
       {
         title: "Instant Quote Requests",
-        description: "Capture new business with a simple freight quote request form.",
+        description:
+          "Capture new business with a simple freight quote request form.",
       },
       {
         title: "Fleet & Capability Showcase",
@@ -331,7 +333,8 @@ export const templates: Template[] = [
       },
       {
         title: "Contract & Recurring Plans",
-        description: "Offer scheduled contract cleaning alongside one-off jobs.",
+        description:
+          "Offer scheduled contract cleaning alongside one-off jobs.",
       },
       {
         title: "Instant Quote Requests",
@@ -340,7 +343,8 @@ export const templates: Template[] = [
       },
       {
         title: "Before & After Gallery",
-        description: "Showcase spotless results across different commercial spaces.",
+        description:
+          "Showcase spotless results across different commercial spaces.",
       },
       {
         title: "Compliance & Insurance Info",
@@ -362,7 +366,7 @@ export const templates: Template[] = [
     href: "https://solar-installation-template.vercel.app/",
     img: "/templates/solar.png",
     hoverImg: "/templates/solar2.png",
-    logo: "/templates/favicon.png",
+    logo: "/templates/solar-logo.png",
     tagline: "A credibility-first site for solar installers.",
     description:
       "SunHarbor is built to build trust fast — showcasing certifications, past installations, and savings estimates so homeowners feel confident requesting a solar quote.",
@@ -404,7 +408,7 @@ export const templates: Template[] = [
     href: "https://plumber1-temp.vercel.app/",
     img: "/templates/plumber1.jpg",
     hoverImg: "/templates/plumber2.jpg",
-    logo: "/templates/favicon.png",
+    logo: "/templates/plumber1-logo.png",
     tagline: "A dependable website for plumbers who want more booked jobs.",
     description:
       "PipeWorks helps plumbing businesses look professional online, with clear service listings, emergency call-out info, and a fast way for customers to request help.",
@@ -420,11 +424,13 @@ export const templates: Template[] = [
       },
       {
         title: "Instant Quote Requests",
-        description: "Turn visitors into leads with a fast, simple request form.",
+        description:
+          "Turn visitors into leads with a fast, simple request form.",
       },
       {
         title: "Before & After Gallery",
-        description: "Showcase completed repairs and installations to build trust.",
+        description:
+          "Showcase completed repairs and installations to build trust.",
       },
       {
         title: "Trust Badges & Reviews",
@@ -446,7 +452,7 @@ export const templates: Template[] = [
     href: "https://plumber-02-template.vercel.app/",
     img: "/templates/PULMBER2-1.png",
     hoverImg: "/templates/PULMBER2-2.png",
-    logo: "/templates/favicon.png",
+    logo: "/templates/plumbing2-logo.png",
     tagline: "A clean, conversion-ready site for modern plumbing businesses.",
     description:
       "FlowMaster combines a professional design with clear calls to action, helping plumbing businesses turn website visitors into booked appointments.",
@@ -462,7 +468,8 @@ export const templates: Template[] = [
       },
       {
         title: "Emergency Services Highlight",
-        description: "Make your emergency plumbing availability impossible to miss.",
+        description:
+          "Make your emergency plumbing availability impossible to miss.",
       },
       {
         title: "Customer Reviews",
@@ -470,11 +477,13 @@ export const templates: Template[] = [
       },
       {
         title: "Service & Pricing Breakdown",
-        description: "Explain your services clearly before the first phone call.",
+        description:
+          "Explain your services clearly before the first phone call.",
       },
       {
         title: "Mobile-Optimised Layout",
-        description: "A smooth experience for customers browsing on their phone.",
+        description:
+          "A smooth experience for customers browsing on their phone.",
       },
     ],
   },
@@ -487,14 +496,15 @@ export const templates: Template[] = [
     href: "https://plumber-3-template.vercel.app/",
     img: "/templates/PULMBER3-1.png",
     hoverImg: "/templates/PULMBER3-2.png",
-    logo: "/templates/favicon.png",
+    logo: "/templates/plumbing3-logo.png",
     tagline: "A trust-building website for drainage and plumbing specialists.",
     description:
       "DrainPro gives drainage and plumbing specialists a credible online presence, with clear service breakdowns and an easy way for customers to get help fast.",
     features: [
       {
         title: "Specialist Service Breakdown",
-        description: "Explain drainage, clearing, and plumbing services in plain language.",
+        description:
+          "Explain drainage, clearing, and plumbing services in plain language.",
       },
       {
         title: "Emergency Contact Banner",
@@ -510,11 +520,13 @@ export const templates: Template[] = [
       },
       {
         title: "Trust Badges & Certifications",
-        description: "Display licences and certifications to reassure new customers.",
+        description:
+          "Display licences and certifications to reassure new customers.",
       },
       {
         title: "Mobile-Friendly Contact Forms",
-        description: "Make it effortless for customers to reach out from any device.",
+        description:
+          "Make it effortless for customers to reach out from any device.",
       },
     ],
   },
@@ -527,14 +539,15 @@ export const templates: Template[] = [
     href: "https://plumber-4-template.vercel.app/",
     img: "/templates/PULMBER4-1.png",
     hoverImg: "/templates/PULMBER4-2.png",
-    logo: "/templates/favicon.png",
+    logo: "/templates/plumbing4-logo.png",
     tagline: "A friendly, professional site for residential plumbing services.",
     description:
       "AquaFix is built for residential plumbers who want a friendly, professional website that makes it simple for homeowners to request help.",
     features: [
       {
         title: "Homeowner-Friendly Design",
-        description: "A warm, approachable layout that puts homeowners at ease.",
+        description:
+          "A warm, approachable layout that puts homeowners at ease.",
       },
       {
         title: "Service & Pricing Overview",
@@ -554,7 +567,8 @@ export const templates: Template[] = [
       },
       {
         title: "Mobile-First Performance",
-        description: "Fast, responsive pages for customers searching on the go.",
+        description:
+          "Fast, responsive pages for customers searching on the go.",
       },
     ],
   },
@@ -567,7 +581,7 @@ export const templates: Template[] = [
     href: "https://plumber-5-template.vercel.app/",
     img: "",
     hoverImg: "",
-    logo: "/templates/favicon.png",
+    logo: "/templates/plumbing5-logo.png",
     tagline: "A confident, modern website for plumbing pros who mean business.",
     description:
       "FlowGuard gives plumbing businesses a sharp, trustworthy online presence, with clear service listings and fast enquiry tools that turn visitors into booked jobs.",
@@ -583,11 +597,13 @@ export const templates: Template[] = [
       },
       {
         title: "Instant Quote Requests",
-        description: "Turn visitors into leads with a fast, simple request form.",
+        description:
+          "Turn visitors into leads with a fast, simple request form.",
       },
       {
         title: "Before & After Gallery",
-        description: "Showcase completed repairs and installations to build trust.",
+        description:
+          "Showcase completed repairs and installations to build trust.",
       },
       {
         title: "Trust Badges & Reviews",
@@ -702,11 +718,13 @@ export const templates: Template[] = [
     features: [
       {
         title: "Service Breakdown",
-        description: "Explain residential and commercial electrical services clearly.",
+        description:
+          "Explain residential and commercial electrical services clearly.",
       },
       {
         title: "Trust Badges & Reviews",
-        description: "Display certifications and customer reviews to build confidence.",
+        description:
+          "Display certifications and customer reviews to build confidence.",
       },
       {
         title: "Instant Quote Requests",
@@ -714,11 +732,13 @@ export const templates: Template[] = [
       },
       {
         title: "Project Gallery",
-        description: "Showcase completed electrical projects and installations.",
+        description:
+          "Showcase completed electrical projects and installations.",
       },
       {
         title: "Emergency Availability Banner",
-        description: "Make 24/7 emergency availability clear from the homepage.",
+        description:
+          "Make 24/7 emergency availability clear from the homepage.",
       },
       {
         title: "Mobile-First Design",

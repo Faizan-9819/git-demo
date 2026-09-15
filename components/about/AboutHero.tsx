@@ -271,7 +271,7 @@ export default function AboutHero() {
         }}
       />
 
-      <div className="md:max-w-[1400px] md:mx-auto fix relative grid gap-[24px] py-[60px] lg:grid-cols-[1.5fr_1.08fr] lg:items-center lg:py-[86px]">
+      <div className="md:max-w-[1400px] md:mx-auto fix relative grid gap-[24px] py-[60px] lg:grid-cols-[1.5fr_1.08fr] lg:items-center lg:pb-[86px] lg:pt-[126px]!">
         <div className="">
           <Reveal>
             <span className="btn-chip inline-flex items-center gap-2 rounded-[40px] border-2 border-gray-100 bg-white p-2">

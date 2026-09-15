@@ -4,25 +4,6 @@ import type { BlogPost } from "./blog-posts";
 export const SITE_URL = "https://www.getgrowthrocket.com";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/figma/hero-dashboard.png`;
 
-function stripHtml(value: string) {
-  return value
-    .replace(/<[^>]*>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function cleanQuestion(value: string) {
-  return stripHtml(value)
-    .replace(/^q\d+[.:\s-]*/i, "")
-    .trim();
-}
-
-function cleanAnswer(value: string) {
-  return stripHtml(value)
-    .replace(/^a\d+[.:\s-]*/i, "")
-    .trim();
-}
-
 export function toAbsoluteUrl(url: string) {
   if (!url) return DEFAULT_OG_IMAGE;
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
@@ -72,50 +53,34 @@ export function buildWebsiteSchema() {
   };
 }
 
-export function buildBlogFaqJsonLdFromHtml(contentHtml: string) {
-  const faqSectionMatch = contentHtml.match(
-    /<h2[^>]*>\s*(?:<[^>]*>\s*)*faq\s*(?:<[^>]*>\s*)*<\/h2>([\s\S]*?)(?=<h2\b|$)/i,
-  );
-
-  if (!faqSectionMatch?.[1]) return null;
-
-  const faqSection = faqSectionMatch[1];
-  const qaMatches = [
-    ...faqSection.matchAll(/<h3[^>]*>([\s\S]*?)<\/h3>([\s\S]*?)(?=<h3\b|$)/gi),
-  ];
-
-  const mainEntity = qaMatches
-    .map(([, questionHtml, answerHtml]) => ({
-      question: cleanQuestion(questionHtml),
-      answer: cleanAnswer(answerHtml),
-    }))
-    .filter((entry) => entry.question.length > 0 && entry.answer.length > 0)
-    .map((entry) => ({
-      "@type": "Question",
-      name: entry.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: entry.answer,
-      },
-    }));
-
-  if (mainEntity.length === 0) return null;
+export function buildFaqJsonLdFromItems(items: { question: string; answer: string }[]) {
+  if (items.length === 0) return null;
 
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity,
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   };
 }
 
 export function buildBlogPostingMetadata(
   post: BlogPost,
   locale: "en" | "nl" = "en",
+  urlSlugs?: { en: string; nl: string },
 ): Metadata {
-  const canonicalPath = locale === "nl" ? `/nl/blog/${post.slug}` : `/blog/${post.slug}`;
+  const enSlug = urlSlugs?.en ?? post.slug;
+  const nlSlug = urlSlugs?.nl ?? post.slug;
+  const canonicalPath = locale === "nl" ? `/nl/blog/${nlSlug}` : `/blog/${enSlug}`;
   const canonical = `${SITE_URL}${canonicalPath}`;
-  const enUrl = `${SITE_URL}/blog/${post.slug}`;
-  const nlUrl = `${SITE_URL}/nl/blog/${post.slug}`;
+  const enUrl = `${SITE_URL}/blog/${enSlug}`;
+  const nlUrl = `${SITE_URL}/nl/blog/${nlSlug}`;
   const image = toAbsoluteUrl(post.coverImage);
 
   return {

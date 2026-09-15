@@ -1,7 +1,7 @@
 export const CONTACT_INFO = {
   brand: "Growth Rocket",
   company: "Parashift Technologies B.V.",
-  kvkno: "KvK Number: 42002389",
+  kvkno: "KVK Number: 42002389",
   addressLines: [
     "World Trade Center",
     "Prinses Margrietplantsoen 33",

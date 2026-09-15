@@ -1,0 +1,309 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+const QUESTIONS = [
+  "Do I have time to learn (or already know) how to manage a WordPress site?",
+  "Do I have a trusted developer or agency I can afford monthly?",
+  "Do I need custom features that go beyond a standard service-business website?",
+  "Am I comfortable being responsible for security and backups?",
+];
+
+const STORAGE_KEY = "gr_waas_test_en";
+
+type Answer = boolean | null;
+
+export default function DecisionSection() {
+  const [answers, setAnswers] = useState<Answer[]>([null, null, null, null]);
+  const [step, setStep] = useState(0);
+  const [done, setDone] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    try {
+      const s = localStorage.getItem(STORAGE_KEY);
+      if (s) {
+        const d = JSON.parse(s);
+        if (Array.isArray(d.answers)) {
+          setAnswers(d.answers);
+          setDone(true);
+          setSaved(true);
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+    setHydrated(true);
+  }, []);
+
+  const curAns = answers[step];
+  const jaCount = answers.filter((a) => a === true).length;
+  const allAnswered = answers.every((a) => a !== null);
+  const result = jaCount >= 3 ? "wordpress" : "waas";
+
+  const setAns = (v: boolean) => {
+    const next = answers.slice();
+    next[step] = v;
+    setAnswers(next);
+    if (step < 3) setStep(step + 1);
+  };
+
+  const resetTest = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+    setAnswers([null, null, null, null]);
+    setStep(0);
+    setDone(false);
+    setSaved(false);
+  };
+
+  const saveResult = () => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers }));
+    } catch {
+      /* ignore */
+    }
+    setSaved(true);
+  };
+
+  if (!hydrated) {
+    return (
+      <section id="decision" className="mt-24 scroll-mt-[88px]">
+        <h2 className="w-full font-poppins text-[26px] font-bold leading-[1.25] tracking-[-0.15px] text-[var(--color-violet-42)] sm:text-[30px]">
+          A simple decision framework
+        </h2>
+        <p className="mt-4.5">
+          Use this short test. Answer yes or no. The result is guidance — not a
+          definitive verdict.
+        </p>
+        <div className="mt-6 h-[260px] rounded-[18px] border border-[#E6E8EF]" />
+      </section>
+    );
+  }
+
+  const review = QUESTIONS.map((q, i) => ({
+    n: i + 1,
+    q,
+    ans: answers[i] === true ? "Yes" : answers[i] === false ? "No" : "—",
+  }));
+
+  const resTitle =
+    result === "wordpress"
+      ? "WordPress is likely the best fit"
+      : "A managed website (WaaS) is likely the best fit";
+  const resSub =
+    result === "wordpress"
+      ? "The flexibility pays off."
+      : "You'll get to “live and capturing enquiries” faster, with less ongoing burden.";
+  const resDeepHref = result === "wordpress" ? "#wordpress-deep" : "#waas-deep";
+  const resDeepLabel =
+    result === "wordpress" ? "Read WordPress in depth" : "Read WaaS in depth";
+
+  return (
+    <section id="decision" className="mt-24 scroll-mt-[88px]">
+      <h2 className="text-balance font-poppins text-[26px] font-bold leading-[1.25] tracking-[-0.15px] text-[var(--color-violet-42)] sm:text-[30px]">
+        A simple decision framework
+      </h2>
+      <p className="mt-4.5">
+        Use this short test. Answer yes or no. The result is guidance — not a
+        definitive verdict.
+      </p>
+
+      <div className="mt-6 overflow-hidden rounded-[18px] border border-[#E6E8EF]">
+        {done ? (
+          <div role="status" aria-live="polite" className="p-6.5 sm:p-7">
+            <div className="font-sans text-xs font-semibold uppercase tracking-[0.4px] text-[#6F4CF5]">
+              Your result · {jaCount} of 4 answered &ldquo;yes&rdquo;
+            </div>
+            <div
+              className="mt-2 font-sans text-2xl font-bold leading-[1.29] tracking-[-0.4px] text-[#1F2937]"
+              dangerouslySetInnerHTML={{ __html: resTitle }}
+            />
+            <p
+              className="mt-2 font-sans text-base leading-[1.56] text-[#374151]"
+              dangerouslySetInnerHTML={{ __html: resSub }}
+            />
+            <div className="mt-4.5 flex flex-col gap-2">
+              {review.map((rv) => (
+                <div
+                  key={rv.n}
+                  className="flex items-start gap-3 rounded-[10px] border border-[#EEF0F4] bg-[#FBFBFD] px-3.5 py-2.5"
+                >
+                  <span
+                    className="mt-px flex-none rounded-md bg-[#6F4CF5] px-2 py-0.5 font-sans text-xs font-semibold text-white"
+                    dangerouslySetInnerHTML={{ __html: rv.ans }}
+                  />
+                  <span
+                    className="font-sans text-sm leading-[1.5] text-[#374151]"
+                    dangerouslySetInnerHTML={{ __html: rv.q }}
+                  />
+                </div>
+              ))}
+            </div>
+            <p className="mt-4.5 font-sans text-[15px] leading-[1.6] text-[#374151]">
+              There&rsquo;s no shame in either answer. A skilled tradesperson
+              who is also comfortable managing tech can squeeze more from
+              WordPress. A skilled tradesperson who&rsquo;d rather not — or who
+              values their evenings — gets more from WaaS.
+            </p>
+            <div className="mt-4.5 flex flex-wrap items-center gap-2.5">
+              <a
+                href={resDeepHref}
+                className="inline-flex min-h-11 items-center rounded-[9px] bg-[#6F4CF5] px-4.5 font-sans text-[15px] font-semibold text-white hover:bg-[#5A3CE0]"
+                dangerouslySetInnerHTML={{ __html: resDeepLabel }}
+              />
+              <a
+                href="#edge-cases"
+                className="inline-flex min-h-11 items-center rounded-[9px] border border-[#E6E8EF] bg-white px-4.5 font-sans text-[15px] font-semibold text-[#1F2937] hover:border-[#C5B7FB]"
+              >
+                See the edge cases first
+              </a>
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              <button
+                type="button"
+                onClick={saveResult}
+                className="min-h-11 cursor-pointer border-0 bg-transparent font-sans text-sm font-semibold text-[#6F4CF5]"
+              >
+                Save my result
+              </button>
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="min-h-11 cursor-pointer border-0 bg-transparent font-sans text-sm font-semibold text-[#6B7280]"
+              >
+                Print summary
+              </button>
+              <button
+                type="button"
+                onClick={resetTest}
+                className="min-h-11 cursor-pointer border-0 bg-transparent font-sans text-sm font-semibold text-[#6B7280]"
+              >
+                Start over
+              </button>
+              {saved && (
+                <span className="font-sans text-[13px] text-[#22A06B]">
+                  Saved in this browser
+                </span>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="p-6.5 sm:p-7">
+            <div className="flex flex-wrap items-center justify-between gap-3.5">
+              <div className="font-sans text-xs font-semibold uppercase tracking-[0.4px] text-[#6F4CF5]">
+                Question {step + 1} of 4
+              </div>
+              <button
+                type="button"
+                onClick={resetTest}
+                className="min-h-9 cursor-pointer border-0 bg-transparent font-sans text-[13px] font-semibold text-[#9AA1AC]"
+              >
+                Start over
+              </button>
+            </div>
+            <div
+              aria-hidden="true"
+              className="mt-3 h-1 overflow-hidden rounded-full bg-[#EEF0F4]"
+            >
+              <div
+                className="h-1 rounded-full bg-[#6F4CF5] transition-[width] duration-200"
+                style={{ width: `${Math.round(((step + 1) / 4) * 100)}%` }}
+              />
+            </div>
+            <p
+              className="mt-5 text-pretty font-sans text-xl font-semibold leading-[1.45] text-[#1F2937]"
+              dangerouslySetInnerHTML={{ __html: QUESTIONS[step] }}
+            />
+            <div role="group" aria-label="Answer" className="mt-5 flex gap-3">
+              <button
+                type="button"
+                onClick={() => setAns(true)}
+                aria-pressed={curAns === true}
+                className="min-h-14 flex-1 cursor-pointer rounded-xl font-sans text-[17px] font-semibold transition-all"
+                style={
+                  curAns === true
+                    ? {
+                        background: "#6F4CF5",
+                        color: "#FFFFFF",
+                        border: "1.5px solid #6F4CF5",
+                      }
+                    : {
+                        background: "#FFFFFF",
+                        color: "#1F2937",
+                        border: "1.5px solid #D8D2F5",
+                      }
+                }
+              >
+                Yes
+              </button>
+              <button
+                type="button"
+                onClick={() => setAns(false)}
+                aria-pressed={curAns === false}
+                className="min-h-14 flex-1 cursor-pointer rounded-xl font-sans text-[17px] font-semibold transition-all"
+                style={
+                  curAns === false
+                    ? {
+                        background: "#6F4CF5",
+                        color: "#FFFFFF",
+                        border: "1.5px solid #6F4CF5",
+                      }
+                    : {
+                        background: "#FFFFFF",
+                        color: "#1F2937",
+                        border: "1.5px solid #D8D2F5",
+                      }
+                }
+              >
+                No
+              </button>
+            </div>
+            <div className="mt-5.5 flex items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => setStep(Math.max(0, step - 1))}
+                disabled={step === 0}
+                className="min-h-11 cursor-pointer rounded-[9px] border border-[#E6E8EF] bg-white px-4.5 font-sans text-[15px] font-semibold text-[#6B7280]"
+                style={{ opacity: step === 0 ? 0.45 : 1 }}
+              >
+                Previous
+              </button>
+              {step === 3 ? (
+                <button
+                  type="button"
+                  onClick={() => setDone(true)}
+                  disabled={!allAnswered}
+                  className="min-h-11 rounded-[9px] border border-[#6F4CF5] bg-[#6F4CF5] px-5.5 font-sans text-[15px] font-semibold text-white"
+                  style={{
+                    opacity: allAnswered ? 1 : 0.45,
+                    cursor: allAnswered ? "pointer" : "not-allowed",
+                  }}
+                >
+                  Show result
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setStep(Math.min(3, step + 1))}
+                  disabled={curAns === null}
+                  className="min-h-11 rounded-[9px] border border-[#6F4CF5] bg-[#6F4CF5] px-5.5 font-sans text-[15px] font-semibold text-white"
+                  style={{
+                    opacity: curAns === null ? 0.45 : 1,
+                    cursor: curAns === null ? "not-allowed" : "pointer",
+                  }}
+                >
+                  Next
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
