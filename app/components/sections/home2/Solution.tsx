@@ -347,7 +347,7 @@ export default function Solution() {
             className="pointer-events-none absolute left-1/2 top-1/2 z-10 hidden h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-4 border-[#e3ff54] bg-[var(--color-haiti)] md:flex"
             style={{ color: ACCENT }}
           >
-            {/* <Plus size={38} strokeWidth={2.5} /> */}
+            <Plus size={38} strokeWidth={2.5} />
           </span>
 
           <OfferCard
