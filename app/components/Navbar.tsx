@@ -201,7 +201,7 @@ export default function Navbar() {
       <div
         className="pointer-events-auto mx-auto flex h-[64px] items-center justify-between gap-6 rounded-full border border-[var(--color-mist)] bg-white/65 shadow-[0_2px_10px_rgba(91,33,182,0.05)] backdrop-blur-2xl backdrop-saturate-150 transition-[max-width,height,padding,box-shadow] duration-500 ease-[cubic-bezier(.22,1,.36,1)] px-6"
         style={{
-          maxWidth: compact ? 980 : "100%",
+          maxWidth: compact ? 1250 : "100%",
           boxShadow: compact
             ? "0 10px 30px rgba(10,5,22,0.10)"
             : "0 2px 10px rgba(91,33,182,0.05)",
