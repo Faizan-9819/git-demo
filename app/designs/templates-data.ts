@@ -319,8 +319,8 @@ export const templates: Template[] = [
     category: "Cleaning",
     price: "€99 EUR",
     href: "https://cleaning02-temp.vercel.app/",
-    img: "/templates/cleaning2-1.png",
-    hoverImg: "/templates/cleaning2-2.png",
+    img: "/templates/cleaning2-2.png",
+    hoverImg: "/templates/cleaning2-1.png",
     logo: "/templates/cleaning2-logo.png",
     tagline: "A polished site built for commercial and office cleaning teams.",
     description:
