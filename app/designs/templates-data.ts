@@ -671,7 +671,7 @@ export const templates: Template[] = [
     href: "https://electrician-2-template.vercel.app/",
     img: "/templates/elec02-1.png",
     hoverImg: "/templates/elec02-2.png",
-    logo: "/templates/favicon.png",
+    logo: "/templates/elec02-logo.png",
     tagline: "A modern, safety-focused website for electrical contractors.",
     description:
       "VoltGuard helps electrical contractors present a safe, professional image online, with clear services, certifications, and a fast way for customers to request a quote.",
@@ -711,7 +711,7 @@ export const templates: Template[] = [
     href: "https://electrician03-temp.vercel.app/",
     img: "/templates/elec03-1.png",
     hoverImg: "/templates/elec03-2.png",
-    logo: "/templates/favicon.png",
+    logo: "/templates/elec03-logo.png",
     tagline: "A sharp, conversion-focused site for electrical specialists.",
     description:
       "CircuitPro is designed to turn website visitors into booked jobs, with clear service breakdowns, trust signals, and simple quote requests.",
