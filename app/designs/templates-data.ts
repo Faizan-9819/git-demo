@@ -234,7 +234,7 @@ export const templates: Template[] = [
     href: "https://saloon-template-web.vercel.app/",
     img: "/templates/saloon1.jpg",
     hoverImg: "/templates/saloon2.jpg",
-    logo: "/templates/favicon.png",
+    logo: "/templates/saloon-logo.png",
     tagline: "A stylish booking site for salons and stylists.",
     description:
       "Trim & Trend brings a boutique feel to your salon's online presence, with service menus, stylist profiles, and booking front and centre so clients can secure their next appointment in seconds.",
@@ -625,7 +625,7 @@ export const templates: Template[] = [
     href: "https://1-electrician-template.vercel.app/",
     img: "/templates/electrician1-1.png",
     hoverImg: "/templates/electrician01-2.png",
-    logo: "/templates/favicon.png",
+    logo: "/templates/electrician1-logo.png",
     tagline: "A bright, trust-building website for electrical contractors.",
     description:
       "SparkFix is a clean, conversion-focused template built for electricians who want to look professional online and turn more visitors into booked jobs. It highlights your services, safety credentials, and service area, with clear calls to action throughout.",

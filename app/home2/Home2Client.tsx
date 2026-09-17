@@ -2,16 +2,22 @@
 
 import HomeShell from "../components/sections/home2/HomeShell";
 import Hero2 from "../components/sections/home2/Hero2";
+import ValueStrip from "../components/sections/home2/ValueStrip";
 import Problem from "../components/sections/home2/Problem";
 import Solution from "../components/sections/home2/Solution";
 import Audience from "../components/sections/home2/Audience";
 import WhyUs from "../components/sections/home2/WhyUs";
+import PricingTeaser from "../components/sections/home2/PricingTeaser";
+import ProcessTimeline from "../components/sections/home2/ProcessTimeline";
 import HowItWorks from "../components/sections/home2/HowItWorks";
 import Testimonials from "../components/sections/home2/Testimonials";
 import Examples from "../components/sections/home2/Examples";
+import TestimonialProof from "../components/sections/home2/TestimonialProof";
 import FinalCta from "../components/sections/home2/FinalCta";
-import Faq2 from "../components/sections/home2/Faq2";
+// import Faq2 from "../components/sections/home2/Faq2";
+import FaqAccordion from "../components/sections/home2/FaqAccordion";
 import BlogTeaser from "../components/sections/home2/BlogTeaser";
+import ContactCta from "../components/sections/home2/ContactCta";
 import JsonLd from "../components/JsonLd";
 import { buildFaqJsonLd, HOME_FAQS } from "../lib/faqs";
 import { buildPageSchema } from "../lib/seo";
@@ -46,16 +52,22 @@ export default function Home2Client() {
       />
       <HomeShell>
         <Hero2 onStartClick={openLeadForm} />
+        <ValueStrip />
         <Problem />
         <Solution />
         <Audience />
         <WhyUs />
-        <HowItWorks />
-        <Testimonials />
+        <PricingTeaser />
+        <ProcessTimeline />
+        {/* <HowItWorks /> */}
+        {/* <Testimonials /> */}
         <Examples />
-        <FinalCta onStartClick={openLeadForm} />
-        <Faq2 />
+        <TestimonialProof />
+        {/* <FinalCta onStartClick={openLeadForm} /> */}
+        {/* <Faq2 /> */}
+        <FaqAccordion />
         <BlogTeaser />
+        <ContactCta />
       </HomeShell>
     </main>
   );

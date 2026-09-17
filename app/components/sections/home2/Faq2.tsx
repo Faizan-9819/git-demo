@@ -381,15 +381,12 @@ export default function Faq2() {
   return (
     <section
       id="faq"
-      // items-start is the fix: without it the grid stretches the left column
-      // to the full row height, leaving sticky nothing to travel inside.
+      // items-start is what makes the sticky column work: a grid item stretches
+      // to the full row height by default, leaving sticky nothing to travel in.
       className="relative rounded-[28px] bg-white fix-wide py-[50px] lg:py-28 grid grid-cols-1 lg:grid-cols-[1fr_1fr] items-start gap-10 lg:gap-14"
     >
-      <div
-        className="flex flex-col gap-4 max-w-90 self-start lg:sticky lg:top-[120px] lg:h-fit"
-        // Forced fallback in case a utility class is purged or overridden.
-        style={{ alignSelf: "start" }}
-      >
+      {/* top-[120px] clears the fixed navbar (76px) with breathing room. */}
+      <div className="flex flex-col gap-4 max-w-90 self-start lg:sticky lg:top-[120px]">
         <EyebrowLabel align="left">FAQ</EyebrowLabel>
         <h2 className="m-0 font-poppins font-bold text-[clamp(26px,2.8vw,36px)] leading-[1.15] tracking-[-1px] text-[var(--color-haiti)]">
           {t({ en: "Frequently asked questions", nl: "Veelgestelde vragen" })}

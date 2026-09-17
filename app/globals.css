@@ -176,6 +176,34 @@ html.lenis body {
   }
 }
 
+/* Left-edge-only companion to .fix. Lines content up with the .fix container's
+   left gutter but adds nothing on the right, so it can run flush to its own
+   edge. Used by the home2 hero, whose copy panel is a half-width grid column:
+   a padding percentage there resolves against half a row, which makes the
+   gutter `column width - (--content-width / 2)`. Falls back to the panel's own
+   inset once the row is narrower than the content width. */
+.fix-left {
+  padding-left: 30px;
+  padding-right: 0;
+}
+
+@media (min-width: 901px) {
+  .fix-left {
+    padding-left: max(
+      clamp(32px, 5vw, 86px),
+      calc(100% - var(--content-width) / 2)
+    );
+  }
+}
+
+/* Breaks a section out of any centered ancestor so it spans the whole viewport
+   — used for bands that must ignore HomeShell's sand padding and max width.
+   Safe against horizontal scroll because html already sets overflow-x: hidden. */
+.full-bleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}
+
 /* Home v2 (bento wireframe): wider 1320px content area, always-on responsive
    side padding that also centers once the viewport clears content+gutters. */
 .fix-wide {
@@ -219,6 +247,31 @@ html.lenis body {
 }
 .gr-ticker-track {
   animation: gr-ticker 38s linear infinite;
+}
+
+/* Home v2 testimonial column: continuous upward marquee. The track holds two
+   identical groups separated by the same gap used inside them, so lifting it
+   by half its height plus half a gap lands the copy exactly where the
+   original started — the seam never shows. `--marquee-gap` is set on the
+   track so the gap stays defined next to the layout that uses it. */
+@keyframes gr-marquee-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-50% - (var(--marquee-gap, 0px) / 2)));
+  }
+}
+.gr-marquee-up-track {
+  animation: gr-marquee-up var(--marquee-duration, 34s) linear infinite;
+}
+.gr-marquee-up-track:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gr-marquee-up-track {
+    animation: none;
+  }
 }
 
 /* ---------- Button system ---------- */
@@ -402,15 +455,49 @@ html.lenis body {
 }
 .btn:hover .btn-arrow__slot--first,
 .btn-primary:hover .btn-arrow__slot--first,
-.btn-secondary:hover .btn-arrow__slot--first {
+.btn-secondary:hover .btn-arrow__slot--first,
+.arrow-cta:hover .btn-arrow__slot--first {
   transform: translate(var(--tx-out), var(--ty-out));
   opacity: 0;
 }
 .btn:hover .btn-arrow__slot--second,
 .btn-primary:hover .btn-arrow__slot--second,
-.btn-secondary:hover .btn-arrow__slot--second {
+.btn-secondary:hover .btn-arrow__slot--second,
+.arrow-cta:hover .btn-arrow__slot--second {
   transform: translate(0, 0);
   opacity: 1;
+}
+
+/* Same lift + arrow swap as `.btn`, for the CTAs that are plain links or icon
+   buttons rather than <Button> — so every call to action on the page reacts
+   identically. Colour transitions ride along here because this rule is
+   unlayered and would otherwise clobber Tailwind's `transition-colors`. */
+.arrow-cta {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+.arrow-cta:hover {
+  transform: scale(1.03);
+}
+.arrow-cta:active {
+  transform: scale(0.98);
+}
+.arrow-cta:disabled {
+  transform: none;
+}
+
+/* The contact fold's circular link carries the same arrow at display size.
+   Doubled selector so it outranks `.btn-arrow`'s own `--arrow-size`. */
+.btn-arrow.btn-arrow--xl {
+  --arrow-size: 26px;
+}
+@media (min-width: 761px) {
+  .btn-arrow.btn-arrow--xl {
+    --arrow-size: 52px;
+  }
 }
 
 .btn-chip {

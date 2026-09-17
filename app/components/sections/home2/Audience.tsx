@@ -389,6 +389,7 @@
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Reveal from "../../Reveal";
 import EyebrowLabel from "../../ui/EyebrowLabel";
 import { useLanguage } from "../../../i18n/LanguageProvider";
@@ -410,9 +411,13 @@ function ArrowButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === "prev" ? "Previous" : "Next"}
-      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-[var(--color-slate-200)] bg-white font-poppins text-[18px] text-[var(--color-haiti)] transition-colors hover:bg-[var(--color-violet-98)] disabled:pointer-events-none disabled:opacity-40"
+      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-[var(--color-slate-200)] bg-white text-[var(--color-haiti)] transition-colors hover:bg-[var(--color-violet-98)] disabled:pointer-events-none disabled:opacity-40"
     >
-      {dir === "prev" ? "‹" : "›"}
+      {dir === "prev" ? (
+        <ChevronLeft size={18} strokeWidth={2.25} />
+      ) : (
+        <ChevronRight size={18} strokeWidth={2.25} />
+      )}
     </button>
   );
 }
@@ -490,14 +495,21 @@ export default function Audience() {
   return (
     <section
       id="voorwie"
-      className="relative overflow-hidden rounded-[28px] bg-white py-[50px] lg:pt-28 lg:pb-24 flex flex-col gap-2"
+      className="relative rounded-[28px] bg-white py-[50px] lg:pt-28 lg:pb-24 flex flex-col gap-2"
     >
-      <div className="fix-wide grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
-        <div className="flex flex-col gap-4 max-w-140">
-          <EyebrowLabel align="left">
+      {/* From lg the left track takes the larger share so the heading fits on
+          one line. The paragraph is `justify-self-end` with its own max-width,
+          so it stays pinned to the right edge and doesn't move. Below lg the
+          columns stay even (and stacked below md) — mobile is untouched. */}
+      <div className="fix grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr] gap-8 items-start">
+        <div className="flex flex-col gap-4 max-w-[950px]">
+          {/* <EyebrowLabel align="left">
             {t({ en: "Who it's for", nl: "Voor wie" })}
-          </EyebrowLabel>
-          <h2 className="m-0 font-poppins font-bold text-[clamp(28px,3.2vw,40px)] leading-[1.12] tracking-[-1px] text-[var(--color-haiti)]">
+          </EyebrowLabel> */}
+          {/* lg:whitespace-nowrap guarantees the single line even if the text
+              renders in a wider fallback before Bricolage loads. The Dutch
+              string's literal <br/> is a real element, so it still breaks. */}
+          <h2 className="m-0 font-bricolage font-bold text-[clamp(28px,3.2vw,40px)] leading-[1.12] tracking-[-1px] text-[var(--color-haiti)] lg:whitespace-nowrap">
             {withBreaks(
               t({
                 en: "Built for entrepreneurs like you.",
@@ -510,7 +522,7 @@ export default function Audience() {
           delay={0.1}
           className="self-center justify-self-end pt-[0px] max-w-95"
         >
-          <p className="m-0 text-[16px] leading-[1.6] text-[var(--color-dolphin)] ">
+          <p className="m-0 text-[16px] leading-[1.6] font-inter text-[var(--color-dolphin)] ">
             {t({
               en: "Different businesses, the same basics: coming across as professional, welcoming customers, planning appointments, keeping client details, and sending quotes and invoices.",
               nl: "Andere bedrijven, dezelfde basis: professioneel overkomen, klanten ontvangen, afspraken plannen, klantgegevens bijhouden, offertes en facturen versturen.",
@@ -544,7 +556,7 @@ export default function Audience() {
                       "linear-gradient(180deg, rgba(10,5,22,0), rgba(10,5,22,0.78))",
                   }}
                 />
-                <span className="relative font-poppins text-[19px] font-semibold text-white">
+                <span className="relative font-bricolage text-[19px] font-semibold text-white">
                   {t(trade.name)}
                 </span>
               </Reveal>
@@ -593,7 +605,12 @@ export default function Audience() {
           </div>
         </div>
       </div> */}
-      <div className="hidden sm:block group mt-5">
+      {/* Desktop marquee runs edge to edge: `full-bleed` cancels HomeShell's
+          side padding + max-width centering so the strip starts at the
+          viewport's left edge and bleeds off the right. The section drops its
+          own `overflow-hidden` for this — the inner div below still clips the
+          ticker, so nothing else escapes. */}
+      <div className="hidden sm:block group mt-5 full-bleed">
         <div className="overflow-hidden pt-[8px]">
           <div className="flex w-max gap-4 [animation:gr-ticker_45s_linear_infinite] group-hover:[animation-play-state:paused]">
             {TRADES.concat(TRADES).map((trade, i) => (
@@ -616,7 +633,7 @@ export default function Audience() {
                       "linear-gradient(180deg, rgba(10,5,22,0), rgba(10,5,22,0.78))",
                   }}
                 />
-                <span className="relative font-poppins text-[19px] font-semibold text-white">
+                <span className="relative font-bricolage text-[19px] font-semibold text-white">
                   {t(trade.name)}
                 </span>
               </div>
