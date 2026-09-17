@@ -4,7 +4,10 @@ import FeatureButton from "./FeatureButton";
 
 export default function FeaturesCta() {
   return (
-    <SectionCard id="closing-cta" className="bg-[#e4fa65] text-[#0a0516]">
+    <SectionCard
+      id="closing-cta"
+      className="bg-[#e4fa65] mb-[14px] text-[#0a0516]"
+    >
       <div className="flex items-center justify-between gap-[40px] max-[900px]:flex-col max-[900px]:items-start">
         <Reveal className="w-[58%] max-[900px]:w-full">
           <h2 className="w-full max-w-[800px] font-bricolage text-[clamp(39px,4.3vw,68px)] leading-[0.99] font-bold tracking-[-0.055em] max-[600px]:text-[38px]">
