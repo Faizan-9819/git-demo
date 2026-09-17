@@ -89,19 +89,34 @@ export default function ProcessTimeline() {
           viewport={{ once: true, amount: 0.3 }}
           className="relative mt-[35px] grid grid-cols-1 gap-x-[24px] gap-y-[35px] min-[761px]:mt-[50px] min-[761px]:grid-cols-4 min-[761px]:gap-[22px] min-[1051px]:gap-[30px]"
         >
-          {/* The rule the step circles sit on: vertical on mobile, horizontal
-              from 761px, inset by half a circle so it spans centre to centre. */}
+          {/* The rule the step circles sit on, inset by half a circle so it
+              spans centre to centre. From 761px it is one horizontal bar; below
+              that the source draws a single top-0/bottom-0 vertical bar, which
+              overshoots both ends, so it is split into a segment per step
+              instead (see inside the article). */}
           <span
             aria-hidden
-            className="absolute bottom-0 left-[20px] top-0 z-0 w-[2px] bg-[#ded8e7] min-[761px]:bottom-auto min-[761px]:left-[28px] min-[761px]:right-[28px] min-[761px]:top-[28px] min-[761px]:h-[2px] min-[761px]:w-auto"
+            className="absolute left-[28px] right-[28px] top-[28px] z-0 hidden h-[2px] bg-[#ded8e7] min-[761px]:block"
           />
 
-          {STEPS.map((step) => (
+          {STEPS.map((step, i) => (
             <motion.article
               key={step.num}
               variants={card}
               className="relative z-[1] grid grid-cols-[40px_1fr] gap-x-[20px] gap-y-[12px] pt-[22px] min-[761px]:block min-[761px]:pt-0"
             >
+              {/* Mobile rule: centre of this circle to the centre of the next
+                  one, so nothing hangs above 01 or below the last step. The
+                  35px row gap plus the next card's 22px top padding and half
+                  its circle is the 77px overhang. Sits behind the circle, which
+                  masks it with its white ring. */}
+              {i < STEPS.length - 1 && (
+                <span
+                  aria-hidden
+                  className="absolute bottom-[-77px] left-[19px] top-[42px] -z-10 w-[2px] bg-[#ded8e7] min-[761px]:hidden"
+                />
+              )}
+
               <span className="row-span-3 row-start-1 grid h-[40px] w-[40px] place-items-center rounded-full bg-[#e4fa65] font-bricolage text-[18px] tracking-[-0.03em] text-[#0a0516] shadow-[0_0_0_6px_#fff] min-[761px]:h-[56px] min-[761px]:w-[56px] min-[761px]:text-[24px] min-[761px]:shadow-[0_0_0_8px_#fff]">
                 {step.num}
               </span>
