@@ -18,7 +18,7 @@ const STAR = "text-[16px] text-[#726e2b] min-[761px]:text-[25px]";
 export default function ValueStrip() {
   return (
     <section className="full-bleed bg-[#e4fa65] py-[20px] text-[#0a0516] min-[761px]:py-[24px] md:px-5 min-[1220px]:px-0">
-      <div className="fix flex flex-wrap items-center justify-between gap-[12px] min-[761px]:flex-nowrap min-[761px]:gap-[20px]">
+      <div className="fix flex flex-wrap items-center justify-between gap-[6px] md:gap-[12px] min-[761px]:flex-nowrap min-[761px]:gap-[20px]">
         <span className="basis-full font-sans text-[10px] font-semibold leading-[1.5] tracking-[0.1em] min-[761px]:max-w-[120px] min-[761px]:basis-auto min-[761px]:text-[11px]">
           BUILT FOR YOUR EVERYDAY
         </span>

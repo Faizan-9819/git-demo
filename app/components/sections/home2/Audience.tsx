@@ -411,7 +411,7 @@ function ArrowButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === "prev" ? "Previous" : "Next"}
-      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/[0.12] bg-[#151021] text-white transition-colors hover:bg-[#1f1830] disabled:pointer-events-none disabled:opacity-40"
+      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-[var(--color-slate-200)] bg-white text-[var(--color-haiti)] transition-colors hover:bg-[var(--color-violet-98)] disabled:pointer-events-none disabled:opacity-40"
     >
       {dir === "prev" ? (
         <ChevronLeft size={18} strokeWidth={2.25} />
