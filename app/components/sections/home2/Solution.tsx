@@ -1,10 +1,10 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { Plus } from "lucide-react";
+// import type { ReactNode } from "react";
+// import { Plus } from "lucide-react";
 import ArrowIcon from "../../ui/ArrowIcon";
 import { useLanguage } from "../../../i18n/LanguageProvider";
-import type { Translation } from "../../../i18n/config";
+// import type { Translation } from "../../../i18n/config";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PREVIOUS VERSION — commented out, superseded by the grsolidvariant.html port
@@ -474,10 +474,14 @@ import type { Translation } from "../../../i18n/config";
  * those are inverted into min-width steps here, so the base values are the
  * smallest ones and the layout widens as the viewport does.
  */
+import { ReactNode } from "react";
+import { Plus } from "lucide-react"; // Adjust import path as needed
 
 const CARD_SHELL =
   "flex min-w-0 flex-col rounded-[13px] px-[18px] pt-6 text-white " +
   "min-[361px]:px-[23px] min-[361px]:pt-7 min-[761px]:px-[25px] min-[1101px]:px-[34px] min-[1101px]:pt-[35px]";
+
+type Translation = { en: string; nl: string };
 
 type FeatureItem = { label: Translation; icon: ReactNode };
 
@@ -636,11 +640,6 @@ const HUB_FEATURES: FeatureItem[] = [
   },
 ];
 
-/**
- * One package card. `evenRows` is the Website card's `grid-template-rows:
- * repeat(6,1fr)` — the six rows share the leftover height so both cards end up
- * the same length; the Hub list is a plain block under `data-offer-layout="a"`.
- */
 function OfferCard({
   id,
   surface,
@@ -753,8 +752,6 @@ export default function Solution() {
       className="rounded-[13px] bg-[#e4fa65] pt-14 pb-14 text-[#0a0516] min-[761px]:pt-20 min-[761px]:pb-16"
     >
       <div className="fix">
-        {/* The `.eyebrow` ("01 / THE COMPLETE PICTURE") is display:none in the
-            source, so it is left out rather than rendered and hidden. */}
         <div className="mb-[44px] grid grid-cols-1 items-end gap-[21px] min-[761px]:grid-cols-[2fr_1fr] min-[761px]:gap-[30px] min-[1101px]:grid-cols-[1.9fr_1fr] min-[1101px]:gap-[55px]">
           <h2
             id="offer-heading"
@@ -816,11 +813,6 @@ export default function Solution() {
             }}
           />
 
-          {/* The `+` that joins the two cards. From 761px up it is absolutely
-              centred on the column gap in *both* axes — the source pins it near
-              the top (`top:46/51px`), which is the one place this port departs
-              from the HTML. Below 761px it folds back into the flow so it
-              straddles the two stacked cards. */}
           <span
             aria-hidden="true"
             className="relative z-[1] mx-auto my-[-8px] grid h-[74px] w-[74px] place-items-center rounded-full border-[6px] border-[#e4fa65] bg-[#0a0516] text-[#e4fa65] min-[761px]:absolute min-[761px]:top-1/2 min-[761px]:left-1/2 min-[761px]:mx-0 min-[761px]:my-0 min-[761px]:h-[68px] min-[761px]:w-[68px] min-[761px]:-translate-x-1/2 min-[761px]:-translate-y-1/2 min-[1101px]:h-[76px] min-[1101px]:w-[76px]"
@@ -857,8 +849,6 @@ export default function Solution() {
           />
         </div>
 
-        {/* Package summary bar. Its eyebrow ("TWO PARTS. ONE COMPLETE
-            PACKAGE.") is hidden by the same global rule as the one above. */}
         <div className="block pt-[30px] min-[761px]:flex min-[761px]:items-start min-[761px]:justify-between min-[761px]:gap-[25px] min-[761px]:pt-9 min-[1101px]:items-center">
           <div className="flex items-center gap-[13px] min-[761px]:gap-5">
             <span
@@ -877,24 +867,18 @@ export default function Solution() {
 
           <div className="mt-[25px] flex flex-wrap items-start justify-between gap-[18px] min-[761px]:mt-0 min-[761px]:flex-col min-[761px]:flex-nowrap min-[761px]:items-end min-[761px]:justify-start min-[761px]:gap-[14px] min-[1101px]:flex-row min-[1101px]:items-center min-[1101px]:gap-6">
             <p className="m-0 font-sans text-[14px] leading-[1.3] whitespace-nowrap">
-              {t({ en: "From ", nl: "Vanaf " })}
-              <strong className="font-bricolage text-[40px] font-semibold tracking-[-0.05em] min-[761px]:text-[42px]">
+              <span>{t({ en: "From ", nl: "Vanaf " })}</span>
+              <strong className="font-bricolage text-[28px] font-semibold tracking-[-0.05em] min-[761px]:text-[42px]">
                 €69
               </strong>
               <span>{t({ en: " / month", nl: " / maand" })}</span>
             </p>
 
-            {/* Same CTA behaviour as every other call to action on the page
-                (cf. "View full pricing" in PricingTeaser): `arrow-cta` supplies
-                the hover lift and drives ArrowIcon's two-slot swap. No colour
-                change on hover — the source's `#49217b` is dropped so this
-                reacts like the rest. */}
             <a
               href="#pricing"
-              className="arrow-cta inline-flex min-h-[51px] items-center justify-center gap-4 rounded-full border border-transparent bg-[#0a0516] px-[17px] py-[13px] font-sans text-[14px] font-semibold leading-[1.35] whitespace-nowrap text-[#e4fa65] min-[761px]:min-h-[52px] min-[761px]:gap-6 min-[761px]:px-5 min-[761px]:py-[14px] min-[761px]:text-[15px]"
+              className="arrow-cta inline-flex min-h-[51px] items-center justify-center gap-2 rounded-full border border-transparent bg-[#0a0516] px-3 py-1 lg:px-[17px] lg:py-[13px] font-sans text-[12px] font-semibold leading-[1.35] whitespace-nowrap text-[#e4fa65] min-[761px]:min-h-[52px] min-[761px]:gap-6 min-[761px]:px-5 min-[761px]:py-[14px] min-[761px]:text-[15px]"
             >
-              {t({ en: "Explore the package", nl: "Bekijk het pakket" })}
-              <ArrowIcon direction="up-right" size={18} />
+              {t({ en: "View pricing", nl: "Bekijk prijzen" })}
             </a>
           </div>
         </div>
