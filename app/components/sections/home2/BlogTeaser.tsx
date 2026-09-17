@@ -323,7 +323,16 @@ export default function BlogTeaser() {
         {/* `.legacy-blog-grid`: 44px below the head, three columns from 900px up
             with a 20px gutter — reproduced here as the carousel's slide width
             and the negative-margin gutter the track already used. */}
-        <div className="mt-[44px] overflow-hidden pb-1" ref={emblaRef}>
+        {/* The viewport's clip would cut the hover glow off whichever card sits
+            at an edge, so — as in Examples — it is padded by one gutter's worth
+            (20px) all round and pulled back out by the same amount, leaving the
+            glow room to spread while the cards stay aligned to `.fix` and the
+            44px gap below the head is preserved (24 + 20). The bottom keeps the
+            4px the old `pb-1` gave the Reveal animation. */}
+        <div
+          className="mt-[24px] -mx-[20px] -mb-[16px] overflow-hidden p-[20px]"
+          ref={emblaRef}
+        >
           <div className="-ml-[20px] flex">
             {POSTS.concat(POSTS).map((post, i) => (
               <div
@@ -332,7 +341,9 @@ export default function BlogTeaser() {
               >
                 <Reveal
                   delay={Math.min(i * 0.05, 0.2)}
-                  className="flex h-full flex-col gap-[16px] rounded-[13px] border border-white/[0.12] bg-[#151021] px-[20px] pt-[20px] pb-[24px]"
+                  /* Same card hover as Examples: a lime (#e4fa65) glow, no
+                     lift and no fill change. */
+                  className="flex h-full flex-col gap-[16px] rounded-[13px] border border-white/[0.12] bg-[#151021] px-[20px] pt-[20px] pb-[24px] transition-shadow duration-200 hover:shadow-[0_0_0_1px_rgba(228,250,101,0.34),0_0_18px_rgba(228,250,101,0.24),0_0_42px_rgba(228,250,101,0.18)]"
                 >
                   <div className="relative h-[190px] overflow-hidden rounded-[13px]">
                     <Image
