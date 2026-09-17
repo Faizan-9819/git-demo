@@ -69,6 +69,14 @@
   --content-width: 1180px;
   --nav-h: 74px;
 
+  /* Features page fold geometry (see .newfix-card / .newfix) */
+  --fold-content-width: 1920px;
+  --fold-gutter: 28px;
+  /* Content rail: fixed cap so every fold aligns on both sides, with the inset
+     acting as the gutter until the viewport is wide enough to centre it. */
+  --fold-rail-width: 1560px;
+  --fold-inset: clamp(20px, 4vw, 80px);
+
   /* Brand gradient used in buttons, pills, and headline emphasis */
   --grad-brand: linear-gradient(90deg, #5b219f 0%, #922698 100%);
   /* Hero card frame gradient */
@@ -200,6 +208,32 @@ html.lenis body {
    side padding that also centers once the viewport clears content+gutters. */
 .fix-wide {
   padding-inline: max(clamp(20px, 4vw, 56px), calc((100% - 1320px) / 2));
+}
+
+/* Features page folds are two boxes, not one:
+
+   .newfix-card  the tinted, rounded, near-full-bleed shell (100% - 28px)
+   .newfix       the content rail inside it — the .fix of this page
+
+   Keeping them separate is what makes every fold's content line up on both
+   sides at every viewport, regardless of how wide the card behind it runs. */
+.newfix-card {
+  width: calc(100% - var(--fold-gutter));
+  max-width: var(--fold-content-width);
+  margin-inline: auto;
+}
+
+.newfix {
+  width: 100%;
+  max-width: var(--fold-rail-width);
+  margin-inline: auto;
+  padding-inline: var(--fold-inset);
+}
+
+@media (max-width: 600px) {
+  .newfix-card {
+    --fold-gutter: 20px;
+  }
 }
 
 /* Footer background "ticker" marquee */
