@@ -469,6 +469,12 @@ export default function Footer() {
   const addressLines =
     locale === "nl" ? CONTACT_INFO.addressLinesNl : CONTACT_INFO.addressLines;
 
+  // home2's folds are built on `.fix` (1180px, centered), so the footer rows
+  // have to use the same container or the columns sit ~70px wider than every
+  // section above them. Everywhere else keeps `.fix-wide` (1320px).
+  const container =
+    pathname === "/home2" || pathname === "/nl/home2" ? "fix" : "fix-wide";
+
   return (
     <div
       className={`px-3.5 p  b-3.5  ${isHome ? "bg-[var(--color-sand)]!" : ""}`}
@@ -476,7 +482,9 @@ export default function Footer() {
       <footer className="relative overflow-hidden rounded-[28px] bg-[var(--color-footer-bg)] mx-auto max-w-473">
         <Ticker />
 
-        <div className="relative z-[1] fix-wide flex flex-wrap justify-between items-start gap-x-[24px] gap-y-[40px] pt-[56px] lg:pt-[72px] pb-[8px]">
+        <div
+          className={`relative z-[1] ${container} flex flex-wrap justify-between items-start gap-x-[24px] gap-y-[40px] pt-[56px] lg:pt-[72px] pb-[8px]`}
+        >
           {/* Brand Info */}
           <Reveal className="w-full sm:w-[48%] lg:w-[30%] flex max-w-[340px] flex-col items-start gap-[16px]">
             <Link
@@ -602,7 +610,9 @@ export default function Footer() {
 
         <Watermark />
 
-        <div className="relative z-[1] fix-wide flex flex-wrap items-center justify-between gap-[18px] border-t border-[rgba(91,33,182,0.10)] py-[18px] font-sans text-[13px] text-[#352c4a]/78">
+        <div
+          className={`relative z-[1] ${container} flex flex-wrap items-center justify-between gap-[18px] border-t border-[rgba(91,33,182,0.10)] py-[18px] font-sans text-[13px] text-[#352c4a]/78`}
+        >
           <span>
             {t({
               en: "© 2026 Growth Rocket by",

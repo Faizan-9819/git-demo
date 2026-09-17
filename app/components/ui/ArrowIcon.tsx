@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 export type ArrowDirection =
   | "up-right"
   | "right"
@@ -42,14 +44,26 @@ function ArrowSvg() {
   );
 }
 
-export default function ArrowIcon({
+export default function dArrowIcon({
   direction = "up-right",
+  size,
+  className,
 }: {
   direction?: ArrowDirection;
+  /** Overrides the size `.btn--sm/md/lg` would set — for arrows used outside a
+   *  <Button>, where there is no size class to inherit from. */
+  size?: number;
+  className?: string;
 }) {
   const rot = ROTATION[direction];
   return (
-    <span className="btn-arrow" data-direction={direction}>
+    <span
+      className={className ? `btn-arrow ${className}` : "btn-arrow"}
+      data-direction={direction}
+      style={
+        size ? ({ "--arrow-size": `${size}px` } as CSSProperties) : undefined
+      }
+    >
       <span className="btn-arrow__slot btn-arrow__slot--first">
         <span
           className="btn-arrow__rotation"

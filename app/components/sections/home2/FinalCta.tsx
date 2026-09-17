@@ -1,6 +1,7 @@
 "use client";
 import Reveal from "../../Reveal";
 import Button from "../../ui/Button";
+import ArrowIcon from "../../ui/ArrowIcon";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 import { withBreaks } from "@/app/lib/withBreaks";
 
@@ -57,9 +58,10 @@ export default function FinalCta({
         </Button>
         <a
           href="#faq"
-          className="font-poppins text-[15px] font-semibold text-[var(--color-kournikova)]"
+          className="arrow-cta inline-flex items-center gap-[8px] font-poppins text-[15px] font-semibold text-[var(--color-kournikova)]"
         >
-          {t({ en: "See what's included →", nl: "Bekijk wat inbegrepen is →" })}
+          {t({ en: "See what's included", nl: "Bekijk wat inbegrepen is" })}
+          <ArrowIcon direction="right" />
         </a>
       </Reveal>
     </section>

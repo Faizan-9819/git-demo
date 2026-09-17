@@ -490,9 +490,9 @@ export default function Audience() {
   return (
     <section
       id="voorwie"
-      className="relative overflow-hidden rounded-[28px] bg-white py-[50px] lg:pt-28 lg:pb-24 flex flex-col gap-2"
+      className="relative rounded-[28px] bg-white py-[50px] lg:pt-28 lg:pb-24 flex flex-col gap-2"
     >
-      <div className="fix-wide grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+      <div className="fix grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
         <div className="flex flex-col gap-4 max-w-140">
           <EyebrowLabel align="left">
             {t({ en: "Who it's for", nl: "Voor wie" })}
@@ -593,7 +593,12 @@ export default function Audience() {
           </div>
         </div>
       </div> */}
-      <div className="hidden sm:block group mt-5">
+      {/* Desktop marquee runs edge to edge: `full-bleed` cancels HomeShell's
+          side padding + max-width centering so the strip starts at the
+          viewport's left edge and bleeds off the right. The section drops its
+          own `overflow-hidden` for this — the inner div below still clips the
+          ticker, so nothing else escapes. */}
+      <div className="hidden sm:block group mt-5 full-bleed">
         <div className="overflow-hidden pt-[8px]">
           <div className="flex w-max gap-4 [animation:gr-ticker_45s_linear_infinite] group-hover:[animation-play-state:paused]">
             {TRADES.concat(TRADES).map((trade, i) => (

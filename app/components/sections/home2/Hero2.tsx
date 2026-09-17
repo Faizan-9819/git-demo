@@ -1,5 +1,13 @@
 "use client";
 import Image from "next/image";
+import ArrowIcon from "../../ui/ArrowIcon";
+
+/* ------------------------------------------------------------------ */
+/*  PREVIOUS HERO — kept for reference, replaced by the                */
+/*  `section.legacy-hero` markup from grsolidvariant.html (Variant B). */
+/* ------------------------------------------------------------------ */
+/*
+import Image from "next/image";
 import { CalendarCheck, Globe } from "lucide-react";
 import Reveal from "../../Reveal";
 import Button from "../../ui/Button";
@@ -50,7 +58,7 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
       id="top"
       className="grid grid-cols-1 lg:grid-cols-2 gap-3.5 items-stretch pt-19"
     >
-      {/* Left: headline card */}
+      // Left: headline card
       <div className="relative overflow-hidden rounded-[28px] bg-white px-5 sm:px-10 lg:px-8 xl:px-[94px] 2xl:pl-[140px] min-[1900px]:pl-[200px]! py-12 sm:py-16 lg:py-14 xl:py-24 flex items-center">
         <div
           aria-hidden
@@ -82,11 +90,9 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
           <Reveal delay={0.1}>
             <div className="flex items-center  gap-[14px] flex-wrap">
               <Button
-                // size="lg"
                 variant="dark"
                 onClick={onStartClick}
                 className="rounded-lg px-[22px]! py-[16px]! text-[15px]!"
-                // style={{ ["--btn-radius" as any]: "999px" }}
               >
                 {t({
                   en: "Start with Growth Rocket",
@@ -116,7 +122,7 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
         </div>
       </div>
 
-      {/* Right: product visual */}
+      // Right: product visual
       <Reveal
         delay={0.1}
         y={16}
@@ -195,6 +201,81 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
           </div>
         </div>
       </Reveal>
+    </section>
+  );
+}
+*/
+
+/**
+ * Hero — ported 1:1 from `section.legacy-hero` in grsolidvariant.html.
+ *
+ * The stylesheet there is layered: the base `.legacy-hero` rules are later
+ * overridden by the "Variant B" blocks, so the values below are the final
+ * computed ones (deep #0a0516 copy panel, purple #5b2dce glow + CTA, lime
+ * #e4fa65 accent line). Variant B also hides the floating chips and the
+ * "Enquiries" stat card over the photo (`display:none !important`), so they
+ * are intentionally not reproduced.
+ *
+ * The 900px breakpoint of the original is kept as-is via `min-[901px]:` /
+ * `max-[900px]:` rather than being rounded to Tailwind's `lg`.
+ */
+export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
+  return (
+    <section id="home" className="">
+      <div className=" grid grid-cols-1 min-[901px]:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-0 overflow-hidden rounded-[13px]">
+        {/* Left: copy panel */}
+
+        <div className="fix-left relative flex items-center overflow-hidden rounded-t-[13px] min-[901px]:rounded-l-[13px] min-[901px]:rounded-tr-none bg-[#0a0516] min-h-[480px] min-[521px]:min-h-[510px] min-[901px]:min-h-[650px] py-[70px]">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -left-[120px] -top-[130px] h-[410px] w-[410px] rounded-full bg-[#5b2dce] opacity-[0.18] blur-[110px]"
+          />
+
+          <div className="relative max-w-[560px]">
+            <h1 className="m-0 font-bricolage text-[40px] min-[521px]:text-[clamp(42px,4.3vw,62px)] font-semibold leading-[1.05] tracking-[-0.06em] text-white">
+              Not just a website.
+              <br />
+              <span className="text-[#e4fa65]">A complete system</span>
+              <br />
+              <span className="text-white">for your business.</span>
+            </h1>
+
+            <div className="mt-[30px] flex flex-wrap items-center gap-[18px]">
+              <button
+                type="button"
+                onClick={onStartClick}
+                className="arrow-cta inline-flex min-h-[52px] items-center gap-[18px] rounded-full bg-[#5b2dce] px-[20px] py-[14px] font-sans text-[14px] font-semibold text-white hover:bg-[#e4fa65] hover:text-[#0a0516]"
+              >
+                Start with Growth Rocket <ArrowIcon direction="right" />
+              </button>
+
+              <a
+                href="#product"
+                className="arrow-cta inline-flex items-center gap-[8px] border-b border-white/55 font-sans text-[14px] font-semibold text-white"
+              >
+                See how it works <ArrowIcon direction="right" />
+              </a>
+            </div>
+
+            <p className="mt-[30px] flex items-center gap-[10px] font-sans text-[13px] text-[#c9c2d4]">
+              <i className="h-[8px] w-[8px] shrink-0 rounded-full bg-[#e4fa65]" />
+              For freelancers and small businesses · from €69 per month
+            </p>
+          </div>
+        </div>
+
+        {/* Right: photo panel */}
+        <div className="relative overflow-hidden rounded-b-[13px] min-[901px]:rounded-r-[13px] min-[901px]:rounded-bl-none bg-[#e7e1f5] min-h-[480px] min-[901px]:min-h-[650px]">
+          <Image
+            src="/home2/hero-electrician.png"
+            alt="Electrician using his phone beside a work van"
+            fill
+            sizes="(min-width: 901px) 50vw, 100vw"
+            className="object-cover object-[38%_50%]"
+            priority
+          />
+        </div>
+      </div>
     </section>
   );
 }

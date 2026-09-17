@@ -4,10 +4,37 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Reveal from "../../Reveal";
-import EyebrowLabel from "../../ui/EyebrowLabel";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 import type { Translation } from "../../../i18n/config";
 import { withBreaks } from "@/app/lib/withBreaks";
+
+/**
+ * Examples — ported from `section#work.legacy-examples` in grsolidvariant.html.
+ *
+ * Surface, type and copy now follow that fold: the deep `--gr-deep` (#0a0516)
+ * ground instead of the old slate blue, Bricolage for the heading instead of
+ * Poppins, and the four cases the HTML actually lists. The later stylesheet
+ * blocks are the ones that win there, so this uses their values: every fold and
+ * card is pinned to a 13px radius, and the card hover is a lime glow with no
+ * lift and no fill change.
+ *
+ * Two things the HTML renders but never shows: the `EXAMPLES` eyebrow is hidden
+ * globally (`.legacy-examples-head>div>p{display:none!important}`), so it is
+ * dropped here rather than rendered invisibly.
+ *
+ * The source list is a plain `overflow-x:auto` strip with decorative arrows —
+ * here it stays an Embla carousel driven by those arrows, so nothing scrolls
+ * horizontally on its own and no scrollbar appears. The viewport sits inside
+ * the fold inset, which is where the cards start at rest in the HTML too.
+ *
+ * The stylesheet is desktop-first with max-width overrides at 900px, 760px and
+ * 520px; those are inverted here into min-width steps, so the base values are
+ * the smallest ones. Two deliberate deviations: horizontal spacing comes from
+ * the shared `.fix` container rather than the source's own `--fold-inset`, so
+ * this fold lines up with every other one on the page; and the head is a column
+ * below 761px rather than the source's row, which at phone widths leaves the
+ * heading about 190px next to the arrow pair.
+ */
 
 const CASES: { name: string; meta: Translation; image: string }[] = [
   {
@@ -32,19 +59,9 @@ const CASES: { name: string; meta: Translation; image: string }[] = [
     image: "/home/case-zenwise.jpg",
   },
   {
-    name: "Seabulk International Trading",
-    meta: { en: "Trade & logistics · UAE", nl: "Handel & logistiek · UAE" },
+    name: "Seabulk International",
+    meta: { en: "Trade & logistics · Dubai", nl: "Handel & logistiek · Dubai" },
     image: "/home/case-seabulk.png",
-  },
-  {
-    name: "Reifen Auto Service Shahmirani",
-    meta: { en: "Tire service · Vienna", nl: "Bandenservice · Wenen" },
-    image: "/home/case-reifen-shahmirani.png",
-  },
-  {
-    name: "SLP Logistics Group",
-    meta: { en: "Transport · India", nl: "Transport · India" },
-    image: "/home/case-slp-logistics.png",
   },
 ];
 
@@ -62,13 +79,13 @@ function ArrowButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      aria-label={dir === "prev" ? "Previous" : "Next"}
-      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/22 bg-white/6 text-white transition-colors hover:bg-white/12 disabled:pointer-events-none disabled:opacity-40"
+      aria-label={dir === "prev" ? "Previous examples" : "Next examples"}
+      className="grid h-11 w-11 flex-none cursor-pointer place-items-center rounded-full border border-white/18 bg-white/6 text-white transition-colors hover:bg-white/12 disabled:pointer-events-none disabled:opacity-40"
     >
       {dir === "prev" ? (
-        <ChevronLeft size={18} strokeWidth={2.25} />
+        <ChevronLeft size={20} strokeWidth={2.25} />
       ) : (
-        <ChevronRight size={18} strokeWidth={2.25} />
+        <ChevronRight size={20} strokeWidth={2.25} />
       )}
     </button>
   );
@@ -103,59 +120,76 @@ export default function Examples() {
   return (
     <section
       id="voorbeelden"
-      className="relative overflow-hidden rounded-[28px] bg-[#263040] py-[50px] lg:pt-28 lg:pb-24 flex flex-col gap-6 lg:gap-8"
+      aria-labelledby="examples-heading"
+      className="relative overflow-hidden rounded-[13px] bg-[#0a0516] py-[56px] min-[761px]:pt-[80px] min-[761px]:pb-[64px]"
     >
-      <div className="fix-wide flex flex-wrap items-end justify-between gap-3 md:gap-6">
-        <div className="flex flex-col gap-3.5 max-w-155">
-          <EyebrowLabel align="left" color="rgb(216,180,254)">
-            {t({ en: "Examples", nl: "Voorbeelden" })}
-          </EyebrowLabel>
-          <h2 className="m-0 font-poppins font-bold text-[clamp(28px,3.2vw,40px)] leading-[1.12] tracking-[-1px] text-white">
+      <div className="fix flex flex-col gap-[24px] min-[761px]:flex-row min-[761px]:items-end min-[761px]:justify-between min-[761px]:gap-[30px]">
+        <div>
+          <h2
+            id="examples-heading"
+            className="m-0 font-bricolage text-[31px] font-semibold leading-[1.1] tracking-[-0.04em] text-white min-[521px]:text-[clamp(40px,4vw,58px)]"
+          >
             {withBreaks(
               t({
-                en: "See what we build for entrepreneurs",
-                nl: "Bekijk wat we voor ondernemers maken",
+                en: "Real businesses.<br/>Beautiful first impressions.",
+                nl: "Echte ondernemers.<br/>Een sterke eerste indruk.",
               }),
             )}
           </h2>
-          <p className="m-0 text-[16px] leading-[1.6] text-white/68">
-            {withBreaks(
-              t({
-                en: "Your website is professionally built for you — as part of Growth Rocket.",
-                nl: "Je website wordt professioneel voor je gemaakt — <br/> als onderdeel van Growth Rocket.",
-              }),
-            )}
-          </p>
+          <span className="mt-[15px] block font-sans text-[16px] leading-[1.6] text-[#c9c2d4]">
+            {t({
+              en: "Built around each business, its people and its purpose.",
+              nl: "Gebouwd rond elk bedrijf, de mensen en het doel erachter.",
+            })}
+          </span>
         </div>
-        <div className="flex gap-[10px] w-full justify-end">
+
+        <div className="flex gap-[10px] self-end">
           <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
           <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
         </div>
       </div>
 
-      <div className="fix-wide pb-6">
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex -ml-5">
+      <div className="fix mt-[18px]">
+        {/* Embla's viewport does the clipping, so the strip never becomes a
+            scroll container of its own — no horizontal scrollbar, on any
+            platform that draws them persistently.
+
+            That clip would also cut the hover glow off the card sitting at
+            either edge, so the viewport is inset by one gap's worth (20px) in
+            every direction and pulled back out horizontally, which leaves the
+            glow room to spread while the cards still line up with `.fix`.
+            20px is the most it can take: at any snap the neighbouring card's
+            edge lands exactly on that boundary, so a wider inset would let a
+            slide show outside the container. */}
+        <div className="-mx-5 overflow-hidden p-5" ref={emblaRef}>
+          <div className="flex gap-[20px]">
             {CASES.map((c, i) => (
-              <div key={c.name} className="shrink-0 w-full pl-5 sm:w-1/3">
+              /* Cards are sized as a share of the track, not the source's flat
+                 400px: at `--content-width` (1180px) three 400px cards plus
+                 their gaps overflow, which cut the third one. */
+              <div
+                key={c.name}
+                className="min-w-0 flex-none basis-full min-[641px]:basis-[calc((100%-20px)/2)] min-[901px]:basis-[calc((100%-40px)/3)]"
+              >
                 <Reveal
                   delay={Math.min(i * 0.05, 0.2)}
-                  className="flex h-full flex-col gap-4 rounded-[28px] border border-white/10 bg-white/6 p-5"
+                  className="flex h-full flex-col rounded-[13px] border border-white/10 bg-white/6 p-5 transition-shadow duration-200 hover:shadow-[0_0_0_1px_rgba(228,250,101,0.34),0_0_18px_rgba(228,250,101,0.24),0_0_42px_rgba(228,250,101,0.18)]"
                 >
-                  <div className="relative rounded-[16px] overflow-hidden bg-white shadow-[0_12px_30px_rgba(10,5,22,0.08)] aspect-[3/2]">
+                  <div className="relative aspect-[3/2] overflow-hidden rounded-[13px]">
                     <Image
                       src={c.image}
-                      alt={c.name}
+                      alt={`${c.name} website`}
                       fill
-                      sizes="(max-width: 640px) 100vw, 400px"
+                      sizes="(min-width: 901px) 380px, (min-width: 641px) 50vw, 100vw"
                       className="object-cover"
                     />
                   </div>
-                  <div className="flex flex-col gap-[2px] px-[6px] pb-[6px]">
-                    <span className="font-poppins text-[17px] font-semibold text-white">
+                  <div className="grid gap-[4px] px-[6px] pt-[16px] pb-[4px] text-white">
+                    <strong className="font-sans text-[17px] font-bold">
                       {c.name}
-                    </span>
-                    <span className="font-sans text-[13px] text-white/60">
+                    </strong>
+                    <span className="font-sans text-[13px] text-[#c9c2d4]">
                       {t(c.meta)}
                     </span>
                   </div>
