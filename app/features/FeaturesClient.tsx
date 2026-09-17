@@ -12,7 +12,9 @@ export default function FeaturesClient() {
   return (
     <main
       id="main"
-      className="relative flex min-h-screen flex-col gap-[14px] overflow-x-hidden bg-white pt-[14px]"
+      // No overflow-x-hidden: it would make <main> a scroll container and break
+      // the sticky video columns. html already clips the x-axis.
+      className="relative flex min-h-screen flex-col gap-[14px] bg-white pt-[14px]"
     >
       <FeaturesHero />
 

@@ -7,7 +7,7 @@ const PILL =
 
 export default function FeaturesHero() {
   return (
-    <SectionCard className="bg-[#0a0516] text-white max-[600px]:py-[38px] py-[clamp(52px,6vw,84px)]">
+    <SectionCard className="bg-[#0a0516] mt-20 text-white max-[600px]:py-[38px] py-[clamp(52px,6vw,84px)]">
       <Reveal>
         <div className="w-full max-w-[1060px]">
           <h1 className="font-bricolage text-[clamp(39px,4.3vw,68px)] leading-[0.99] font-bold tracking-[-0.055em] max-[600px]:text-[38px]">

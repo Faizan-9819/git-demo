@@ -6,15 +6,15 @@ type Props = {
   children: ReactNode;
 };
 
-/* Source folds are rounded full-bleed cards: width min(100% - 28px, 1920px).
-   The card owns geometry and tint; the inner .fix owns content width. */
+/* Two boxes: .newfix-card is the tinted near-full-bleed shell, .newfix is the
+   content rail inside it so every fold aligns on both sides. */
 export default function SectionCard({ id, className, children }: Props) {
   return (
     <section id={id} className="w-full">
       <div
-        className={`w-[calc(100%-28px)] max-w-[1920px] mx-auto rounded-[13px] py-[clamp(46px,5vw,68px)] max-[600px]:w-[calc(100%-20px)] max-[600px]:py-[38px] ${className ?? ""}`}
+        className={`newfix-card rounded-[13px] py-[clamp(46px,5vw,68px)] max-[600px]:py-[38px] ${className ?? ""}`}
       >
-        <div className="fix">{children}</div>
+        <div className="newfix">{children}</div>
       </div>
     </section>
   );

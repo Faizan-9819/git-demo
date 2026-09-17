@@ -24,6 +24,7 @@ type Props = {
 };
 
 export default function FeatureFold({ content, children }: Props) {
+  const reduced = useReducedMotion();
   const inverse = isInverse(content.tone);
   const accent = inverse ? "text-[#e4fa65]" : "text-[#5b2dce]";
   const bodyColor = inverse ? "text-[#c9c2d4]" : "text-[#625a70]";
@@ -31,8 +32,10 @@ export default function FeatureFold({ content, children }: Props) {
 
   return (
     <SectionCard id={content.id} className={TONE_BG[content.tone]}>
+      {/* items-stretch so the video column spans the full fold height — that
+          span is the distance its sticky tile travels. */}
       <div
-        className={`flex items-center gap-[clamp(34px,5vw,76px)] max-[900px]:flex-col max-[900px]:items-stretch ${
+        className={`flex items-stretch gap-[clamp(34px,5vw,76px)] max-[900px]:flex-col ${
           content.reverse ? "flex-row-reverse" : "flex-row"
         }`}
       >
@@ -78,16 +81,31 @@ export default function FeatureFold({ content, children }: Props) {
           {children}
         </Reveal>
 
-        <Reveal
-          delay={0.08}
-          className="w-[48%] min-w-0 max-[900px]:w-full"
-        >
-          <VideoPreview
-            title={content.videoTitle}
-            caption={content.videoCaption}
-            bgClass={content.videoBg}
-          />
-        </Reveal>
+        {/* No Reveal wrapper here: its motion transform would become the
+            containing block and stop the sticky column from pinning. The tile
+            fades in on its own instead. */}
+        <div className="w-[48%] min-w-0 max-[900px]:w-full">
+          {/* Same pattern as the blog TOC (components/blogs/shared/BlogToc.tsx):
+              a full-height column with the sticky element nested inside it. */}
+          <div className="sticky top-[104px] max-[900px]:static">
+            <motion.div
+              initial={reduced ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0 }}
+              transition={{
+                duration: 0.7,
+                delay: 0.08,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <VideoPreview
+                title={content.videoTitle}
+                caption={content.videoCaption}
+                bgClass={content.videoBg}
+              />
+            </motion.div>
+          </div>
+        </div>
       </div>
     </SectionCard>
   );
