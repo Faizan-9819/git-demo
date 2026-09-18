@@ -69,13 +69,14 @@
   --content-width: 1180px;
   --nav-h: 74px;
 
-  /* Features page fold geometry (see .newfix-card / .newfix) */
-  --fold-content-width: 1920px;
+  /* Features page fold geometry (see .newfix-card / .newfix).
+     Matched to /home2 so both pages read identically: HomeShell's card is
+     max-w-473 (1892px) and its rail is .fix-wide (1320px). */
+  --fold-content-width: 1892px;
+  /* 28px total = 14px each side, matching HomeShell's px-3.5. */
   --fold-gutter: 28px;
-  /* Content rail: fixed cap so every fold aligns on both sides, with the inset
-     acting as the gutter until the viewport is wide enough to centre it. */
-  --fold-rail-width: 1560px;
-  --fold-inset: clamp(20px, 4vw, 80px);
+  /* Same 1180px rail as .fix, which /home2's sections use. */
+  --fold-rail-width: var(--content-width);
 
   /* Brand gradient used in buttons, pills, and headline emphasis */
   --grad-brand: linear-gradient(90deg, #5b219f 0%, #922698 100%);
@@ -223,18 +224,22 @@ html.lenis body {
   margin-inline: auto;
 }
 
+/* Mirrors /home2's content box. Its sections (see home2/Solution.tsx) sit in a
+   max-w-473 (1892px) card and use plain .fix inside — a 1180px rail with a
+   20px gutter that drops to 0 at 768px. Same rule here so both pages line up. */
 .newfix {
   width: 100%;
   max-width: var(--fold-rail-width);
   margin-inline: auto;
-  padding-inline: var(--fold-inset);
+  padding-inline: 20px;
 }
 
-@media (max-width: 600px) {
-  .newfix-card {
-    --fold-gutter: 20px;
+@media (min-width: 768px) {
+  .newfix {
+    padding-inline: 0px;
   }
 }
+
 
 /* Footer background "ticker" marquee */
 @keyframes gr-ticker {

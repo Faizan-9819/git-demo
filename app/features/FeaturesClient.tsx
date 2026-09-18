@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import FeaturesHero from "./FeaturesHero";
 import FeatureFold, { WebsiteAccordion } from "./FeatureFold";
+import VideoLightbox, { type LightboxState } from "./VideoLightbox";
 import WorkflowFold from "./WorkflowFold";
 import ManagedFold from "./ManagedFold";
 import FeaturesFaq from "./FeaturesFaq";
@@ -9,6 +11,8 @@ import FeaturesCta from "./FeaturesCta";
 import { FEATURE_FOLDS, WEBSITE_ACCORDION, WEBSITE_FOLD } from "./data";
 
 export default function FeaturesClient() {
+  const [video, setVideo] = useState<LightboxState | null>(null);
+
   return (
     <main
       id="main"
@@ -18,18 +22,20 @@ export default function FeaturesClient() {
     >
       <FeaturesHero />
 
-      <FeatureFold content={WEBSITE_FOLD}>
+      <FeatureFold content={WEBSITE_FOLD} onOpenVideo={setVideo}>
         <WebsiteAccordion rows={WEBSITE_ACCORDION} />
       </FeatureFold>
 
       {FEATURE_FOLDS.map((fold) => (
-        <FeatureFold key={fold.id} content={fold} />
+        <FeatureFold key={fold.id} content={fold} onOpenVideo={setVideo} />
       ))}
 
       <WorkflowFold />
       <ManagedFold />
       <FeaturesFaq />
       <FeaturesCta />
+
+      <VideoLightbox video={video} onClose={() => setVideo(null)} />
     </main>
   );
 }

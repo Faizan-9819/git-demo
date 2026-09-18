@@ -7,6 +7,10 @@ export const metadata: Metadata = {
     "A professional website plus the Growth Rocket Hub: enquiries, appointments, your Contact Book, quotes and invoices — connected as one system for your business.",
   alternates: {
     canonical: "https://www.getgrowthrocket.com/features",
+    languages: {
+      en: "https://www.getgrowthrocket.com/features",
+      nl: "https://www.getgrowthrocket.com/nl/features",
+    },
   },
 };
 

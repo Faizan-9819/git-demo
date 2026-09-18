@@ -14,7 +14,7 @@ export default function SectionCard({ id, className, children }: Props) {
       <div
         className={`newfix-card rounded-[13px] py-[clamp(46px,5vw,68px)] max-[600px]:py-[38px] ${className ?? ""}`}
       >
-        <div className="newfix">{children}</div>
+        <div className="fix">{children}</div>
       </div>
     </section>
   );

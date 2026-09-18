@@ -2,6 +2,8 @@
    the source rewrites its own markup at runtime, so the strings below come from
    the revision scripts rather than the static HTML. */
 
+import type { Locale } from "../i18n/config";
+
 export type FoldTone = "white" | "silver" | "purple";
 
 export type FeatureFoldContent = {
@@ -15,8 +17,17 @@ export type FeatureFoldContent = {
   reverse: boolean;
   videoTitle: string;
   videoCaption: string;
-  videoBg: string;
+  /* Placeholder thumbnails until the real playlist stills are supplied. */
+  videoThumb: string;
+  /* Per-locale videos: EN playlist PLVvja2dSXLtk, NL playlist PLCRbj9Z0dcRg.
+     Matched section-to-section by video title. */
+  youtubeId: Record<Locale, string>;
 };
+
+/* Unsplash still, cropped to the card's 3/2 box. */
+function thumb(id: string) {
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1200&q=70`;
+}
 
 export const WEBSITE_ACCORDION: ReadonlyArray<{
   title: string;
@@ -60,7 +71,8 @@ export const WEBSITE_FOLD: FeatureFoldContent = {
   reverse: false,
   videoTitle: "Website features",
   videoCaption: "Watch the website features overview",
-  videoBg: "bg-[#5b2dce]",
+  videoThumb: thumb("1467232004584-a241de8bcf5d"),
+  youtubeId: { en: "g1rPnsdTHkc", nl: "CV0l0U2dMwY" },
 };
 
 export const FEATURE_FOLDS: ReadonlyArray<FeatureFoldContent> = [
@@ -82,7 +94,8 @@ export const FEATURE_FOLDS: ReadonlyArray<FeatureFoldContent> = [
     reverse: true,
     videoTitle: "Appointment system",
     videoCaption: "See how booking works",
-    videoBg: "bg-[#0a0516]",
+    videoThumb: thumb("1506784983877-45594efa4cbe"),
+    youtubeId: { en: "vp_esay0ULE", nl: "exvgPGtNZAs" },
   },
   {
     id: "enquiries",
@@ -103,7 +116,8 @@ export const FEATURE_FOLDS: ReadonlyArray<FeatureFoldContent> = [
     reverse: false,
     videoTitle: "Enquiry management",
     videoCaption: "See how enquiries are managed",
-    videoBg: "bg-[#665a78]",
+    videoThumb: thumb("1596526131083-e8c633c948d2"),
+    youtubeId: { en: "_wpnT3UcLk8", nl: "uuD00Ka03P8" },
   },
   {
     id: "quotes",
@@ -124,7 +138,8 @@ export const FEATURE_FOLDS: ReadonlyArray<FeatureFoldContent> = [
     reverse: true,
     videoTitle: "Quotes & invoices",
     videoCaption: "See quotes and invoices in action",
-    videoBg: "bg-[#241044]",
+    videoThumb: thumb("1554224155-6726b3ff858f"),
+    youtubeId: { en: "YZrpo-sSOIM", nl: "uesLJ1tvj0M" },
   },
   {
     id: "contacts",
@@ -145,7 +160,8 @@ export const FEATURE_FOLDS: ReadonlyArray<FeatureFoldContent> = [
     reverse: false,
     videoTitle: "Customer contacts",
     videoCaption: "See how contacts work",
-    videoBg: "bg-[#0a0516]",
+    videoThumb: thumb("1600880292203-757bb62b4baf"),
+    youtubeId: { en: "pWbc4fkOJgQ", nl: "zpSzR2pALJk" },
   },
   {
     id: "support",
@@ -164,7 +180,8 @@ export const FEATURE_FOLDS: ReadonlyArray<FeatureFoldContent> = [
     reverse: true,
     videoTitle: "Support system",
     videoCaption: "Explore support inside your Hub",
-    videoBg: "bg-[#5b2dce]",
+    videoThumb: thumb("1521737604893-d14cc237f11d"),
+    youtubeId: { en: "cC7Y3YO1rjg", nl: "QSnJV05YRoE" },
   },
 ];
 

@@ -3,8 +3,10 @@
 import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Reveal from "../components/Reveal";
+import { useLanguage } from "../i18n/LanguageProvider";
 import SectionCard from "./SectionCard";
 import VideoPreview from "./VideoPreview";
+import type { LightboxState } from "./VideoLightbox";
 import type { FeatureFoldContent, FoldTone } from "./data";
 
 const TONE_BG: Record<FoldTone, string> = {
@@ -20,11 +22,17 @@ function isInverse(tone: FoldTone) {
 
 type Props = {
   content: FeatureFoldContent;
+  onOpenVideo: (video: LightboxState) => void;
   children?: ReactNode;
 };
 
-export default function FeatureFold({ content, children }: Props) {
-  const reduced = useReducedMotion();
+export default function FeatureFold({
+  content,
+  onOpenVideo,
+  children,
+}: Props) {
+  /* The NL route serves the Dutch playlist; everything else falls back to EN. */
+  const { locale } = useLanguage();
   const inverse = isInverse(content.tone);
   const accent = inverse ? "text-[#e4fa65]" : "text-[#5b2dce]";
   const bodyColor = inverse ? "text-[#c9c2d4]" : "text-[#625a70]";
@@ -32,10 +40,8 @@ export default function FeatureFold({ content, children }: Props) {
 
   return (
     <SectionCard id={content.id} className={TONE_BG[content.tone]}>
-      {/* items-stretch so the video column spans the full fold height — that
-          span is the distance its sticky tile travels. */}
       <div
-        className={`flex items-stretch gap-[clamp(34px,5vw,76px)] max-[900px]:flex-col ${
+        className={`flex items-center gap-[clamp(34px,5vw,76px)] max-[900px]:flex-col max-[900px]:items-stretch ${
           content.reverse ? "flex-row-reverse" : "flex-row"
         }`}
       >
@@ -81,31 +87,23 @@ export default function FeatureFold({ content, children }: Props) {
           {children}
         </Reveal>
 
-        {/* No Reveal wrapper here: its motion transform would become the
-            containing block and stop the sticky column from pinning. The tile
-            fades in on its own instead. */}
-        <div className="w-[48%] min-w-0 max-[900px]:w-full">
-          {/* Same pattern as the blog TOC (components/blogs/shared/BlogToc.tsx):
-              a full-height column with the sticky element nested inside it. */}
-          <div className="sticky top-[104px] max-[900px]:static">
-            <motion.div
-              initial={reduced ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0 }}
-              transition={{
-                duration: 0.7,
-                delay: 0.08,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              <VideoPreview
-                title={content.videoTitle}
-                caption={content.videoCaption}
-                bgClass={content.videoBg}
-              />
-            </motion.div>
-          </div>
-        </div>
+        <Reveal
+          delay={0.08}
+          className="w-[48%] min-w-0 max-[900px]:w-full"
+        >
+          <VideoPreview
+            title={content.videoTitle}
+            caption={content.videoCaption}
+            thumb={content.videoThumb}
+            onOpen={(rect) =>
+              onOpenVideo({
+                youtubeId: content.youtubeId[locale] ?? content.youtubeId.en,
+                title: content.videoTitle,
+                origin: rect,
+              })
+            }
+          />
+        </Reveal>
       </div>
     </SectionCard>
   );

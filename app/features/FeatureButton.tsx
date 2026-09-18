@@ -8,9 +8,9 @@ import ArrowIcon, { type ArrowDirection } from "../components/ui/ArrowIcon";
    (min-height 52px, padding 14px 20px, radius 999px, gap 32px), applied after
    .btn so the Features shape wins. */
 const BASE =
-  "btn !min-h-[52px] !gap-[32px] !rounded-full !px-[20px] !py-[14px] !text-[15px] !leading-[1.35] !font-semibold !font-sans " +
+  "btn !min-h-[52px] !gap-[12px] !rounded-full !px-[15px] !py-[14px] !text-[15px] !leading-[1.35] !font-semibold !font-sans " +
   /* The Features page transitions colour only — cancel .btn's scale-on-hover. */
-  "!transition-colors !duration-200 hover:!scale-100 active:!scale-100";
+  "!transition-all !duration-200 hover:!scale-100 active:!scale-100";
 
 type Props = {
   href: string;
