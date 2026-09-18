@@ -21,7 +21,7 @@ export default function ManagedFold() {
             {MANAGED_POINTS.map((point, index) => (
               <article
                 key={point.number}
-                className={`flex items-center gap-[15px] py-[10px] ${
+                className={`flex items-center gap-[15px] py-[20px] ${
                   index === 0 ? "" : "border-t border-[#ded8e7]"
                 }`}
               >
