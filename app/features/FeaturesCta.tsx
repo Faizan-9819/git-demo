@@ -44,7 +44,7 @@ export default function FeaturesCta() {
             <FeatureButton
               href="/pricing"
               arrow="up-right"
-              className="mt-[14px] w-full justify-between bg-[#e4fa65] text-[#0a0516] hover:bg-white hover:text-[#0a0516]"
+              className="mt-[14px] w-[90%] justify-between bg-[#fff] text-[#0a0516] hover:bg-white hover:text-[#0a0516]"
             >
               View full pricing
             </FeatureButton>
@@ -53,7 +53,7 @@ export default function FeaturesCta() {
           <FeatureButton
             href="mailto:sales@getgrowthrocket.com"
             arrow="right"
-            className="w-full justify-between bg-[#0a0516] text-[#e4fa65] hover:bg-[#5b2dce] hover:text-white"
+            className="w-[90%] justify-between bg-[#0a0516] text-[#e4fa65] hover:bg-[#5b2dce] hover:text-white"
           >
             Contact our sales team
           </FeatureButton>
