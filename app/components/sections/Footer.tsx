@@ -469,11 +469,12 @@ export default function Footer() {
   const addressLines =
     locale === "nl" ? CONTACT_INFO.addressLinesNl : CONTACT_INFO.addressLines;
 
-  // home2's folds are built on `.fix` (1180px, centered), so the footer rows
-  // have to use the same container or the columns sit ~70px wider than every
-  // section above them. Everywhere else keeps `.fix-wide` (1320px).
-  const container =
-    pathname === "/home2" || pathname === "/nl/home2" ? "fix" : "fix-wide";
+  // home2 ships its own footer (FooterLoopStrip + Footer2) as the last two
+  // folds inside HomeShell, so this one stands down there rather than printing
+  // a second one underneath it.
+  if (pathname === "/home2" || pathname === "/nl/home2") return null;
+
+  const container = "fix-wide";
 
   return (
     <div

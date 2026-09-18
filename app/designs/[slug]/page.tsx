@@ -15,7 +15,7 @@ import TemplateFaqAccordion from "./TemplateFaqAccordion";
 import TemplateLivePreview from "./TemplateLivePreview";
 import AboutReadMore from "./AboutReadMore";
 import TemplateHeroCTAs from "./TemplateHeroCTAs";
-import TemplateCard, { ComingSoonCard } from "../TemplateCard";
+import TemplateCard, { ComingSoonCard } from "./RelatedTemplateCard";
 
 type TemplateDetailPageProps = {
   params: Promise<{ slug: string }>;

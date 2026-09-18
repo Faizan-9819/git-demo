@@ -16,7 +16,9 @@ import { withBreaks } from "@/app/lib/withBreaks";
  * Poppins, and the four cases the HTML actually lists. The later stylesheet
  * blocks are the ones that win there, so this uses their values: every fold and
  * card is pinned to a 13px radius, and the card hover is a lime glow with no
- * lift and no fill change.
+ * lift. The glow now comes with a fill flip to that same lime, matching the
+ * cards in BlogTeaser — a deliberate step past the source, which leaves the
+ * card dark.
  *
  * Two things the HTML renders but never shows: the `EXAMPLES` eyebrow is hidden
  * globally (`.legacy-examples-head>div>p{display:none!important}`), so it is
@@ -174,7 +176,13 @@ export default function Examples() {
               >
                 <Reveal
                   delay={Math.min(i * 0.05, 0.2)}
-                  className="flex h-full flex-col rounded-[13px] border border-white/10 bg-white/6 p-5 transition-shadow duration-200 hover:shadow-[0_0_0_1px_rgba(228,250,101,0.34),0_0_18px_rgba(228,250,101,0.24),0_0_42px_rgba(228,250,101,0.18)]"
+                  /* Same card hover as BlogTeaser: the lime glow plus a fill
+                     flip to that same lime, with the two lines of copy going
+                     dark against it. Fill, glow and both colours share one
+                     300ms ease-out so the card turns over as a single piece —
+                     `transition-shadow` on its own left the fill snapping in
+                     while the glow was still arriving. */
+                  className="group flex h-full flex-col rounded-[13px] border border-white/10 bg-white/6 p-5 transition-[background-color,box-shadow] duration-300 ease-out hover:bg-[#e4fa65] hover:shadow-[0_0_0_1px_rgba(228,250,101,0.34),0_0_18px_rgba(228,250,101,0.24),0_0_42px_rgba(228,250,101,0.18)]"
                 >
                   <div className="relative aspect-[3/2] overflow-hidden rounded-[13px]">
                     <Image
@@ -185,11 +193,15 @@ export default function Examples() {
                       className="object-cover"
                     />
                   </div>
+                  {/* The two lines take BlogTeaser's mapping against the lime:
+                      the name to the card ground (#151021), the secondary line
+                      to violet — the same pair its title and "Read more" use,
+                      so a lit card reads the same in both folds. */}
                   <div className="grid gap-[4px] px-[6px] pt-[16px] pb-[4px] text-white">
-                    <strong className="font-sans text-[17px] font-bold">
+                    <strong className="font-sans text-[17px] font-bold transition-colors duration-300 ease-out group-hover:text-[#151021]">
                       {c.name}
                     </strong>
-                    <span className="font-sans text-[13px] text-[#c9c2d4]">
+                    <span className="font-sans text-[13px] text-[#c9c2d4] transition-colors duration-300 ease-out group-hover:text-[#5b2dce]">
                       {t(c.meta)}
                     </span>
                   </div>

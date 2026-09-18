@@ -1,6 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  type Transition,
+  type Variants,
+} from "framer-motion";
 
 /**
  * Process timeline — ported from `section.how-section` in grsolidvariant.html.
@@ -44,21 +49,58 @@ const STEPS = [
   },
 ];
 
+/**
+ * One clock for the whole fold, so the rule can be timed against the cards
+ * rather than just appearing under them. Card `i` runs over
+ * `[LEAD + STEP*i, +CARD]`; the segment that leads to it starts once card
+ * `i - 1` is on screen and lands a beat before card `i` settles, so the line
+ * reads as drawing each card into place.
+ */
+const LEAD = 0.092; // before step 01 moves
+const STEP = 0.161; // between consecutive steps
+const CARD = 0.69; // a card's own fade-and-rise
+const DRAW = 0.575; // a segment's draw
+const DRAW_LEAD = 0.184; // after its own card, before the segment sets off
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const EASE_DRAW: [number, number, number, number] = [0.33, 1, 0.68, 1];
+
 export default function ProcessTimeline() {
   const reduced = useReducedMotion();
 
-  const list: Variants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.14, delayChildren: 0.08 } },
-  };
+  const list: Variants = { hidden: {}, show: {} };
 
   const card: Variants = {
     hidden: { opacity: 0, y: reduced ? 0 : 28 },
-    show: {
+    show: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-    },
+      transition: { duration: CARD, delay: LEAD + STEP * i, ease: EASE },
+    }),
+  };
+
+  // `custom` is the index of the step a segment *starts* from, so segment 0
+  // runs 01 → 02. Reduced motion keeps the rule whole and just fades it in.
+  const drawTransition = (i: number): Transition => ({
+    duration: reduced ? 0.3 : DRAW,
+    delay: LEAD + STEP * i + DRAW_LEAD,
+    ease: reduced ? "linear" : EASE_DRAW,
+  });
+
+  const drawX: Variants = {
+    hidden: reduced ? { opacity: 0 } : { scaleX: 0 },
+    show: (i: number) =>
+      reduced
+        ? { opacity: 1, transition: drawTransition(i) }
+        : { scaleX: 1, transition: drawTransition(i) },
+  };
+
+  const drawY: Variants = {
+    hidden: reduced ? { opacity: 0 } : { scaleY: 0 },
+    show: (i: number) =>
+      reduced
+        ? { opacity: 1, transition: drawTransition(i) }
+        : { scaleY: 1, transition: drawTransition(i) },
   };
 
   return (
@@ -89,31 +131,44 @@ export default function ProcessTimeline() {
           viewport={{ once: true, amount: 0.3 }}
           className="relative mt-[35px] grid grid-cols-1 gap-x-[24px] gap-y-[35px] min-[761px]:mt-[50px] min-[761px]:grid-cols-4 min-[761px]:gap-[22px] min-[1051px]:gap-[30px]"
         >
-          {/* The rule the step circles sit on, inset by half a circle so it
-              spans centre to centre. From 761px it is one horizontal bar; below
-              that the source draws a single top-0/bottom-0 vertical bar, which
-              overshoots both ends, so it is split into a segment per step
-              instead (see inside the article). */}
-          <span
-            aria-hidden
-            className="absolute left-[28px] right-[28px] top-[28px] z-0 hidden h-[2px] bg-[#ded8e7] min-[761px]:block"
-          />
-
+          {/* The rule the step circles sit on. The source draws it as one bar
+              behind the whole row (horizontal from 761px, vertical below), but
+              a single bar can only appear all at once, so it is cut into a
+              segment per step and each one is parented to the card it starts
+              from. Same painted result, and each segment can now be timed
+              against its own card. */}
           {STEPS.map((step, i) => (
             <motion.article
               key={step.num}
+              custom={i}
               variants={card}
               className="relative z-[1] grid grid-cols-[40px_1fr] gap-x-[20px] gap-y-[12px] pt-[22px] min-[761px]:block min-[761px]:pt-0"
             >
+              {/* Desktop rule: this circle's centre to the next one's, i.e. one
+                  column plus one gap. The last step keeps the source's tail out
+                  to 28px short of the row's right edge. Sits behind the circle,
+                  which masks it with its white ring. */}
+              <motion.span
+                aria-hidden
+                custom={i}
+                variants={drawX}
+                className={`absolute left-[28px] top-[28px] -z-10 hidden h-[2px] origin-left bg-[#ded8e7] min-[761px]:block ${
+                  i < STEPS.length - 1
+                    ? "min-[761px]:w-[calc(100%+22px)] min-[1051px]:w-[calc(100%+30px)]"
+                    : "min-[761px]:w-[calc(100%-56px)]"
+                }`}
+              />
+
               {/* Mobile rule: centre of this circle to the centre of the next
                   one, so nothing hangs above 01 or below the last step. The
                   35px row gap plus the next card's 22px top padding and half
-                  its circle is the 77px overhang. Sits behind the circle, which
-                  masks it with its white ring. */}
+                  its circle is the 77px overhang. */}
               {i < STEPS.length - 1 && (
-                <span
+                <motion.span
                   aria-hidden
-                  className="absolute bottom-[-77px] left-[19px] top-[42px] -z-10 w-[2px] bg-[#ded8e7] min-[761px]:hidden"
+                  custom={i}
+                  variants={drawY}
+                  className="absolute bottom-[-77px] left-[19px] top-[42px] -z-10 w-[2px] origin-top bg-[#ded8e7] min-[761px]:hidden"
                 />
               )}
 

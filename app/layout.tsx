@@ -14,7 +14,7 @@ import JsonLd from "./components/JsonLd";
 import LenisProvider from "./components/LenisProvider";
 import StickyActions from "./components/StickyActions";
 import Navbar from "./components/Navbar";
-import Footer from "./components/sections/Footer";
+import SiteFooter from "./components/SiteFooter";
 import { LanguageProvider } from "./i18n/LanguageProvider";
 import { DEFAULT_LOCALE } from "./i18n/config";
 import {
@@ -120,7 +120,7 @@ export default function RootLayout({
           <LenisProvider>
             <Navbar />
             {children}
-            <Footer />
+            <SiteFooter />
             <StickyActions />
             <CookieConsent />
           </LenisProvider>

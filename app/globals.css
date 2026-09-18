@@ -253,7 +253,8 @@ html.lenis body {
    identical groups separated by the same gap used inside them, so lifting it
    by half its height plus half a gap lands the copy exactly where the
    original started — the seam never shows. `--marquee-gap` is set on the
-   track so the gap stays defined next to the layout that uses it. */
+   track so the gap stays defined next to the layout that uses it. The scroll
+   is continuous by design — it does not pause on hover. */
 @keyframes gr-marquee-up {
   from {
     transform: translateY(0);
@@ -265,11 +266,81 @@ html.lenis body {
 .gr-marquee-up-track {
   animation: gr-marquee-up var(--marquee-duration, 34s) linear infinite;
 }
-.gr-marquee-up-track:hover {
+@media (prefers-reduced-motion: reduce) {
+  .gr-marquee-up-track {
+    animation: none;
+  }
+}
+
+/* Home v2 "who it's for" strip: continuous right-to-left marquee.
+
+   Two rules make the loop seamless, and both matter:
+
+   1. Card spacing lives on the cards themselves (`mr-4`), never on a flex
+      `gap`. A `gap` puts no space *after* the last card, so one group is a
+      gap narrower than the repeat distance and the track snaps back by that
+      much every cycle. With the margin on each card every card occupies the
+      same 236px, the track is exactly three identical groups, and -100%/3
+      lands copy two where copy one started — to the pixel, at any width.
+
+   2. The component renders three copies, not two. The strip is full-bleed
+      (100vw) and one group is ~2360px, so with only two copies a monitor
+      wider than that would show empty space at the wrap before the jump.
+      Three copies keep ~4720px of track ahead of the seam at all times.
+
+   Hover pausing lives here, not as a `group-hover:[animation-play-state:paused]`
+   utility on the track. Tailwind v4 puts every utility in `@layer utilities`,
+   and this file's rules are unlayered — unlayered CSS beats layered CSS whatever
+   the specificity, so the `animation` shorthand below (which resets play-state
+   to `running`) silently wins and the utility never takes effect. Pause/resume
+   is instant by nature: `animation-play-state` cannot be transitioned. */
+@keyframes gr-marquee-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(-100% / 3), 0, 0);
+  }
+}
+.gr-marquee-left-track {
+  animation: gr-marquee-left var(--marquee-duration, 45s) linear infinite;
+  /* Keeps the track on its own compositor layer so each frame is a transform,
+     not a repaint of thirty image cards. */
+  will-change: transform;
+  backface-visibility: hidden;
+}
+/* Put .gr-marquee-hover-pause on any ancestor of the track to stop it while the
+   pointer is over that area. */
+.gr-marquee-hover-pause:hover .gr-marquee-left-track {
   animation-play-state: paused;
 }
 @media (prefers-reduced-motion: reduce) {
-  .gr-marquee-up-track {
+  .gr-marquee-left-track {
+    animation: none;
+  }
+}
+
+/* Home v2 footer loop strip: the "Get started in 7 days" band above the
+   footer. The track starts flush at the left edge and slides to negative X, so
+   the type travels right to left — phrases enter at the right edge and exit at
+   the left. It holds the same phrase run twice with no gap between them, so
+   sliding it exactly half its width lands the second copy where the first
+   started and the seam never shows. (Swapping the two transforms below would
+   reverse it to left-to-right.) The duration is a variable so the strip can be
+   slowed or sped up from the component. */
+@keyframes gr-loop-strip {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.gr-loop-strip-track {
+  animation: gr-loop-strip var(--loop-strip-duration, 30s) linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gr-loop-strip-track {
     animation: none;
   }
 }
@@ -487,6 +558,31 @@ html.lenis body {
 }
 .arrow-cta:disabled {
   transform: none;
+}
+
+/* Opt-in: put `arrow-cta-host` on a card (or any wrapper) that owns a single
+   `.arrow-cta`, and hovering anywhere in it plays that CTA's arrow swap and
+   lift. Without it the link sits inert while the card lights up around it, and
+   the arrow only answers a hover landing on the 90-odd pixels of "Read more".
+   These live here rather than as `group-hover:` utilities because the rules
+   they override are unlayered, and Tailwind's utility layer always loses to
+   them however specific the variant. */
+.arrow-cta-host:hover .arrow-cta {
+  transform: scale(1.03);
+}
+/* The press-down would otherwise be dead inside a host: any click on the link
+   happens while the card is hovered, and the rule above outranks
+   `.arrow-cta:active`. */
+.arrow-cta-host:hover .arrow-cta:active {
+  transform: scale(0.98);
+}
+.arrow-cta-host:hover .arrow-cta .btn-arrow__slot--first {
+  transform: translate(var(--tx-out), var(--ty-out));
+  opacity: 0;
+}
+.arrow-cta-host:hover .arrow-cta .btn-arrow__slot--second {
+  transform: translate(0, 0);
+  opacity: 1;
 }
 
 /* The contact fold's circular link carries the same arrow at display size.

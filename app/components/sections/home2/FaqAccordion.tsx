@@ -1,131 +1,145 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Reveal from "../../Reveal";
 import ArrowIcon from "../../ui/ArrowIcon";
+import { useLanguage } from "../../../i18n/LanguageProvider";
+import { HOME_FAQS, type FaqAnswer, type FaqEntry } from "../../../lib/faqs";
 
 /**
- * FAQ — ported from `section.faq-section` in grsolidvariant.html.
+ * FAQ — the layout and behaviour of `sections/FAQ.tsx` (sticky copy column on
+ * the left, a card accordion on the right, a "still have questions" card under
+ * the heading), repainted in the home2 language: Bricolage heading, the 13px
+ * fold radius, `#5b2dce` violet and `#e4fa65` lime instead of the magenta /
+ * `#fff64c` pair, and the `min-[761px]` step the rest of home2 breaks on.
  *
- * The source markup is `<details>`/`<summary>`, which the browser toggles on
- * every click. This one has to stay open once opened and only close when
- * another question takes its place, and that is not something `<details>` can
- * express — so it is a controlled accordion of buttons instead, with
- * `aria-expanded`/`aria-controls` carrying the semantics `<details>` gave for
- * free. The click handler sets the index rather than toggling it, so clicking
- * the open question is a no-op; the first question starts open.
+ * Content is the shared FAQ data rather than the copy the original port of
+ * `section.faq-section` carried, so this fold and the `buildFaqJsonLd(HOME_FAQS)`
+ * block Home2Client emits now describe the same questions. `items` overrides it
+ * for pages that need their own set, exactly as `FAQ.tsx` allows.
  *
- * The stylesheet is desktop-first with max-width overrides at 1050px and
- * 760px; those are inverted here into min-width steps, so the base values are
- * the smallest ones. The heading and the `.text-link` size come from later
- * blocks that win over the media queries, and `--fold-radius` is pinned to
- * 13px by the same global block every other fold uses.
+ * Two deliberate departures from `FAQ.tsx`:
  *
- * Horizontal spacing comes from the shared `.fix` container (the source's
- * `.wrap` is 1280px; this matches the rest of home2 at 1180px), which also
- * owns the two-column grid — the section itself only carries the surface and
- * its vertical rhythm (`--section-space`: 56px, 80px from 761px).
+ * - No scroll window. The source clips the list at 450px with a custom
+ *   scrollbar and a fade; here every question sits in the page flow, so there
+ *   is no scrollbar beside the questions and nothing to trap the Lenis wheel.
+ *   The left column is sticky, which is what keeps the heading in view now that
+ *   the list runs the full height of the fold.
+ * - The answer panel is a sibling of the question button, not a child of it.
+ *   `FAQ.tsx` nests the whole card inside one `<button>`, which puts a `<ul>`
+ *   (the bulleted answers in HOME_FAQS) inside button content that may only
+ *   hold phrasing; `aria-expanded`/`aria-controls` carry the same semantics
+ *   without that.
  */
 
-type Faq = {
-  q: string;
-  a: ReactNode;
-};
+function RichParagraph({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return (
+    <p className="m-0">
+      {parts.map((part, i) =>
+        part.startsWith("**") && part.endsWith("**") ? (
+          <span key={i} className="font-semibold text-[#0a0516]">
+            {part.slice(2, -2)}
+          </span>
+        ) : (
+          <span key={i}>{part}</span>
+        ),
+      )}
+    </p>
+  );
+}
 
-const FAQS: Faq[] = [
-  {
-    q: "Is this a website builder I have to use myself?",
-    a: "No. We design and build your website for you, then keep it up to date. You focus on your business.",
-  },
-  {
-    q: "What exactly is Growth Rocket Hub?",
-    a: "It’s the place where you manage the work behind your website: enquiries, appointments, customer records, quotes and invoices. Your website and these everyday tools come together in one system.",
-  },
-  {
-    q: "Is it only for new businesses?",
-    a: "No. Growth Rocket is for new business owners and existing small businesses that want a professional online presence and a simpler way to manage customers and admin.",
-  },
-  {
-    q: "Can I keep my existing website content and domain?",
-    a: "Yes. We can review your current website and bring its content into your new one. You can use your existing domain. We’ll discuss the transfer steps with you before getting started.",
-  },
-  {
-    q: "Can customers book appointments on my website?",
-    a: "Yes. Customers can send an enquiry or book an appointment directly. Their details arrive in your Growth Rocket Hub.",
-  },
-  {
-    q: "Can I manage customers, quotes and invoices?",
-    a: "Yes. Keep your customer records, contacts and leads organised in one place. Create quotes and send invoices from those same customer details.",
-  },
-  {
-    q: "What’s included in the monthly price?",
-    a: "Growth Rocket starts from €69 per month and brings your website and business tools together. Hosting, SSL, maintenance, updates and technical support are included. Contact us to confirm the package and terms for your business.",
-  },
-  {
-    q: "How quickly can my website go live?",
-    a: "We’ll agree your launch timeline once we’ve reviewed your requirements and content. The process covers discovery, setup, your review and launch.",
-  },
-  {
-    q: "What happens when I need support?",
-    a: (
-      <>
-        Our team can help with questions about your website and Growth Rocket
-        Hub. Email{" "}
-        <a
-          href="mailto:support@getgrowthrocket.com"
-          className="underline [overflow-wrap:anywhere]"
-        >
-          support@getgrowthrocket.com
-        </a>{" "}
-        to get in touch.
-      </>
-    ),
-  },
-];
+function AnswerBody({ answer }: { answer: FaqAnswer }) {
+  const { t } = useLanguage();
+  return (
+    <div className="flex flex-col gap-[8px]">
+      {answer.paragraphs.map((p, i) => (
+        <RichParagraph key={i} text={t(p)} />
+      ))}
+      {answer.bullets && (
+        <ul className="m-0 ml-[20px] flex list-disc flex-col gap-[4px] p-0 marker:text-[#5b2dce]">
+          {answer.bullets.map((b, i) => (
+            <li key={i}>{t(b)}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
-function FaqItem({
-  faq,
+/** The lime tile from `FAQ.tsx`, in home2's lime and violet. */
+function ToggleIcon({ open }: { open: boolean }) {
+  return (
+    <span className="inline-flex size-[40px] shrink-0 items-center justify-center rounded-[10px] bg-[#e4fa65]">
+      <svg width="21" height="21" viewBox="0 0 21 21" fill="none" aria-hidden>
+        <path
+          d="M3 10.5h15"
+          stroke="#5b2dce"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+        {!open && (
+          <path
+            d="M10.5 3v15"
+            stroke="#5b2dce"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        )}
+      </svg>
+    </span>
+  );
+}
+
+function AccordionItem({
+  entry,
   index,
   isOpen,
-  onOpen,
+  onToggle,
+  delay,
 }: {
-  faq: Faq;
+  entry: FaqEntry;
   index: number;
   isOpen: boolean;
-  onOpen: () => void;
+  onToggle: () => void;
+  delay: number;
 }) {
+  const { t } = useLanguage();
   const panelId = `faq-panel-${index}`;
   const buttonId = `faq-button-${index}`;
 
   return (
-    <div className="border-b border-[#ded8e7]">
-      {/* The row's vertical padding lives on the button, not on the wrapper,
-          so the whole band between two rules is a hit target — with it on the
-          wrapper the 18px above and below the question swallowed the click.
-          The bottom half shrinks to 12px while the panel is open so the gap to
-          the answer keeps the spacing the source markup had. */}
+    <Reveal
+      delay={delay}
+      className={
+        "w-full rounded-[13px] border bg-white transition-colors duration-200 " +
+        (isOpen
+          ? "border-[#5b2dce]"
+          : "border-[#ded8e7] hover:border-[#b9a6f0]")
+      }
+    >
+      {/* The padding lives on the button rather than the card so the whole band
+          beside the question is a hit target. */}
       <button
         id={buttonId}
         type="button"
-        onClick={onOpen}
+        onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={panelId}
-        className={`flex w-full cursor-pointer items-center justify-between gap-[20px] text-left font-sans text-[15px] font-medium text-[#0a0516] transition-[padding] duration-300 ${
-          index === 0 ? "pt-0" : "pt-[18px]"
-        } ${isOpen ? "pb-[12px]" : "pb-[18px]"}`}
+        className="flex w-full cursor-pointer items-center justify-between gap-[14px] px-[18px] py-[14px] text-left min-[761px]:gap-[16px] min-[761px]:px-[28px] min-[761px]:py-[20px]"
       >
-        {faq.q}
         <span
-          aria-hidden
-          className="text-[25px] font-normal leading-none text-[#5b2dce] transition-transform duration-300"
-          style={{ transform: isOpen ? "rotate(45deg)" : "rotate(0deg)" }}
+          className={
+            "font-sans text-[15px] font-medium leading-[1.45] tracking-[-0.01em] transition-colors duration-200 min-[761px]:text-[17px] " +
+            (isOpen ? "text-[#5b2dce]" : "text-[#0a0516]")
+          }
         >
-          +
+          {t(entry.question)}
         </span>
+        <ToggleIcon open={isOpen} />
       </button>
 
-      {/* `initial={false}` keeps the question that starts open from animating
-          itself in on first paint. */}
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
@@ -138,17 +152,72 @@ function FaqItem({
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="m-0 max-w-[95%] pb-[18px] font-sans text-[14px] leading-[1.8] text-[#625a70] max-[370px]:text-[16px]">
-              {faq.a}
-            </p>
+            <div className="px-[18px] pb-[18px] font-sans text-[14px] leading-[1.75] text-[#625a70] min-[761px]:px-[28px] min-[761px]:pb-[22px]">
+              <AnswerBody answer={entry.answer} />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
+    </Reveal>
+  );
+}
+
+/** `FAQ.tsx`'s HelpCard, on home2's surface and with its pill CTA. */
+function HelpCard({ onBookClick }: { onBookClick?: () => void }) {
+  const { t } = useLanguage();
+
+  const label = t({ en: "Book an Appointment", nl: "Plan een afspraak" });
+  const ctaClass =
+    "arrow-cta mt-[4px] inline-flex min-h-[52px] items-center gap-[8px] self-start rounded-full bg-[#5b2dce] px-[20px] py-[14px] font-sans text-[14px] font-semibold text-white hover:bg-[#e4fa65] hover:text-[#0a0516]";
+
+  return (
+    <div className="relative mt-[28px] flex w-full max-w-[378px] flex-col gap-[16px] overflow-hidden rounded-[13px] border border-[#ded8e7] p-[26px] min-[761px]:mt-[32px] min-[761px]:p-[30px]">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-[13px]"
+        style={{
+          background:
+            "radial-gradient(60% 60% at 50% 50%, rgba(91,45,206,0.10) 0%, rgba(255,255,255,0) 100%), #ffffff",
+        }}
+      />
+      <div className="relative flex flex-col gap-[14px]">
+        <p className="m-0 font-bricolage text-[24px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#5b2dce]">
+          {t({ en: "Still have questions?", nl: "Heeft u nog vragen?" })}
+        </p>
+        <p className="m-0 font-sans text-[15px] leading-[1.6] text-[#625a70]">
+          {t({
+            en: "Can’t find what you’re looking for? Reach out to our team.",
+            nl: "Staat uw vraag er niet tussen? Neem gerust contact met ons op.",
+          })}
+        </p>
+
+        {/* A real button when the page hands us the booking form, a plain link
+            to the contact fold when it does not. */}
+        {onBookClick ? (
+          <button type="button" onClick={onBookClick} className={ctaClass}>
+            {label}
+            <ArrowIcon direction="up-right" />
+          </button>
+        ) : (
+          <a href="#contact" className={ctaClass}>
+            {label}
+            <ArrowIcon direction="up-right" />
+          </a>
+        )}
+      </div>
     </div>
   );
 }
 
-export default function FaqAccordion() {
+export default function FaqAccordion({
+  onBookClick,
+  items,
+}: {
+  onBookClick?: () => void;
+  items?: FaqEntry[];
+} = {}) {
+  const { t } = useLanguage();
+  const entries = items ?? HOME_FAQS;
   const [open, setOpen] = useState(0);
 
   return (
@@ -163,39 +232,35 @@ export default function FaqAccordion() {
       <div className="fix grid grid-cols-1 items-start gap-[35px] min-[761px]:grid-cols-[0.85fr_1.15fr] min-[761px]:gap-[50px] min-[1051px]:gap-[90px]">
         {/* top-[120px] clears the fixed navbar (76px) with breathing room. */}
         <div className="self-start min-[761px]:sticky min-[761px]:top-[120px]">
-          <p className="m-0 mb-[20px] flex items-center gap-[10px] font-sans text-[11px] font-semibold leading-[1.5] tracking-[0.07em]">
+          {/* <p className="m-0 mb-[20px] flex items-center gap-[10px] font-sans text-[11px] font-semibold leading-[1.5] tracking-[0.07em]">
             07 / GOOD QUESTIONS
-          </p>
+          </p> */}
 
           <h2
             id="faq-heading"
             className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] font-semibold leading-[1.1] tracking-[-0.04em]"
           >
-            A little clarity.
+            {t({ en: "Frequently asked", nl: "Veelgestelde" })}
             <br />
-            Before you start.
+            <span className="text-[#5b2dce]">
+              {t({ en: "Questions", nl: "vragen" })}
+            </span>
           </h2>
 
-          <p className="mb-[12px] mt-[18px] font-sans text-[15px] text-[#625a70] min-[761px]:mt-[23px] min-[761px]:max-w-[300px] min-[761px]:text-[16px]">
-            Still wondering how it fits your business? Let’s talk it through.
-          </p>
-
-          <a
-            href="#contact"
-            className="arrow-cta mt-[12px] inline-flex items-center gap-[16px] border-b border-current py-[10px] font-sans text-[14px] font-semibold text-[#5b2dce]"
-          >
-            Ask us anything <ArrowIcon direction="up-right" />
-          </a>
+          <HelpCard onBookClick={onBookClick} />
         </div>
 
-        <div>
-          {FAQS.map((faq, i) => (
-            <FaqItem
-              key={faq.q}
-              faq={faq}
-              index={i}
-              isOpen={open === i}
-              onOpen={() => setOpen(i)}
+        {/* No scroll window and no fade: the list runs the full height of the
+            fold, so the page scrollbar is the only one on screen. */}
+        <div className="flex w-full flex-col gap-[16px]">
+          {entries.map((entry, idx) => (
+            <AccordionItem
+              key={entry.question.en}
+              entry={entry}
+              index={idx}
+              isOpen={open === idx}
+              onToggle={() => setOpen(open === idx ? -1 : idx)}
+              delay={Math.min(idx * 0.05, 0.2)}
             />
           ))}
         </div>

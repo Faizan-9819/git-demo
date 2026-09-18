@@ -244,7 +244,7 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
               <button
                 type="button"
                 onClick={onStartClick}
-                className="arrow-cta inline-flex min-h-[52px] items-center gap-[18px] rounded-full bg-[#5b2dce] px-[20px] py-[14px] font-sans text-[14px] font-semibold text-white hover:bg-[#e4fa65] hover:text-[#0a0516]"
+                className="arrow-cta inline-flex min-h-[52px] items-center gap-[8px] rounded-full bg-[#5b2dce] px-[20px] py-[14px] font-sans text-[14px] font-semibold text-white hover:bg-[#e4fa65] hover:text-[#0a0516]"
               >
                 Start with Growth Rocket <ArrowIcon direction="right" />
               </button>
