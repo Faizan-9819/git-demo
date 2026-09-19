@@ -892,7 +892,11 @@ export default function Solution() {
             <a
               href="#pricing"
               className="arrow-cta inline-flex min-h-[51px] items-center justify-center gap-4 rounded-full border border-transparent bg-[#0a0516] px-[17px] py-[13px] font-sans text-[14px] font-semibold leading-[1.35] whitespace-nowrap text-[#e4fa65] min-[761px]:min-h-[52px] min-[761px]:gap-6 min-[761px]:px-5 min-[761px]:py-[14px] min-[761px]:text-[15px]"
+            >
+              {t({ en: "Explore the package", nl: "Bekijk het pakket" })}
+              <ArrowIcon direction="up-right" size={18} />
             </a>
+          </div>
         </div>
       </div>
     </section>
