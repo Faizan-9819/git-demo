@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { lenisStop, lenisStart } from "./LenisProvider";
 import { useLanguage } from "../i18n/LanguageProvider";
 
@@ -304,12 +304,38 @@ function PreferencesPanel({
   );
 }
 
+// ── Cookie icon ───────────────────────────────────────────────────────────────
+function CookieIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      className="h-4.5 w-4.5"
+      aria-hidden
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="9.25"
+        stroke="currentColor"
+        strokeWidth="1.6"
+      />
+      <circle cx="9" cy="9.2" r="1.15" fill="currentColor" />
+      <circle cx="15" cy="11" r="1.05" fill="currentColor" />
+      <circle cx="10.4" cy="15" r="1.15" fill="currentColor" />
+      <circle cx="14.6" cy="15.6" r="0.9" fill="currentColor" />
+    </svg>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 export default function CookieConsent() {
   const { t } = useLanguage();
   const [bannerOpen, setBannerOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const [prefs, setPrefs] = useState<Prefs>(DEFAULT_PREFS);
+  const barRef = useRef<HTMLDivElement | null>(null);
+  const [barHeight, setBarHeight] = useState(0);
 
   useEffect(() => {
     const { consent, prefs: stored } = readStored();
@@ -327,6 +353,21 @@ export default function CookieConsent() {
       return () => lenisStart();
     }
   }, [panelOpen]);
+
+  // Keep the WhatsApp FAB clear of the full-width consent bar
+  useEffect(() => {
+    if (!bannerOpen) {
+      setBarHeight(0);
+      return;
+    }
+    const el = barRef.current;
+    if (!el) return;
+    const measure = () => setBarHeight(el.offsetHeight);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [bannerOpen]);
 
   // Allow other parts of the app (e.g. the footer "Cookie settings" link) to open the panel
   useEffect(() => {
@@ -365,65 +406,95 @@ export default function CookieConsent() {
 
   return (
     <>
-      {/* Banner */}
+      {/* Banner — full-width bottom strip: icon · title · description · actions */}
       <AnimatePresence>
         {bannerOpen && (
           <motion.div
-            initial={{ y: 80, opacity: 0 }}
+            ref={barRef}
+            initial={{ y: "100%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 80, opacity: 0 }}
-            transition={{ type: "spring", duration: 0.5, bounce: 0.22 }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{ type: "spring", duration: 0.5, bounce: 0.18 }}
             role="dialog"
             aria-live="polite"
             aria-label="Cookie consent"
-            // Desktop: bottom-right card. Mobile: above the 52px sticky bar.
-            className="fixed z-[1500] left-4 right-4 bottom-[calc(52px+12px)] sm:bottom-6 sm:left-auto sm:right-6 sm:w-[420px]"
+            // Sits above the 52px mobile sticky bar; flush to the bottom on desktop.
+            className="fixed inset-x-0 bottom-[52px] z-[1500] lg:bottom-0"
           >
-            <div className="rounded-2xl border border-[var(--color-slate-200)] bg-white p-5 shadow-2xl">
-              <p className="text-[15px] font-bold text-[var(--color-haiti)]">
-                {t({ en: "We use cookies", nl: "Wij gebruiken cookies" })}
-              </p>
-              <p className="mt-1.5 text-[13px] leading-[1.6] text-[var(--color-dolphin)]">
-                {t({
-                  en: "We use cookies to make this website work properly and to understand how it's used. You can accept all, reject non-essential, or choose which ones to allow.",
-                  nl: "We gebruiken cookies om deze website goed te laten werken en om te begrijpen hoe deze wordt gebruikt. Je kunt alle cookies accepteren, niet-essentiële cookies weigeren of zelf kiezen welke cookies je toestaat.",
-                })}{" "}
-                <Link
-                  href={t({ en: "/cookie-policy", nl: "/nl/cookie-policy" })}
-                  className="underline text-[var(--color-violet-42)] hover:text-[var(--color-violet-58)] font-medium"
-                >
-                  {t({ en: "Cookie Policy", nl: "Cookiebeleid" })}
-                </Link>
-                {" · "}
-                <Link
-                  href={t({ en: "/privacy-policy", nl: "/nl/privacy-policy" })}
-                  className="underline text-[var(--color-violet-42)] hover:text-[var(--color-violet-58)] font-medium"
-                >
-                  {t({ en: "Privacy Policy", nl: "Privacybeleid" })}
-                </Link>
-              </p>
-              <div className="mt-4 flex flex-col gap-2">
-                <button
-                  onClick={acceptAll}
-                  className="btn btn--primary btn--sm btn--full"
-                >
-                  {t({ en: "Accept all", nl: "Alles accepteren" })}
-                </button>
-                <div className="flex gap-2">
+            <div className="border-t border-[var(--color-slate-200)] bg-white shadow-[0_-10px_34px_rgba(10,5,22,0.10)]">
+              <div className="flex w-full flex-col gap-3 px-4 py-3.5 sm:px-6 sm:py-4 lg:flex-row lg:items-center lg:gap-6 lg:px-8">
+                {/* Icon + title + description */}
+                <div className="flex min-w-0 items-start gap-3 lg:items-center">
+                  <span className="mt-0.5 grid h-8 w-8 flex-shrink-0 place-items-center rounded-full bg-[var(--color-violet-98)] text-[var(--color-violet-42)] lg:mt-0">
+                    <CookieIcon />
+                  </span>
+                  <p className="min-w-0 text-[13px] leading-[1.6] text-[var(--color-dolphin)]">
+                    <span className="font-bold text-[var(--color-haiti)]">
+                      {t({
+                        en: "We use cookies",
+                        nl: "Wij gebruiken cookies",
+                      })}
+                    </span>
+                    <span
+                      className="mx-1.5 hidden text-[var(--color-slate-300)] sm:inline"
+                      aria-hidden
+                    >
+                      —
+                    </span>
+                    <span className="block sm:inline">
+                      {t({
+                        en: "We use cookies to make this website work properly and to understand how it's used. You can accept all, reject non-essential, or choose which ones to allow.",
+                        nl: "We gebruiken cookies om deze website goed te laten werken en om te begrijpen hoe deze wordt gebruikt. Je kunt alle cookies accepteren, niet-essentiële cookies weigeren of zelf kiezen welke cookies je toestaat.",
+                      })}{" "}
+                      <Link
+                        href={t({
+                          en: "/cookie-policy",
+                          nl: "/nl/cookie-policy",
+                        })}
+                        className="underline text-[var(--color-violet-42)] hover:text-[var(--color-violet-58)] font-medium"
+                      >
+                        {t({ en: "Cookie Policy", nl: "Cookiebeleid" })}
+                      </Link>
+                      {" · "}
+                      <Link
+                        href={t({
+                          en: "/privacy-policy",
+                          nl: "/nl/privacy-policy",
+                        })}
+                        className="underline text-[var(--color-violet-42)] hover:text-[var(--color-violet-58)] font-medium"
+                      >
+                        {t({ en: "Privacy Policy", nl: "Privacybeleid" })}
+                      </Link>
+                    </span>
+                  </p>
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-shrink-0 flex-col gap-2 sm:flex-row sm:items-center lg:ml-auto">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={rejectAll}
+                      className="btn btn--secondary btn--sm flex-1 sm:flex-none"
+                      style={{ whiteSpace: "normal" }}
+                    >
+                      {t({
+                        en: "Reject non-essential",
+                        nl: "Niet-essentiële cookies weigeren",
+                      })}
+                    </button>
+                    <button
+                      onClick={openPanel}
+                      className="btn btn--secondary btn--sm flex-1 sm:flex-none"
+                      style={{ whiteSpace: "normal" }}
+                    >
+                      {t({ en: "Manage preferences", nl: "Voorkeuren beheren" })}
+                    </button>
+                  </div>
                   <button
-                    onClick={rejectAll}
-                    className="btn btn--secondary btn--sm flex-1"
+                    onClick={acceptAll}
+                    className="btn btn--primary btn--sm w-full sm:w-auto"
                   >
-                    {t({
-                      en: "Reject non-essential",
-                      nl: "Niet-essentiële cookies weigeren",
-                    })}
-                  </button>
-                  <button
-                    onClick={openPanel}
-                    className="btn btn--ghost btn--sm flex-1 text-[var(--color-violet-42)] hover:text-[var(--color-violet-58)] font-medium text-[13px]"
-                  >
-                    {t({ en: "Manage preferences", nl: "Voorkeuren beheren" })}
+                    {t({ en: "Accept all", nl: "Alles accepteren" })}
                   </button>
                 </div>
               </div>
@@ -451,7 +522,8 @@ export default function CookieConsent() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed z-[1400] bottom-[calc(52px+12px)] right-4 sm:bottom-6 top-auto sm:right-6 group w-12 h-12 rounded-full flex items-center justify-center shadow-lg border border-[var(--color-mist)] bg-white transition-transform hover:scale-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-violet-42)]"
+        style={{ "--cc-bar-h": `${barHeight}px` } as CSSProperties}
+        className="fixed z-[1400] bottom-[calc(52px+12px+var(--cc-bar-h,0px))] right-4 lg:bottom-[calc(24px+var(--cc-bar-h,0px))] top-auto sm:right-6 group w-12 h-12 rounded-full flex items-center justify-center shadow-lg border border-[var(--color-mist)] bg-white transition-[bottom,transform] duration-300 hover:scale-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-violet-42)]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

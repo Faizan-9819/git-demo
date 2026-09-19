@@ -62,7 +62,7 @@ export default function PricingTeaser() {
 
           <a
             href="#prijzen"
-            className="arrow-cta col-span-2 mt-[14px] inline-flex min-h-[52px] w-full items-center justify-center gap-[32px] rounded-full border border-transparent bg-[#e4fa65] px-[20px] py-[14px] font-sans text-[15px] font-semibold leading-[1.35] text-[#0a0516] hover:bg-white min-[761px]:w-auto"
+            className="arrow-cta col-span-2 mt-[14px] inline-flex min-h-[52px] w-full items-center justify-center gap-[8px] rounded-full border border-transparent bg-[#e4fa65] px-[20px] py-[14px] font-sans text-[15px] font-semibold leading-[1.35] text-[#0a0516] hover:bg-white min-[761px]:w-auto"
           >
             View full pricing <ArrowIcon direction="up-right" size={18} />
           </a>

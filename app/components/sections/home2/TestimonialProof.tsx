@@ -70,7 +70,7 @@ const HEADING_LINES = ["What", "Business owners", "Say about", "Growth Rocket"];
 
 function QuoteCard({ quote }: { quote: Quote }) {
   return (
-    <blockquote className="m-0 rounded-[13px] bg-white px-[24px] pb-[25px] pt-[28px] min-[761px]:px-[34px] min-[761px]:pb-[28px] min-[761px]:pt-[30px]">
+    <blockquote className="m-0 rounded-[13px] bg-white px-[24px] pb-[25px] pt-[28px] transition-colors duration-200  min-[761px]:px-[34px] min-[761px]:pb-[28px] min-[761px]:pt-[30px]">
       <span
         aria-hidden
         className="mb-[4px] block text-[58px] leading-[.55] text-[#5b2dce] [font-family:Georgia,serif]"

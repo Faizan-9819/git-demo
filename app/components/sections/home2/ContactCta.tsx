@@ -41,7 +41,7 @@ export default function ContactCta() {
         <div className="mt-[24px] flex items-end justify-between gap-[16px] min-[761px]:items-center min-[761px]:gap-[30px]">
           <h2
             id="contact-heading"
-            className="m-0 font-bricolage text-[28px] font-semibold leading-[1.05] tracking-[-0.055em] min-[371px]:text-[43px] min-[761px]:text-[clamp(48px,5.6vw,78px)]"
+            className="m-0 font-bricolage text-[28px] font-semibold leading-[1.05] tracking-[-0.055em]  md:text-[76px]"
           >
             Big plans?
             <br />

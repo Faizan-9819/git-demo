@@ -18,6 +18,8 @@ import FinalCta from "../components/sections/home2/FinalCta";
 import FaqAccordion from "../components/sections/home2/FaqAccordion";
 import BlogTeaser from "../components/sections/home2/BlogTeaser";
 import ContactCta from "../components/sections/home2/ContactCta";
+import FooterLoopStrip from "../components/sections/home2/FooterLoopStrip";
+import Footer2 from "../components/sections/home2/Footer2";
 import JsonLd from "../components/JsonLd";
 import { buildFaqJsonLd, HOME_FAQS } from "../lib/faqs";
 import { buildPageSchema } from "../lib/seo";
@@ -68,6 +70,8 @@ export default function Home2Client() {
         <FaqAccordion />
         <BlogTeaser />
         <ContactCta />
+        <FooterLoopStrip />
+        <Footer2 />
       </HomeShell>
     </main>
   );

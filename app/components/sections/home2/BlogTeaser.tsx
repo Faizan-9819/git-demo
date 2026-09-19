@@ -341,9 +341,21 @@ export default function BlogTeaser() {
               >
                 <Reveal
                   delay={Math.min(i * 0.05, 0.2)}
-                  /* Same card hover as Examples: a lime (#e4fa65) glow, no
-                     lift and no fill change. */
-                  className="flex h-full flex-col gap-[16px] rounded-[13px] border border-white/[0.12] bg-[#151021] px-[20px] pt-[20px] pb-[24px] transition-shadow duration-200 hover:shadow-[0_0_0_1px_rgba(228,250,101,0.34),0_0_18px_rgba(228,250,101,0.24),0_0_42px_rgba(228,250,101,0.18)]"
+                  /* Card hover as in Examples — a lime (#e4fa65) glow, no lift
+                     — plus a fill flip to that same lime. `group` sits on the
+                     card rather than the slide so the gutter between cards
+                     cannot trigger it: with it on the slide, the 20px of
+                     padding to the card's left flipped the title and link
+                     colours while the card itself stayed dark.
+
+                     Fill, glow and the two text colours all ride the same
+                     300ms ease-out so the whole card changes as one piece.
+                     `transition-shadow` alone left the fill snapping.
+
+                     `arrow-cta-host` hands the same hover down to the "Read
+                     more" arrow below, which otherwise only swapped when the
+                     pointer landed on the link itself. */
+                  className="arrow-cta-host group flex h-full flex-col gap-[16px] rounded-[13px] border border-white/[0.12] bg-[#151021] px-[20px] pt-[20px] pb-[24px] transition-[background-color,box-shadow] duration-300 ease-out hover:bg-[#e4fa65] hover:shadow-[0_0_0_1px_rgba(228,250,101,0.34),0_0_18px_rgba(228,250,101,0.24),0_0_42px_rgba(228,250,101,0.18)]"
                 >
                   <div className="relative h-[190px] overflow-hidden rounded-[13px]">
                     <Image
@@ -355,7 +367,7 @@ export default function BlogTeaser() {
                     />
                   </div>
 
-                  <h3 className="m-0 px-[6px] font-bricolage text-[20px] font-semibold leading-[1.25] tracking-[-0.02em] text-white">
+                  <h3 className="m-0 px-[6px] font-bricolage text-[20px] font-semibold leading-[1.25] tracking-[-0.02em] text-white transition-colors duration-300 ease-out group-hover:text-[#151021]">
                     {t(post.title)}
                   </h3>
 
@@ -363,7 +375,7 @@ export default function BlogTeaser() {
                       row however long the titles run. */}
                   <a
                     href={post.href}
-                    className="arrow-cta mt-auto inline-flex items-center gap-[8px] self-start px-[6px] font-sans text-[14px] font-semibold text-[#e4fa65]"
+                    className="arrow-cta mt-auto inline-flex items-center gap-[8px] self-start px-[6px] font-sans text-[14px] font-semibold text-[#e4fa65] group-hover:text-[#5b2dce]"
                   >
                     {t({ en: "Read more", nl: "Lees meer" })}
                     <ArrowIcon direction="right" size={14} />

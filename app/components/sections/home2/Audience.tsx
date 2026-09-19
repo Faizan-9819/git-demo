@@ -388,7 +388,7 @@
 "use client";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Reveal from "../../Reveal";
 import EyebrowLabel from "../../ui/EyebrowLabel";
@@ -610,19 +610,32 @@ export default function Audience() {
           viewport's left edge and bleeds off the right. The section drops its
           own `overflow-hidden` for this — the inner div below still clips the
           ticker, so nothing else escapes. */}
-      <div className="hidden sm:block group mt-5 full-bleed">
+      <div className="hidden sm:block gr-marquee-hover-pause mt-5 full-bleed">
         <div className="overflow-hidden pt-[8px]">
-          <div className="flex w-max gap-4 [animation:gr-ticker_45s_linear_infinite] group-hover:[animation-play-state:paused]">
-            {TRADES.concat(TRADES).map((trade, i) => (
+          {/* Three copies and `mr-4` on the cards (never a flex `gap`) are what
+              the -100%/3 keyframe depends on, and hover pausing comes from
+              `gr-marquee-hover-pause` on the wrapper rather than a
+              `group-hover:` utility — see gr-marquee-left in globals.css for
+              why, before changing any of it. */}
+          <div
+            style={{ "--marquee-duration": "45s" } as CSSProperties}
+            className="gr-marquee-left-track flex w-max"
+          >
+            {[...TRADES, ...TRADES, ...TRADES].map((trade, i) => (
               <div
                 key={`${trade.name.en}-${i}`}
-                className="relative shrink-0 w-[220px] h-[300px] rounded-[26px] overflow-hidden flex flex-col justify-end p-[22px]"
+                aria-hidden={i >= TRADES.length}
+                className="relative shrink-0 mr-4 w-[220px] h-[300px] rounded-[26px] overflow-hidden flex flex-col justify-end p-[22px]"
               >
                 <Image
                   src={trade.image}
                   alt={t(trade.name)}
                   fill
                   sizes="220px"
+                  // The repeats scroll in from off-screen; decoding them lazily
+                  // mid-animation drops frames, so the strip's images load up
+                  // front (all 30 cards share the same 10 files).
+                  loading="eager"
                   className="object-cover"
                 />
                 <span
