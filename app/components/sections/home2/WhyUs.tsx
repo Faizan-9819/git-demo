@@ -274,16 +274,16 @@ function Card({
   body: string;
 }) {
   return (
-    <article className="flex translate-y-0 scale-100 flex-col items-start gap-[14px] rounded-[13px] border border-white/[0.34] bg-[#f5f3ff] px-[23px] pb-[15px] pt-[20px] text-[#0a0516] shadow-[0_14px_34px_rgba(10,5,22,0.08)] transition-[background-color,border-color,translate,scale,box-shadow] duration-380 ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:border-white/[0.46] hover:bg-[#ebe6ff] hover:shadow-[0_22px_46px_rgba(10,5,22,0.14)] hover:duration-300 hover:ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-[background-color,border-color] motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100 min-[901px]:px-[28px] min-[901px]:pb-[16px] min-[901px]:pt-[22px]">
+    <article className="flex translate-y-0 scale-100 flex-col items-start gap-[14px] rounded-[13px] border border-white/[0.34] bg-[#f5f3ff] px-[23px] pb-[15px] pt-[20px] text-[#0a0516] shadow-[0_14px_34px_rgba(10,5,22,0.08)] transition-[background-color,border-color,translate,scale,box-shadow] duration-380 ease-in-out hover:-translate-y-1  hover:border-white/[0.46] hover:bg-[#ebe6ff] hover:shadow-[0_22px_46px_rgba(10,5,22,0.14)] hover:duration-300 hover:ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-[background-color,border-color] motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100 lg:px-[28px] lg:pb-[16px] lg:pt-[22px]">
       <span className="grid h-[38px] w-[38px] flex-none place-items-center rounded-[13px] bg-[#e4fa65] text-[#5b2dce]">
         {icon}
       </span>
 
-      <h3 className="m-0 mt-[5px] font-bricolage text-[25px] font-semibold leading-[1.18] tracking-[-0.03em] min-[761px]:text-[22px] min-[901px]:text-[25px]">
+      <h3 className="m-0 mt-[5px] font-bricolage text-[25px] font-semibold leading-[1.18] tracking-[-0.03em] md:text-[22px] lg:text-[25px]">
         {title}
       </h3>
 
-      <p className="m-0 font-sans text-[16px] leading-[1.6] text-[#554c64] min-[761px]:text-[15px] min-[901px]:text-[16px]">
+      <p className="m-0 font-sans text-[16px] leading-[1.6] text-[#554c64] md:text-[15px] lg:text-[16px]">
         {body}
       </p>
     </article>
@@ -401,12 +401,12 @@ export default function WhyUs() {
   return (
     <section
       aria-labelledby="why-heading"
-      className="rounded-[13px] bg-[#5b2dce] py-[56px] min-[901px]:py-[64px]"
+      className="rounded-[13px] bg-[#5b2dce] py-[56px] lg:py-[64px]"
     >
       <div className="fix flex flex-col items-center text-left">
         <h2
           id="why-heading"
-          className="m-0 text-center font-bricolage text-[40px] font-semibold leading-[1.1] tracking-[-0.045em] text-white min-[761px]:text-[clamp(42px,4vw,60px)]"
+          className="m-0 text-center font-bricolage text-[40px] font-semibold leading-[1.1] tracking-[-0.045em] text-white md:text-[clamp(42px,4vw,60px)]"
         >
           {t({ en: "Why Growth Rocket?", nl: "Waarom Growth Rocket?" })}
         </h2>
@@ -415,13 +415,13 @@ export default function WhyUs() {
             right-hand side (`grid-row: 1 / 3`) and the two text columns stack
             down the left; below that it is pulled to the top of the flow, which
             is what `order-first` reproduces from the source's `order: -1`. */}
-        <div className="mt-[30px] grid w-full max-w-[1240px] grid-cols-1 items-stretch gap-[14px] min-[761px]:mt-[32px] min-[761px]:grid-cols-2 min-[901px]:grid-cols-3">
+        <div className="mt-[30px] grid w-full max-w-[1240px] grid-cols-1 items-stretch gap-[14px] md:mt-[32px] md:grid-cols-2 lg:grid-cols-3">
           {/* `grid-rows-[1fr_1fr]`, not Tailwind's `grid-rows-2`: that utility
               emits `minmax(0, 1fr)`, which would cap each card at exactly half
               the photo's 450px and crush the copy against the bottom edge. The
               source's plain `1fr` is `minmax(auto, 1fr)` — the rows stay equal
               to each other but grow to fit, and the photo stretches to match. */}
-          <div className="grid min-w-0 gap-[14px] min-[761px]:grid-rows-[1fr_1fr]">
+          <div className="grid min-w-0 gap-[14px] md:grid-rows-[1fr_1fr]">
             {cards.slice(0, 2).map((card) => (
               <Card
                 key={card.title.en}
@@ -432,11 +432,11 @@ export default function WhyUs() {
             ))}
           </div>
 
-          <figure className="relative m-0 min-h-[330px] overflow-hidden rounded-[13px] bg-[#0a0516] order-first min-[761px]:order-none min-[761px]:row-start-1 min-[761px]:row-end-3 min-[761px]:min-h-0 min-[901px]:row-auto min-[901px]:min-h-[450px]">
+          <figure className="relative m-0 min-h-[330px] overflow-hidden rounded-[13px] bg-[#0a0516] order-first md:order-none md:row-start-1 md:row-end-3 md:min-h-0 lg:row-auto lg:min-h-[450px]">
             <FadeImages />
           </figure>
 
-          <div className="grid min-w-0 gap-[14px] min-[761px]:grid-rows-[1fr_1fr]">
+          <div className="grid min-w-0 gap-[14px] md:grid-rows-[1fr_1fr]">
             {cards.slice(2).map((card) => (
               <Card
                 key={card.title.en}

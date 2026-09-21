@@ -70,7 +70,7 @@ const HEADING_LINES = ["What", "Business owners", "Say about", "Growth Rocket"];
 
 function QuoteCard({ quote }: { quote: Quote }) {
   return (
-    <blockquote className="m-0 rounded-[13px] bg-white px-[24px] pb-[25px] pt-[28px] transition-colors duration-200  min-[761px]:px-[34px] min-[761px]:pb-[28px] min-[761px]:pt-[30px]">
+    <blockquote className="m-0 rounded-[13px] bg-white px-[24px] pb-[25px] pt-[28px] transition-colors duration-200  md:px-[34px] md:pb-[28px] md:pt-[30px]">
       <span
         aria-hidden
         className="mb-[4px] block text-[58px] leading-[.55] text-[#5b2dce] [font-family:Georgia,serif]"
@@ -78,7 +78,7 @@ function QuoteCard({ quote }: { quote: Quote }) {
         “
       </span>
 
-      <p className="m-0 font-bricolage text-[25px] font-semibold leading-[1.2] tracking-[-0.035em] text-[#0a0516] min-[761px]:text-[clamp(22px,1.75vw,28px)]">
+      <p className="m-0 font-bricolage text-[25px] font-semibold leading-[1.2] tracking-[-0.035em] text-[#0a0516] md:text-[clamp(22px,1.75vw,28px)]">
         {quote.text}
       </p>
 
@@ -168,13 +168,13 @@ export default function TestimonialProof() {
       /* The 730px ceiling exists to trim the marquee, so it is scoped to the
          widths that still run one: below 901px the carousel is as tall as one
          card and the cap would cut the arrows off instead. */
-      className="overflow-hidden rounded-[13px] bg-[#eeeeee] py-[56px] text-[#0a0516] min-[761px]:py-[80px] min-[901px]:max-h-[730px]"
+      className="overflow-hidden rounded-[13px] bg-[#eeeeee] py-[56px] text-[#0a0516] md:py-[80px] lg:max-h-[730px]"
     >
-      <div className="fix grid grid-cols-1 items-center gap-[28px] min-[761px]:gap-[34px] min-[901px]:grid-cols-[minmax(430px,1fr)_minmax(0,520px)] min-[901px]:gap-[clamp(34px,5vw,86px)]">
+      <div className="fix grid grid-cols-1 items-center gap-[28px] md:gap-[34px] lg:grid-cols-[minmax(430px,1fr)_minmax(0,520px)] lg:gap-[clamp(34px,5vw,86px)]">
         <div>
           <h2
             id="testimonial-heading"
-            className="m-0 max-w-[720px] font-bricolage text-[40px] font-semibold leading-[1.02] tracking-[-0.045em] min-[761px]:text-[clamp(42px,4.05vw,62px)]"
+            className="m-0 max-w-[720px] font-bricolage text-[40px] font-semibold leading-[1.02] tracking-[-0.045em] md:text-[clamp(42px,4.05vw,62px)]"
           >
             {HEADING_LINES.map((line, i) => (
               <span
@@ -192,9 +192,9 @@ export default function TestimonialProof() {
 
           <div
             aria-hidden
-            className="mt-[22px] flex items-center gap-[16px] text-left min-[761px]:mt-[28px]"
+            className="mt-[22px] flex items-center gap-[16px] text-left md:mt-[28px]"
           >
-            <span className="grid h-[54px] w-[54px] flex-none place-items-center rounded-full bg-[#e4fa65] text-[28px] text-[#0a0516] min-[901px]:h-[62px] min-[901px]:w-[62px] min-[901px]:text-[31px]">
+            <span className="grid h-[54px] w-[54px] flex-none place-items-center rounded-full bg-[#e4fa65] text-[28px] text-[#0a0516] lg:h-[62px] lg:w-[62px] lg:text-[31px]">
               ✳
             </span>
             <b className="font-sans text-[15px] font-semibold leading-[1.4]">
@@ -221,7 +221,7 @@ export default function TestimonialProof() {
             `height - 160px` and the cards span the full fold. */}
         <div
           aria-label="Customer testimonials"
-          className="relative hidden h-[720px] max-w-[560px] overflow-hidden [--marquee-duration:26s] [--marquee-gap:20px] min-[761px]:h-[660px] min-[901px]:-my-[80px] min-[901px]:block min-[901px]:max-w-none"
+          className="relative hidden h-[720px] max-w-[560px] overflow-hidden [--marquee-duration:26s] [--marquee-gap:20px] md:h-[660px] lg:-my-[80px] lg:block lg:max-w-none"
         >
           {/* Two identical groups, spaced by the same gap they use inside, so
               the keyframe's half-height lift loops without a visible seam. */}
@@ -236,7 +236,7 @@ export default function TestimonialProof() {
             viewport below is what clips it. */}
         <div
           aria-label="Customer testimonials"
-          className="min-w-0 min-[901px]:hidden"
+          className="min-w-0 lg:hidden"
         >
           <div className="overflow-hidden pb-1" ref={emblaRef}>
             {/* The -20px/+20px pair is the gutter trick the other home2
@@ -257,7 +257,7 @@ export default function TestimonialProof() {
             </div>
           </div>
 
-          <div className="mt-[20px] flex gap-[10px]">
+          <div className="mt-[20px] flex justify-end gap-[10px]">
             <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
             <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
           </div>

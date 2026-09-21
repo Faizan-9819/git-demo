@@ -59,7 +59,7 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
       className="grid grid-cols-1 lg:grid-cols-2 gap-3.5 items-stretch pt-19"
     >
       // Left: headline card
-      <div className="relative overflow-hidden rounded-[28px] bg-white px-5 sm:px-10 lg:px-8 xl:px-[94px] 2xl:pl-[140px] min-[1900px]:pl-[200px]! py-12 sm:py-16 lg:py-14 xl:py-24 flex items-center">
+      <div className="relative overflow-hidden rounded-[28px] bg-white px-5 sm:px-10 lg:px-8 xl:px-[94px] 2xl:pl-[140px] 3xl:pl-[200px]! py-12 sm:py-16 lg:py-14 xl:py-24 flex items-center">
         <div
           aria-hidden
           className="pointer-events-none absolute -top-[140px] -left-[120px] w-[420px] h-[420px] rounded-full opacity-35"
@@ -216,23 +216,23 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
  * "Enquiries" stat card over the photo (`display:none !important`), so they
  * are intentionally not reproduced.
  *
- * The 900px breakpoint of the original is kept as-is via `min-[901px]:` /
- * `max-[900px]:` rather than being rounded to Tailwind's `lg`.
+ * The 900px breakpoint of the original is kept as-is via `lg:` /
+ * `max-lg:` rather than being rounded to Tailwind's `lg`.
  */
 export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
   return (
     <section id="home" className="">
-      <div className=" grid grid-cols-1 min-[901px]:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-0 overflow-hidden rounded-[13px]">
+      <div className=" grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-0 overflow-hidden rounded-[13px]">
         {/* Left: copy panel */}
 
-        <div className="fix-left relative flex items-center overflow-hidden rounded-t-[13px] min-[901px]:rounded-l-[13px] min-[901px]:rounded-tr-none bg-[#0a0516] min-h-[480px] min-[521px]:min-h-[510px] min-[901px]:min-h-[650px] py-[70px]">
+        <div className="fix-left relative flex items-center overflow-hidden rounded-t-[13px] lg:rounded-l-[13px] lg:rounded-tr-none bg-[#0a0516] min-h-[480px] xs:min-h-[510px] lg:min-h-[650px] py-[70px]">
           <div
             aria-hidden
             className="pointer-events-none absolute -left-[120px] -top-[130px] h-[410px] w-[410px] rounded-full bg-[#5b2dce] opacity-[0.18] blur-[110px]"
           />
 
           <div className="relative max-w-[560px]">
-            <h1 className="m-0 font-bricolage text-[36px] min-[521px]:text-[clamp(42px,4.3vw,62px)] font-semibold leading-[1.05] tracking-[-0.06em] text-white">
+            <h1 className="m-0 font-bricolage text-[36px] xs:text-[clamp(42px,4.3vw,62px)] font-semibold leading-[1.05] tracking-[-0.06em] text-white">
               Not just a website.
               <br />
               <span className="text-[#e4fa65]">A complete system</span>
@@ -244,7 +244,7 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
               <button
                 type="button"
                 onClick={onStartClick}
-                className="arrow-cta inline-flex min-h-[52px] items-center gap-[8px] rounded-full bg-[#5b2dce] px-[20px] py-[14px] font-sans text-[14px] font-semibold text-white hover:bg-[#e4fa65] hover:text-[#0a0516]"
+                className="arrow-cta inline-flex min-h-[45px] items-center gap-[8px] rounded-full bg-[#5b2dce] px-[20px] py-[10px] font-sans text-[14px] font-semibold text-white hover:bg-[#e4fa65] hover:text-[#0a0516]"
               >
                 Start with Growth Rocket <ArrowIcon direction="right" />
               </button>
@@ -265,7 +265,7 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
         </div>
 
         {/* Right: photo panel */}
-        <div className="relative overflow-hidden rounded-b-[13px] min-[901px]:rounded-r-[13px] min-[901px]:rounded-bl-none bg-[#e7e1f5] min-h-[480px] min-[901px]:min-h-[650px]">
+        <div className="relative overflow-hidden rounded-b-[13px] lg:rounded-r-[13px] lg:rounded-bl-none bg-[#e7e1f5] min-h-[480px] lg:min-h-[650px]">
           <Image
             src="/home2/hero-electrician.png"
             alt="Electrician using his phone beside a work van"

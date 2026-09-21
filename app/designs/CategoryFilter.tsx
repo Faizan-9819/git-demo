@@ -272,8 +272,8 @@ export default function CategoryFilter({
        `relative z-30` lifts the whole band above the heading and grid that
        follow it in source order, so the open dropdown paints over them. It
        stays under the navbar, which is z-50 (z-[60] for its mobile sheet). */
-    <div className="full-bleed relative z-30 bg-[#e4fa65] px-[var(--fold-inset)] py-[25px] text-[#0a0516] max-[600px]:px-[14px] max-[600px]:py-[22px]">
-      <div className="fix flex items-center justify-start gap-[14px] px-0! max-[600px]:flex-col max-[600px]:items-start">
+    <div className="full-bleed relative z-30 bg-[#e4fa65] px-[var(--fold-inset)] py-[25px] text-[#0a0516] max-sm:px-[14px] max-sm:py-[22px]">
+      <div className="fix flex items-center justify-start gap-[14px] px-0! max-sm:flex-col max-sm:items-start">
         {/* The source's drop-shadow belongs to `.filter-control`, but `filter`
           creates a stacking context, which would trap the dropdown inside this
           wrapper. The source can afford it — its control is a native <select>
@@ -281,7 +281,7 @@ export default function CategoryFilter({
           moves onto the pill itself and the wrapper stays a plain anchor. */}
         <div
           ref={containerRef}
-          className="relative w-[250px] max-[600px]:w-full"
+          className="relative w-[250px] max-sm:w-full"
         >
           <button
             type="button"

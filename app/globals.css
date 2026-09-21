@@ -1,6 +1,31 @@
 @import "tailwindcss";
 
 @theme {
+  /* Breakpoints. Tailwind's own sm/md/lg/xl/2xl are unchanged — every other
+     page is already written against them — and three names extend the scale
+     at the ends, where the ported designs have steps Tailwind has no default
+     for: 2xs (above the smallest phones), xs (above a large phone) and 3xl
+     (ultra-wide). Named variants only, please: the home2 and designs ports
+     arrived full of one-off `min-[761px]:` / `max-[600px]:` media queries, so
+     neighbouring components broke to desktop at 761, 901, 1051, 1101 and
+     1220px and no two folds changed shape together. Those all now land on the
+     nearest name below, which is what makes the page turn as one.
+
+       2xs  360   <- source's 361 step
+       xs   520   <- source's 521 step
+       sm   640   <- source's 600 and 641 steps
+       md   768   <- source's 761 step
+       lg   1024  <- source's 900/901, 1051 and 1101 steps
+       xl   1280  <- source's 1220 step
+       3xl  1920  <- source's 1900 step
+
+     Reach for an arbitrary variant only when a number is genuinely tied to
+     something measured — a container's own max-width, say — and leave a
+     comment saying so. */
+  --breakpoint-2xs: 22.5rem;
+  --breakpoint-xs: 32.5rem;
+  --breakpoint-3xl: 120rem;
+
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-jakarta: var(--font-jakarta), system-ui, sans-serif;
   --font-bricolage: var(--font-bricolage), system-ui, sans-serif;
@@ -191,10 +216,14 @@ html.lenis body {
    edge. Used by the home2 hero, whose copy panel is a half-width grid column:
    a padding percentage there resolves against half a row, which makes the
    gutter `column width - (--content-width / 2)`. Falls back to the panel's own
-   inset once the row is narrower than the content width. */
+   inset once the row is narrower than the content width.
+
+   The flush right edge only makes sense once the row is two columns wide: while
+   the panel is stacked full-width it mirrors the left gutter so the headline
+   cannot run into the panel edge. */
 .fix-left {
   padding-left: 30px;
-  padding-right: 0;
+  padding-right: 30px;
 }
 
 @media (min-width: 901px) {
@@ -203,6 +232,7 @@ html.lenis body {
       clamp(32px, 5vw, 86px),
       calc(100% - var(--content-width) / 2)
     );
+    padding-right: 0;
   }
 }
 

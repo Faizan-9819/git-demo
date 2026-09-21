@@ -107,10 +107,10 @@ export default function ProcessTimeline() {
     <section
       id="how"
       aria-labelledby="how-heading"
-      className="full-bleed bg-white py-[60px] text-[#0a0516] min-[761px]:py-[94px]"
+      className="full-bleed bg-white py-[60px] text-[#0a0516] md:py-[94px]"
     >
       <div className="fix">
-        <div className="mb-[30px] min-[761px]:mb-[44px]">
+        <div className="mb-[30px] md:mb-[44px]">
           <h2
             id="how-heading"
             className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] font-semibold leading-[1.1] tracking-[-0.04em]"
@@ -129,7 +129,7 @@ export default function ProcessTimeline() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
-          className="relative mt-[35px] grid grid-cols-1 gap-x-[24px] gap-y-[35px] min-[761px]:mt-[50px] min-[761px]:grid-cols-4 min-[761px]:gap-[22px] min-[1051px]:gap-[30px]"
+          className="relative mt-[35px] grid grid-cols-1 gap-x-[24px] gap-y-[35px] md:mt-[50px] md:grid-cols-4 md:gap-[22px] lg:gap-[30px]"
         >
           {/* The rule the step circles sit on. The source draws it as one bar
               behind the whole row (horizontal from 761px, vertical below), but
@@ -142,7 +142,7 @@ export default function ProcessTimeline() {
               key={step.num}
               custom={i}
               variants={card}
-              className="relative z-[1] grid grid-cols-[40px_1fr] gap-x-[20px] gap-y-[12px] pt-[22px] min-[761px]:block min-[761px]:pt-0"
+              className="relative z-[1] grid grid-cols-[40px_1fr] gap-x-[20px] gap-y-[12px] pt-[22px] md:block md:pt-0"
             >
               {/* Desktop rule: this circle's centre to the next one's, i.e. one
                   column plus one gap. The last step keeps the source's tail out
@@ -152,10 +152,10 @@ export default function ProcessTimeline() {
                 aria-hidden
                 custom={i}
                 variants={drawX}
-                className={`absolute left-[28px] top-[28px] -z-10 hidden h-[2px] origin-left bg-[#ded8e7] min-[761px]:block ${
+                className={`absolute left-[28px] top-[28px] -z-10 hidden h-[2px] origin-left bg-[#ded8e7] md:block ${
                   i < STEPS.length - 1
-                    ? "min-[761px]:w-[calc(100%+22px)] min-[1051px]:w-[calc(100%+30px)]"
-                    : "min-[761px]:w-[calc(100%-56px)]"
+                    ? "md:w-[calc(100%+22px)] lg:w-[calc(100%+30px)]"
+                    : "md:w-[calc(100%-56px)]"
                 }`}
               />
 
@@ -168,23 +168,23 @@ export default function ProcessTimeline() {
                   aria-hidden
                   custom={i}
                   variants={drawY}
-                  className="absolute bottom-[-77px] left-[19px] top-[42px] -z-10 w-[2px] origin-top bg-[#ded8e7] min-[761px]:hidden"
+                  className="absolute bottom-[-77px] left-[19px] top-[42px] -z-10 w-[2px] origin-top bg-[#ded8e7] md:hidden"
                 />
               )}
 
-              <span className="row-span-3 row-start-1 grid h-[40px] w-[40px] place-items-center rounded-full bg-[#e4fa65] font-bricolage text-[18px] tracking-[-0.03em] text-[#0a0516] shadow-[0_0_0_6px_#fff] min-[761px]:h-[56px] min-[761px]:w-[56px] min-[761px]:text-[24px] min-[761px]:shadow-[0_0_0_8px_#fff]">
+              <span className="row-span-3 row-start-1 grid h-[40px] w-[40px] place-items-center rounded-full bg-[#e4fa65] font-bricolage text-[18px] tracking-[-0.03em] text-[#0a0516] shadow-[0_0_0_6px_#fff] md:h-[56px] md:w-[56px] md:text-[24px] md:shadow-[0_0_0_8px_#fff]">
                 {step.num}
               </span>
 
-              <h3 className="m-0 font-bricolage text-[25px] font-semibold leading-[1.05] tracking-[-0.035em] min-[761px]:mt-[26px] min-[761px]:text-[22px] min-[1051px]:text-[25px]">
+              <h3 className="m-0 font-bricolage text-[25px] font-semibold leading-[1.05] tracking-[-0.035em] md:mt-[26px] md:text-[22px] lg:text-[25px]">
                 {step.title}
               </h3>
 
-              <p className="m-0 font-sans text-[16px] leading-[1.75] text-[#625a70] min-[761px]:mt-[15px]">
+              <p className="m-0 font-sans text-[16px] leading-[1.75] text-[#625a70] md:mt-[15px]">
                 {step.body}
               </p>
 
-              <span className="m-0 inline-flex w-max items-center rounded-full bg-[rgba(228,250,101,0.42)] px-[10px] py-[6px] font-sans text-[11px] font-bold tracking-[0.025em] text-[#0a0516] min-[761px]:mt-[20px] min-[761px]:px-[11px] min-[761px]:py-[7px] min-[761px]:text-[12px]">
+              <span className="m-0 inline-flex w-max items-center rounded-full bg-[rgba(228,250,101,0.42)] px-[10px] py-[6px] font-sans text-[11px] font-bold tracking-[0.025em] text-[#0a0516] md:mt-[20px] md:px-[11px] md:py-[7px] md:text-[12px]">
                 {step.owner}
               </span>
             </motion.article>

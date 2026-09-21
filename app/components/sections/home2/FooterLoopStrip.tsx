@@ -3,7 +3,8 @@ import { Fragment } from "react";
 /**
  * Footer loop strip — ported from `div.footer-loop-strip` in
  * grsolidvariant.html, the band that runs between the contact fold and the
- * footer.
+ * footer. {@link Footer2} renders it directly above itself, so it comes along
+ * on every route the footer appears on rather than being mounted per page.
  *
  * As with the other ported folds, the values below are the final computed
  * ones: the base rule paints the strip lime, a later block repaints it deep,
@@ -42,7 +43,7 @@ function LoopRun({ hidden }: { hidden?: boolean }) {
     <div aria-hidden={hidden} className="flex shrink-0 items-center">
       {Array.from({ length: PAIRS_PER_HALF }).map((_, i) => (
         <Fragment key={i}>
-          <span className="inline-flex items-center px-[13px] font-bricolage text-[clamp(24px,2.45vw,38px)] font-semibold leading-none tracking-[-0.045em] min-[521px]:px-[18px]">
+          <span className="inline-flex items-center px-[13px] font-bricolage text-[clamp(24px,2.45vw,38px)] font-semibold leading-none tracking-[-0.045em] xs:px-[18px]">
             {PHRASE}
           </span>
           <span

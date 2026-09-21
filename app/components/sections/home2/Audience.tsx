@@ -497,35 +497,52 @@ export default function Audience() {
       id="voorwie"
       className="relative rounded-[28px] bg-white py-[50px] lg:pt-28 lg:pb-24 flex flex-col gap-2"
     >
-      {/* From lg the left track takes the larger share so the heading fits on
-          one line. The paragraph is `justify-self-end` with its own max-width,
-          so it stays pinned to the right edge and doesn't move. Below lg the
-          columns stay even (and stacked below md) — mobile is untouched. */}
-      <div className="fix grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr] gap-8 items-start">
-        <div className="flex flex-col gap-4 max-w-[950px]">
+      {/* `.legacy-section-head` from grsolidvariant.html: a `1fr
+          minmax(260px,420px)` grid with a 42px gap, bottom-aligned, collapsing
+          to one column with an 18px gap at the source's 900px step (`md:` is
+          the nearest one this project defines). */}
+      <div className="fix grid grid-cols-1 items-start gap-[18px] md:grid-cols-[1fr_minmax(260px,420px)] md:items-end md:gap-[42px]">
+        <div className="flex flex-col gap-4">
           {/* <EyebrowLabel align="left">
             {t({ en: "Who it's for", nl: "Voor wie" })}
           </EyebrowLabel> */}
-          {/* lg:whitespace-nowrap guarantees the single line even if the text
-              renders in a wider fallback before Bricolage loads. The Dutch
-              string's literal <br/> is a real element, so it still breaks. */}
-          <h2 className="m-0 font-bricolage font-bold text-[clamp(28px,3.2vw,40px)] leading-[1.12] tracking-[-1px] text-[var(--color-haiti)] lg:whitespace-nowrap">
+          {/* Copy and type both come from `.legacy-who .legacy-section-head h2`
+              in grsolidvariant.html: Bricolage 600 at clamp(40px,4vw,58px),
+              1.1 line-height and -0.04em tracking (the "One typography and
+              control language" block wins over the earlier 43px rule), on
+              #0a0516 — which is what `--color-haiti` holds. The line break is
+              the source's own `<br>`; nothing there pins the heading to one
+              line, so it wraps on its own when the column gets narrow. */}
+          <h2 className="m-0 font-bricolage font-semibold text-[clamp(40px,4vw,58px)] leading-[1.1] tracking-[-0.04em] text-[var(--color-haiti)]">
             {withBreaks(
               t({
-                en: "Built for entrepreneurs like you.",
-                nl: "Gemaakt voor <br/> ondernemers zoals jij.",
+                en: "Made for the people<br/>who make things happen.",
+                nl: "Gemaakt voor de mensen<br/>die dingen voor elkaar krijgen.",
               }),
             )}
           </h2>
         </div>
-        <Reveal
-          delay={0.1}
-          className="self-center justify-self-end pt-[0px] max-w-95"
-        >
-          <p className="m-0 text-[16px] leading-[1.6] font-inter text-[var(--color-dolphin)] ">
+        <Reveal delay={0.1}>
+          {/* The fold's second column in the source. Five rules in
+              grsolidvariant.html hit it, all at the same specificity, so each
+              property is settled by the last one to declare it:
+
+                `.legacy-section-head p`   font:700 11px Inter; ls .13em; #5b21b6
+                `.legacy-section-head>p`   margin:0 0 4px; #6b6580; font:16px/1.6 Inter
+                `.legacy-section-head p`   font-size:12px; letter-spacing:.1em
+                `.legacy-section-head>p`   font-size:16px; line-height:1.6
+                `.legacy-section-head p`   color:var(--gr-brand-ink)
+
+              leaving Inter 400 16px/1.6, 0.1em tracking and #5b2dce. The two
+              surprises are both spill from rules written for the eyebrow: the
+              `font` shorthand never resets `letter-spacing`, so the 0.1em
+              survives, and the last colour rule is a descendant selector that
+              reaches this paragraph as well. `--gr-brand-ink` is redefined
+              further down the sheet, so it resolves to #5b2dce, not #5b219f. */}
+          <p className="m-0 mb-[4px] font-sans text-[16px] leading-[1.6] tracking-[0.1em] text-[#5b2dce]">
             {t({
-              en: "Different businesses, the same basics: coming across as professional, welcoming customers, planning appointments, keeping client details, and sending quotes and invoices.",
-              nl: "Andere bedrijven, dezelfde basis: professioneel overkomen, klanten ontvangen, afspraken plannen, klantgegevens bijhouden, offertes en facturen versturen.",
+              en: "For freelancers and small businesses who want to look professional, stay organised and spend more time on the work they love.",
+              nl: "Voor ZZP'ers en MKB'ers die professioneel willen overkomen, georganiseerd willen blijven en meer tijd willen besteden aan het werk waar ze van houden.",
             })}
           </p>
         </Reveal>
@@ -565,7 +582,7 @@ export default function Audience() {
         </div>
       </div>
 
-      <div className="fix-wide flex items-center justify-center gap-[10px] sm:hidden">
+      <div className="fix-wide flex items-center justify-end gap-[10px] sm:hidden">
         <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
         <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
       </div>

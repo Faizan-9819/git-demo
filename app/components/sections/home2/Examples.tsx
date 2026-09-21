@@ -33,9 +33,9 @@ import { withBreaks } from "@/app/lib/withBreaks";
  * 520px; those are inverted here into min-width steps, so the base values are
  * the smallest ones. Two deliberate deviations: horizontal spacing comes from
  * the shared `.fix` container rather than the source's own `--fold-inset`, so
- * this fold lines up with every other one on the page; and the head is a column
- * below 761px rather than the source's row, which at phone widths leaves the
- * heading about 190px next to the arrow pair.
+ * this fold lines up with every other one on the page; and the arrow pair sits
+ * under the cards at the right edge instead of beside the heading, which is
+ * where every carousel on this page keeps its controls.
  */
 
 const CASES: { name: string; meta: Translation; image: string }[] = [
@@ -123,33 +123,26 @@ export default function Examples() {
     <section
       id="voorbeelden"
       aria-labelledby="examples-heading"
-      className="relative overflow-hidden rounded-[13px] bg-[#0a0516] py-[56px] min-[761px]:pt-[80px] min-[761px]:pb-[64px]"
+      className="relative overflow-hidden rounded-[13px] bg-[#0a0516] py-[56px] md:pt-[80px] md:pb-[64px]"
     >
-      <div className="fix flex flex-col gap-[24px] min-[761px]:flex-row min-[761px]:items-end min-[761px]:justify-between min-[761px]:gap-[30px]">
-        <div>
-          <h2
-            id="examples-heading"
-            className="m-0 font-bricolage text-[31px] font-semibold leading-[1.1] tracking-[-0.04em] text-white min-[521px]:text-[clamp(40px,4vw,58px)]"
-          >
-            {withBreaks(
-              t({
-                en: "Real businesses.<br/>Beautiful first impressions.",
-                nl: "Echte ondernemers.<br/>Een sterke eerste indruk.",
-              }),
-            )}
-          </h2>
-          <span className="mt-[15px] block font-sans text-[16px] leading-[1.6] text-[#c9c2d4]">
-            {t({
-              en: "Built around each business, its people and its purpose.",
-              nl: "Gebouwd rond elk bedrijf, de mensen en het doel erachter.",
-            })}
-          </span>
-        </div>
-
-        <div className="flex gap-[10px] self-end">
-          <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
-          <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
-        </div>
+      <div className="fix">
+        <h2
+          id="examples-heading"
+          className="m-0 font-bricolage text-[31px] font-semibold leading-[1.1] tracking-[-0.04em] text-white xs:text-[clamp(40px,4vw,58px)]"
+        >
+          {withBreaks(
+            t({
+              en: "Real businesses.<br/>Beautiful first impressions.",
+              nl: "Echte ondernemers.<br/>Een sterke eerste indruk.",
+            }),
+          )}
+        </h2>
+        <span className="mt-[15px] block font-sans text-[16px] leading-[1.6] text-[#c9c2d4]">
+          {t({
+            en: "Built around each business, its people and its purpose.",
+            nl: "Gebouwd rond elk bedrijf, de mensen en het doel erachter.",
+          })}
+        </span>
       </div>
 
       <div className="fix mt-[18px]">
@@ -172,7 +165,7 @@ export default function Examples() {
                  their gaps overflow, which cut the third one. */
               <div
                 key={c.name}
-                className="min-w-0 flex-none basis-full min-[641px]:basis-[calc((100%-20px)/2)] min-[901px]:basis-[calc((100%-40px)/3)]"
+                className="min-w-0 flex-none basis-full sm:basis-[calc((100%-20px)/2)] lg:basis-[calc((100%-40px)/3)]"
               >
                 <Reveal
                   delay={Math.min(i * 0.05, 0.2)}
@@ -209,6 +202,14 @@ export default function Examples() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Controls sit under the cards, at the right edge. The viewport's
+            own 20px of bottom padding already stands in for most of the gap,
+            so only the remainder is added here. */}
+        <div className="mt-[4px] flex justify-end gap-[10px]">
+          <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
+          <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
         </div>
       </div>
     </section>

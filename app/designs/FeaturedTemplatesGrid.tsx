@@ -46,7 +46,7 @@ export default function FeaturedTemplatesGrid({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.4 }}
-        className="grid grid-cols-3 gap-[14px] max-[900px]:grid-cols-2 max-[600px]:grid-cols-1"
+        className="grid grid-cols-3 gap-[30px] max-lg:grid-cols-2 max-sm:grid-cols-1"
       >
         {filteredTemplates.map((template, index) => (
           <TemplateCard key={template.slug} template={template} index={index} />

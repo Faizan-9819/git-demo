@@ -8,7 +8,7 @@ import type { Translation } from "../../../i18n/config";
 
 const CARD_SHELL =
   "flex min-w-0 flex-col rounded-[13px] px-[18px] pt-6 text-white " +
-  "min-[361px]:px-[23px] min-[361px]:pt-7 min-[761px]:px-[25px] min-[1101px]:px-[34px] min-[1101px]:pt-[35px]";
+  "2xs:px-[23px] 2xs:pt-7 md:px-[25px] lg:px-[34px] lg:pt-[35px]";
 
 type FeatureItem = { label: Translation; icon: ReactNode };
 
@@ -41,7 +41,7 @@ function BigIcon({ children }: { children: ReactNode }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      className="h-6 w-6 min-[361px]:h-7 min-[361px]:w-7 min-[761px]:h-[29px] min-[761px]:w-[29px] min-[1101px]:h-8 min-[1101px]:w-8"
+      className="h-6 w-6 2xs:h-7 2xs:w-7 md:h-[29px] md:w-[29px] lg:h-8 lg:w-8"
     >
       {children}
     </svg>
@@ -201,10 +201,10 @@ function OfferCard({
   return (
     <article className={`${CARD_SHELL} ${surface}`} aria-labelledby={id}>
       <header>
-        <div className="flex items-center justify-between gap-[13px] min-[761px]:gap-3 min-[1101px]:gap-5">
+        <div className="flex items-center justify-between gap-[13px] md:gap-3 lg:gap-5">
           <h3
             id={id}
-            className="m-0 font-bricolage text-[28px] font-semibold leading-[1.14] tracking-[-0.035em] min-[361px]:text-[31px] min-[761px]:text-[30px] min-[1101px]:text-[33px]"
+            className="m-0 font-bricolage text-[28px] font-semibold leading-[1.14] tracking-[-0.035em] 2xs:text-[31px] md:text-[30px] lg:text-[33px]"
           >
             {titlePrefix ? t(titlePrefix) : ""}
             <span className="text-[#e4fa65]">
@@ -218,25 +218,29 @@ function OfferCard({
           </h3>
 
           <span
-            className={`grid h-[39px] w-[39px] flex-shrink-0 place-items-center rounded-[13px] min-[361px]:h-12 min-[361px]:w-12 min-[761px]:h-[49px] min-[761px]:w-[49px] min-[1101px]:h-[52px] min-[1101px]:w-[52px] ${headerIconClass}`}
+            className={`grid h-[39px] w-[39px] flex-shrink-0 place-items-center rounded-[13px] 2xs:h-12 2xs:w-12 md:h-[49px] md:w-[49px] lg:h-[52px] lg:w-[52px] ${headerIconClass}`}
           >
             {headerIcon}
           </span>
         </div>
 
         <p
-          className={`mt-[15px] mb-[22px] font-sans text-[16px] leading-[1.7] min-[761px]:mb-[23px] min-[761px]:min-h-[54px] min-[1101px]:min-h-0 ${taglineClass}`}
+          className={`mt-[15px] mb-[22px] font-sans text-[16px] leading-[1.7] md:mb-[23px] md:min-h-[54px] lg:min-h-0 ${taglineClass}`}
         >
           {t(tagline)}
         </p>
       </header>
 
+      {/* The list is deliberately not `flex-1`. The two cards are grid siblings,
+          so the shorter one (the Hub, five rows against the website's six) is
+          stretched to its neighbour's height; letting the list absorb that
+          difference pushed its foot note to the card's bottom edge, away from
+          the last row. Without it the rows and the note keep the same rhythm in
+          both cards and the slack falls below the note instead. */}
       <ul
         className={
-          "m-0 flex-1 list-none p-0 " +
-          (evenRows
-            ? "min-[761px]:grid min-[761px]:[grid-template-rows:repeat(6,1fr)]"
-            : "")
+          "m-0 list-none p-0 " +
+          (evenRows ? "md:grid md:[grid-template-rows:repeat(6,1fr)]" : "")
         }
       >
         {features.map((item) => (
@@ -249,17 +253,17 @@ function OfferCard({
             >
               {item.icon}
             </span>
-            <h4 className="m-0 font-bricolage text-[20px] font-medium leading-[1.18] tracking-[-0.02em] min-[361px]:text-[21px] min-[1101px]:text-[22px]">
+            <h4 className="m-0 font-bricolage text-[18px] font-medium leading-[1.18] tracking-[-0.02em] 2xs:text-[21px] lg:text-[18px]">
               {t(item.label)}
             </h4>
           </li>
         ))}
       </ul>
 
-      <p className="m-0 flex items-center gap-[10px] border-t border-white/25 pt-[17px] pb-[19px] font-sans text-[13px] font-medium text-[#e4fa65] min-[761px]:gap-[13px] min-[1101px]:text-[14px]">
+      <p className="m-0 flex items-center gap-[10px] border-t border-white/25 pt-[17px] pb-[19px] font-sans text-[13px] font-medium text-[#e4fa65] md:gap-[13px] lg:text-[14px]">
         <span
           aria-hidden="true"
-          className="text-[23px] leading-none min-[761px]:text-[27px]"
+          className="text-[23px] leading-none md:text-[27px]"
         >
           ✳
         </span>
@@ -276,15 +280,15 @@ export default function Solution() {
     <section
       id="oplossing"
       aria-labelledby="offer-heading"
-      className="rounded-[13px] bg-[#e4fa65] pt-14 pb-14 text-[#0a0516] min-[761px]:pt-20 min-[761px]:pb-16"
+      className="rounded-[13px] bg-[#e4fa65] pt-14 pb-14 text-[#0a0516] md:pt-20 md:pb-16"
     >
       <div className="fix">
         {/* The `.eyebrow` ("01 / THE COMPLETE PICTURE") is display:none in the
             source, so it is left out rather than rendered and hidden. */}
-        <div className="mb-[44px] grid grid-cols-1 items-end gap-[21px] min-[761px]:grid-cols-[2fr_1fr] min-[761px]:gap-[30px] min-[1101px]:grid-cols-[1.9fr_1fr] min-[1101px]:gap-[55px]">
+        <div className="mb-[44px] grid grid-cols-1 items-end gap-[21px] md:grid-cols-[2fr_1fr] md:gap-[30px] lg:grid-cols-[1.9fr_1fr] lg:gap-[55px]">
           <h2
             id="offer-heading"
-            className="m-0 font-bricolage text-[clamp(35px,9.7vw,52px)] font-semibold leading-[1.07] tracking-[-0.045em] min-[761px]:text-[clamp(40px,4.6vw,65px)]"
+            className="m-0 font-bricolage text-[clamp(35px,9.7vw,52px)] font-semibold leading-[1.07] tracking-[-0.045em] md:text-[clamp(40px,4.6vw,65px)]"
           >
             {t({ en: "Good on the outside.", nl: "Goed aan de buitenkant." })}
             <br />
@@ -296,7 +300,7 @@ export default function Solution() {
             </span>
           </h2>
 
-          <p className="m-0 font-sans text-[16px] leading-[1.6] text-[#625a70] min-[761px]:mb-[5px] min-[761px]:ml-auto min-[761px]:max-w-[340px]">
+          <p className="m-0 font-sans text-[16px] leading-[1.6] text-[#625a70] md:mb-[5px] md:ml-auto md:max-w-[340px]">
             {t({
               en: "A professional website ",
               nl: "Een professionele website ",
@@ -311,7 +315,7 @@ export default function Solution() {
           </p>
         </div>
 
-        <div className="relative grid grid-cols-1 gap-0 min-[761px]:grid-cols-2 min-[761px]:gap-6">
+        <div className="relative grid grid-cols-1 gap-0 md:grid-cols-2 md:gap-6">
           <OfferCard
             id="website-heading"
             surface="bg-[#0a0516]"
@@ -349,7 +353,7 @@ export default function Solution() {
               straddles the two stacked cards. */}
           <span
             aria-hidden="true"
-            className="relative z-[1] mx-auto my-[-8px] grid h-[74px] w-[74px] place-items-center rounded-full border-[6px] border-[#e4fa65] bg-[#0a0516] text-[#e4fa65] min-[761px]:absolute min-[761px]:top-1/2 min-[761px]:left-1/2 min-[761px]:mx-0 min-[761px]:my-0 min-[761px]:h-[68px] min-[761px]:w-[68px] min-[761px]:-translate-x-1/2 min-[761px]:-translate-y-1/2 min-[1101px]:h-[76px] min-[1101px]:w-[76px]"
+            className="relative z-[1] mx-auto my-[-8px] grid h-[74px] w-[74px] place-items-center rounded-full border-[6px] border-[#e4fa65] bg-[#0a0516] text-[#e4fa65] md:absolute md:top-1/2 md:left-1/2 md:mx-0 md:my-0 md:h-[68px] md:w-[68px] md:-translate-x-1/2 md:-translate-y-1/2 lg:h-[76px] lg:w-[76px]"
           >
             <Plus size={38} strokeWidth={2.5} />
           </span>
@@ -385,15 +389,15 @@ export default function Solution() {
 
         {/* Package summary bar. Its eyebrow ("TWO PARTS. ONE COMPLETE
             PACKAGE.") is hidden by the same global rule as the one above. */}
-        <div className="block pt-[30px] min-[761px]:flex min-[761px]:items-start min-[761px]:justify-between min-[761px]:gap-[25px] min-[761px]:pt-9 min-[1101px]:items-center">
-          <div className="flex items-center gap-[13px] min-[761px]:gap-5">
+        <div className="block pt-[30px] md:flex md:items-start md:justify-between md:gap-[25px] md:pt-9 lg:items-center">
+          <div className="flex items-center gap-[13px] md:gap-5">
             <span
               aria-hidden="true"
-              className="flex-shrink-0 text-[39px] leading-none text-[#5b2dce] min-[761px]:text-[57px]"
+              className="flex-shrink-0 text-[39px] leading-none text-[#5b2dce] md:text-[57px]"
             >
               ✳
             </span>
-            <h3 className="m-0 font-bricolage text-[27px] font-semibold leading-[1.12] tracking-[-0.035em] min-[761px]:text-[26px] min-[1101px]:text-[29px]">
+            <h3 className="m-0 font-bricolage text-[27px] font-semibold leading-[1.12] tracking-[-0.035em] md:text-[26px] lg:text-[29px]">
               {t({
                 en: "Your website + your business hub.",
                 nl: "Jouw website + jouw bedrijfshub.",
@@ -401,10 +405,10 @@ export default function Solution() {
             </h3>
           </div>
 
-          <div className="mt-[25px] flex flex-wrap items-start justify-between gap-[18px] min-[761px]:mt-0 min-[761px]:flex-col min-[761px]:flex-nowrap min-[761px]:items-end min-[761px]:justify-start min-[761px]:gap-[14px] min-[1101px]:flex-row min-[1101px]:items-center min-[1101px]:gap-6">
+          <div className="mt-[25px] flex flex-wrap items-start justify-between gap-[18px] md:mt-0 md:flex-col md:flex-nowrap md:items-end md:justify-start md:gap-[14px] lg:flex-row lg:items-center lg:gap-6">
             <p className="m-0 font-sans text-[14px] leading-[1.3] whitespace-nowrap">
               <div>{t({ en: "From ", nl: "Vanaf " })}</div>
-              <strong className="font-bricolage text-[28px] font-semibold tracking-[-0.05em] min-[761px]:text-[42px]">
+              <strong className="font-bricolage text-[28px] font-semibold tracking-[-0.05em] md:text-[42px]">
                 €69
               </strong>
               <span>{t({ en: " / month", nl: " / maand" })}</span>
@@ -418,7 +422,7 @@ export default function Solution() {
             {/*  */}
             <a
               href="#pricing"
-              className="arrow-cta inline-flex min-h-[51px] items-center justify-center gap-2 rounded-full border border-transparent bg-[#0a0516] px-3 py-1 lg:px-[17px] lg:py-[13px] font-sans text-[12px] font-semibold leading-[1.35] whitespace-nowrap text-[#e4fa65] min-[761px]:min-h-[52px] min-[761px]:gap-2 min-[761px]:px-5 min-[761px]:py-[14px] min-[761px]:text-[15px]"
+              className="arrow-cta inline-flex min-h-[51px] items-center justify-center gap-2 rounded-full border border-transparent bg-[#0a0516] px-3 py-1 lg:px-[17px] lg:py-[13px] font-sans text-[12px] font-semibold leading-[1.35] whitespace-nowrap text-[#e4fa65] md:min-h-[52px] md:gap-2 md:px-5 md:py-[14px] md:text-[15px]"
             >
               {t({ en: "Explore the package", nl: "Bekijk het pakket" })}
               <ArrowIcon direction="up-right" size={18} />

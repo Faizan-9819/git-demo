@@ -297,28 +297,21 @@ export default function BlogTeaser() {
     <section
       id="guides"
       aria-labelledby="guides-heading"
-      className="relative overflow-hidden rounded-[13px] bg-[#0a0516] py-[56px] text-white min-[761px]:py-[80px]"
+      className="relative overflow-hidden rounded-[13px] bg-[#0a0516] py-[56px] text-white md:py-[80px]"
     >
       <div className="fix">
-        {/* `.legacy-blog .legacy-section-head` is `align-items:center`; the
-            right-hand column here holds the carousel arrows rather than the
-            copy the other folds put there. */}
-        <div className="grid grid-cols-1 items-center gap-[18px] md:grid-cols-[1fr_auto] md:gap-[42px]">
-          <h2
-            id="guides-heading"
-            className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] font-semibold leading-[1.1] tracking-[-0.04em] text-white min-[761px]:whitespace-nowrap"
-          >
-            {t({
-              en: "Helpful ideas for your next step.",
-              nl: "Handige ideeën voor je volgende stap.",
-            })}
-          </h2>
-
-          <div className="flex gap-[10px] md:justify-self-end">
-            <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
-            <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
-          </div>
-        </div>
+        {/* `.legacy-blog .legacy-section-head` is `align-items:center`. The
+            arrows the source keeps in the right-hand column now sit under the
+            cards instead, so the head is the heading alone. */}
+        <h2
+          id="guides-heading"
+          className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] font-semibold leading-[1.1] tracking-[-0.04em] text-white md:whitespace-nowrap"
+        >
+          {t({
+            en: "Helpful ideas for your next step.",
+            nl: "Handige ideeën voor je volgende stap.",
+          })}
+        </h2>
 
         {/* `.legacy-blog-grid`: 44px below the head, three columns from 900px up
             with a 20px gutter — reproduced here as the carousel's slide width
@@ -384,6 +377,14 @@ export default function BlogTeaser() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Controls sit under the cards, at the right edge. The viewport above
+            already leaves 4px below them (20px of padding less the -16px pull),
+            so this adds the rest of the gap. */}
+        <div className="mt-[20px] flex justify-end gap-[10px]">
+          <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
+          <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
         </div>
       </div>
     </section>

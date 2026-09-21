@@ -127,11 +127,11 @@ function AccordionItem({
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={panelId}
-        className="flex w-full cursor-pointer items-center justify-between gap-[14px] px-[18px] py-[14px] text-left min-[761px]:gap-[16px] min-[761px]:px-[28px] min-[761px]:py-[20px]"
+        className="flex w-full cursor-pointer items-center justify-between gap-[14px] px-[18px] py-[14px] text-left md:gap-[16px] md:px-[28px] md:py-[20px]"
       >
         <span
           className={
-            "font-sans text-[15px] font-medium leading-[1.45] tracking-[-0.01em] transition-colors duration-200 min-[761px]:text-[17px] " +
+            "font-sans text-[15px] font-medium leading-[1.45] tracking-[-0.01em] transition-colors duration-200 md:text-[17px] " +
             (isOpen ? "text-[#5b2dce]" : "text-[#0a0516]")
           }
         >
@@ -152,7 +152,7 @@ function AccordionItem({
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-[18px] pb-[18px] font-sans text-[14px] leading-[1.75] text-[#625a70] min-[761px]:px-[28px] min-[761px]:pb-[22px]">
+            <div className="px-[18px] pb-[18px] font-sans text-[14px] leading-[1.75] text-[#625a70] md:px-[28px] md:pb-[22px]">
               <AnswerBody answer={entry.answer} />
             </div>
           </motion.div>
@@ -171,7 +171,7 @@ function HelpCard({ onBookClick }: { onBookClick?: () => void }) {
     "arrow-cta mt-[4px] inline-flex min-h-[52px] items-center gap-[8px] self-start rounded-full bg-[#5b2dce] px-[20px] py-[14px] font-sans text-[14px] font-semibold text-white hover:bg-[#e4fa65] hover:text-[#0a0516]";
 
   return (
-    <div className="relative mt-[28px] flex w-full max-w-[378px] flex-col gap-[16px] overflow-hidden rounded-[13px] border border-[#ded8e7] p-[26px] min-[761px]:mt-[32px] min-[761px]:p-[30px]">
+    <div className="relative mt-[28px] flex w-full max-w-[378px] flex-col gap-[16px] overflow-hidden rounded-[13px] border border-[#ded8e7] p-[26px] md:mt-[32px] md:p-[30px]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-[13px]"
@@ -230,14 +230,14 @@ export default function FaqAccordion({
     <section
       id="faq"
       aria-labelledby="faq-heading"
-      className="rounded-[13px] bg-white py-[56px] text-[#0a0516] min-[761px]:py-[80px]"
+      className="rounded-[13px] bg-white py-[56px] text-[#0a0516] md:py-[80px]"
     >
       {/* items-start is what lets the left column stick: a grid item stretches
           to the full row height by default, leaving sticky nothing to travel
           in. It only matters from 761px, where the two columns exist. */}
-      <div className="fix grid grid-cols-1 items-start gap-[35px] min-[761px]:grid-cols-[0.85fr_1.15fr] min-[761px]:gap-[50px] min-[1051px]:gap-[90px]">
+      <div className="fix grid grid-cols-1 items-start gap-[35px] md:grid-cols-[0.85fr_1.15fr] md:gap-[50px] lg:gap-[90px]">
         {/* top-[120px] clears the fixed navbar (76px) with breathing room. */}
-        <div className="self-start min-[761px]:sticky min-[761px]:top-[120px]">
+        <div className="self-start md:sticky md:top-[120px]">
           {/* <p className="m-0 mb-[20px] flex items-center gap-[10px] font-sans text-[11px] font-semibold leading-[1.5] tracking-[0.07em]">
             07 / GOOD QUESTIONS
           </p> */}

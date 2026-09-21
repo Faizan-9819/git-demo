@@ -71,7 +71,7 @@ export default function TemplateCard({ template, index = 0 }: TemplateCardProps)
 function TemplatePreview({ img, title }: { img: string; title: string }) {
   if (!img.trim()) {
     return (
-      <div className="flex aspect-[1.22] w-full flex-col items-center justify-center gap-[8px] bg-[#eeeeee] px-[24px] text-center font-sans text-[#0a0516] max-[600px]:aspect-[1.42]">
+      <div className="flex aspect-[1.22] w-full flex-col items-center justify-center gap-[8px] bg-[#eeeeee] px-[24px] text-center font-sans text-[#0a0516] max-sm:aspect-[1.42]">
         <span className="text-[13px] leading-[1.35] font-semibold">
           {title}
         </span>
@@ -88,7 +88,7 @@ function TemplatePreview({ img, title }: { img: string; title: string }) {
       src={img}
       alt={title}
       loading="lazy"
-      className="aspect-[1.22] w-full object-cover object-top max-[600px]:aspect-[1.42]"
+      className="aspect-[1.22] w-full object-cover object-top max-sm:aspect-[1.42]"
     />
   );
 }
@@ -123,7 +123,7 @@ type TemplateCardProps = {
  */
 export default function TemplateCard({ template }: TemplateCardProps) {
   return (
-    <article className="translate-y-0 overflow-hidden rounded-[13px] border border-[rgb(10_5_22_/_11%)] bg-[#eeeeee] [transition:translate_.25s_ease,box-shadow_.25s_ease] hover:-translate-y-[5px] hover:shadow-[0_0_0_1px_rgb(228_250_101_/_45%),0_0_28px_rgb(228_250_101_/_25%)]">
+    <article className="translate-y-0 overflow-hidden border border-[rgb(10_5_22_/_11%)] bg-[#eeeeee] [transition:translate_.25s_ease,box-shadow_.25s_ease] hover:-translate-y-[5px] hover:shadow-[0_0_0_1px_rgb(228_250_101_/_45%),0_0_28px_rgb(228_250_101_/_25%)]">
       <Link href={`/designs/${template.slug}`} className="block">
         <TemplatePreview img={template.img} title={template.title} />
 

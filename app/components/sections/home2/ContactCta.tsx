@@ -38,7 +38,7 @@ export default function ContactCta() {
           YOUR NEXT CHAPTER STARTS HERE
         </p>
 
-        <div className="mt-[24px] flex items-end justify-between gap-[16px] min-[761px]:items-center min-[761px]:gap-[30px]">
+        <div className="mt-[24px] flex items-end justify-between gap-[16px] md:items-center md:gap-[30px]">
           <h2
             id="contact-heading"
             className="m-0 font-bricolage text-[28px] font-semibold leading-[1.05] tracking-[-0.055em]  md:text-[76px]"
@@ -51,13 +51,13 @@ export default function ContactCta() {
           <a
             href={mailto}
             aria-label="Email the Growth Rocket sales team"
-            className="arrow-cta grid h-[54px] w-[54px] flex-shrink-0 place-items-center rounded-full bg-[#0a0516] font-light text-[#e4fa65] min-[761px]:h-[110px] min-[761px]:w-[110px]"
+            className="arrow-cta grid h-[54px] w-[54px] flex-shrink-0 place-items-center rounded-full bg-[#0a0516] font-light text-[#e4fa65] md:h-[110px] md:w-[110px]"
           >
             <ArrowIcon direction="up-right" className="btn-arrow--xl" />
           </a>
         </div>
 
-        <div className="mt-[30px] flex flex-col items-start gap-[20px] border-t border-[#b8ce50] pt-[25px] min-[761px]:mt-[40px] min-[761px]:flex-row min-[761px]:items-end min-[761px]:justify-between min-[761px]:gap-[24px]">
+        <div className="mt-[30px] flex flex-col items-start gap-[20px] border-t border-[#b8ce50] pt-[25px] md:mt-[40px] md:flex-row md:items-end md:justify-between md:gap-[24px]">
           <p className="m-0 font-sans text-[14px] leading-[1.65]">
             Tell us about your business.
             <br />
@@ -66,7 +66,7 @@ export default function ContactCta() {
 
           <a
             href={mailto}
-            className="arrow-cta inline-flex items-center gap-[6px] border-b border-current font-sans text-[15px] leading-[1.65] [overflow-wrap:anywhere] min-[761px]:text-[12px] min-[1051px]:text-[15px]"
+            className="arrow-cta inline-flex items-center gap-[6px] border-b border-current font-sans text-[15px] leading-[1.65] [overflow-wrap:anywhere] md:text-[12px] lg:text-[15px]"
           >
             sales@getgrowthrocket.com
             <ArrowIcon direction="up-right" size={14} />
@@ -74,7 +74,7 @@ export default function ContactCta() {
 
           <a
             href="tel:+31857444176"
-            className="arrow-cta inline-flex items-center gap-[6px] border-b border-current font-sans text-[15px] leading-[1.65] [overflow-wrap:anywhere] min-[761px]:text-[12px] min-[1051px]:text-[15px]"
+            className="arrow-cta inline-flex items-center gap-[6px] border-b border-current font-sans text-[15px] leading-[1.65] [overflow-wrap:anywhere] md:text-[12px] lg:text-[15px]"
           >
             +31 85 744 4176
             <ArrowIcon direction="up-right" size={14} />

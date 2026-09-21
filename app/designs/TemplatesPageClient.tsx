@@ -48,7 +48,7 @@ export default function TemplatesPageClient() {
     /* The filter band goes through `bleed` so it runs to the card's edges,
        while the heading and grid sit on the rail inside it.
 
-       `max-[600px]:px-0!` drops the fold's phone inset for this fold only.
+       `max-sm:px-0!` drops the fold's phone inset for this fold only.
        DesignsFold carries it as a floor so copy never touches a COLOURED card
        edge (the hero and the CTA), but this card is white on a white page, so
        the inset is invisible padding that only pushes the heading and the grid
@@ -56,10 +56,10 @@ export default function TemplatesPageClient() {
        the rail sits on the card's own edge — 14px off the viewport, the same
        gutter `.newfix-card` gives every fold and the same 14px the page uses
        between them. The `!` is needed because this lands in the same Tailwind
-       layer as the base `max-[600px]:px-[22px]` it has to beat. */
+       layer as the base `max-sm:px-[22px]` it has to beat. */
     <DesignsFold
       id="designs"
-      className="bg-white pt-0! text-[#0a0516] max-[600px]:px-0!"
+      className="bg-white pt-0! text-[#0a0516] max-sm:px-0!"
       bleed={
         <CategoryFilter
           selectedCategory={selectedCategory}
@@ -67,7 +67,7 @@ export default function TemplatesPageClient() {
         />
       }
     >
-      <div className="mt-[66px] mb-[32px] flex items-end justify-between gap-[30px] max-[900px]:flex-col max-[900px]:items-start max-[600px]:mt-[46px] max-[600px]:mb-[26px]">
+      <div className="mt-[66px] mb-[32px] flex items-end justify-between gap-[30px] max-lg:flex-col max-lg:items-start max-sm:mt-[46px] max-sm:mb-[26px]">
         <h2 className="font-bricolage text-[clamp(36px,4vw,58px)] leading-[0.94] font-semibold tracking-[-0.065em]">
           Latest designs
         </h2>

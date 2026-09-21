@@ -25,7 +25,7 @@ export default function DesignsHero() {
   return (
     <DesignsFold className="mt-20 bg-[#0a0516] text-white">
       <Reveal>
-        <h1 className="font-bricolage text-[clamp(48px,6.1vw,88px)] leading-[0.94]! font-semibold tracking-[-0.065em]! max-[600px]:text-[48px]">
+        <h1 className="font-bricolage text-[clamp(48px,6.1vw,88px)] leading-[0.94]! font-semibold tracking-[-0.065em]! max-sm:text-[48px]">
           Choose your design.
           <br />
           <span className="text-[#e4fa65]">Make it yours.</span>

@@ -11,6 +11,7 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 import ArrowIcon from "../../ui/ArrowIcon";
+import FooterLoopStrip from "./FooterLoopStrip";
 import { CONTACT_INFO, phoneHref } from "@/app/lib/contact";
 import { localizedHref } from "@/app/i18n/locale-href";
 import type { Locale } from "@/app/i18n/config";
@@ -19,6 +20,12 @@ import type { Locale } from "@/app/i18n/config";
  * Site footer — ported from `footer.legacy-footer.fresh-footer` in
  * grsolidvariant.html, the block that sits directly under
  * {@link FooterLoopStrip}.
+ *
+ * The strip is rendered here rather than by each caller, so every route that
+ * mounts the footer gets the pair. It stays a sibling of the `<footer>` card
+ * instead of a child of it: the strip prints on the page's own white, while the
+ * card is a deep, rounded surface, and on home2 the two are separate children
+ * of HomeShell's flex column so its 12px gap still falls between them.
  *
  * home2 renders it itself as the last fold inside HomeShell; every other route
  * gets it from the root layout via {@link SiteFooter}, which supplies the page
@@ -158,148 +165,151 @@ export default function Footer2() {
   };
 
   return (
-    <footer className="overflow-hidden rounded-[13px] bg-[#0a0516] pt-[34px] pb-[22px] text-white min-[521px]:pt-[40px] min-[521px]:pb-[28px]">
-      <div className="fix">
-        {/* Lead block: brand statement on the left, pricing CTA on the right.
-            `minmax(0,1fr)` keeps the copy column from being widened past the
-            grid by its own max-widths. */}
-        <div className="grid grid-cols-1 items-center gap-[32px] border-b border-white/12 pb-[34px] min-[901px]:grid-cols-[minmax(0,1fr)_auto]">
-          <div>
-            <img
-              src="/figma/icons/logos/logowhite.svg"
-              alt="Growth Rocket"
-              width={145}
-              height={40}
-              loading="lazy"
-              className="mb-[22px] h-auto w-[145px]"
-            />
-            <h2 className="m-0 max-w-[620px] font-sans text-[18px] font-bold leading-[1.55] text-white">
-              Your website and everyday business tools.
-            </h2>
-            <p className="mt-[8px] max-w-[680px] font-sans text-[16px] leading-[1.65] text-[#c9c2d4]">
-              Together, for a business that’s going places. For freelancers and
-              small businesses that want to get found, get booked and stay
-              organised without handling the technical side.
-            </p>
+    <>
+      <FooterLoopStrip />
+      <footer className="overflow-hidden rounded-[13px] bg-[#0a0516] pt-[34px] pb-[22px] text-white xs:pt-[40px] xs:pb-[28px]">
+        <div className="fix">
+          {/* Lead block: brand statement on the left, pricing CTA on the right.
+              `minmax(0,1fr)` keeps the copy column from being widened past the
+              grid by its own max-widths. */}
+          <div className="grid grid-cols-1 items-center gap-[32px] border-b border-white/12 pb-[34px] lg:grid-cols-[minmax(0,1fr)_auto]">
+            <div>
+              <img
+                src="/figma/icons/logos/logowhite.svg"
+                alt="Growth Rocket"
+                width={145}
+                height={40}
+                loading="lazy"
+                className="mb-[22px] h-auto w-[145px]"
+              />
+              <h2 className="m-0 max-w-[620px] font-sans text-[18px] font-bold leading-[1.55] text-white">
+                Your website and everyday business tools.
+              </h2>
+              <p className="mt-[8px] max-w-[680px] font-sans text-[16px] leading-[1.65] text-[#c9c2d4]">
+                Together, for a business that’s going places. For freelancers and
+                small businesses that want to get found, get booked and stay
+                organised without handling the technical side.
+              </p>
+            </div>
+
+            <NavLink
+              href={resolve({ label: "Pricing", href: "#pricing" })}
+              className="arrow-cta inline-flex min-h-[52px] w-fit md:w-full items-center justify-center gap-[8px] rounded-full bg-[#e4fa65] px-[20px] py-[13px] font-sans text-[15px] font-bold leading-none whitespace-nowrap text-[#0a0516] xs:w-max"
+            >
+              View full pricing
+              <ArrowIcon
+                direction="up-right"
+                // size={21}
+                className="text-[#5b2dce]"
+              />
+            </NavLink>
           </div>
 
-          <NavLink
-            href={resolve({ label: "Pricing", href: "#pricing" })}
-            className="arrow-cta inline-flex min-h-[52px] w-fit md:w-full items-center justify-center gap-[8px] rounded-full bg-[#e4fa65] px-[20px] py-[13px] font-sans text-[15px] font-bold leading-none whitespace-nowrap text-[#0a0516] min-[521px]:w-max"
-          >
-            View full pricing
-            <ArrowIcon
-              direction="up-right"
-              // size={21}
-              className="text-[#5b2dce]"
-            />
-          </NavLink>
-        </div>
-
-        {/* Link grid: three equal columns plus a wider contact column from
-            901px. Below that it drops to two columns, which suits Product and
-            Explore — short labels that pair up without wrapping — but not
-            Social or Contact, whose rows carry an icon chip and, in Contact's
-            case, an address block. Those two span the full width instead, so
-            the grid reads as a 2-up row followed by two stacked blocks. */}
-        <div className="grid grid-cols-2 gap-[36px] pt-[34px] pb-[28px] min-[901px]:grid-cols-[repeat(3,minmax(120px,1fr))_minmax(300px,1.35fr)]">
-          <div>
-            <h3 className={HEADING_CLASS}>Product</h3>
-            {PRODUCT_LINKS.map((link) => (
-              <NavLink
-                key={link.label}
-                href={resolve(link)}
-                className={LINK_CLASS}
-              >
-                {link.label}
-              </NavLink>
-            ))}
-          </div>
-
-          <div>
-            <h3 className={HEADING_CLASS}>Explore</h3>
-            {EXPLORE_LINKS.map((link) => (
-              <NavLink
-                key={link.label}
-                href={resolve(link)}
-                className={LINK_CLASS}
-              >
-                {link.label}
-              </NavLink>
-            ))}
-          </div>
-
-          <div className="col-span-2 min-[901px]:col-span-1">
-            <h3 className={HEADING_CLASS}>Social</h3>
-            {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={LINK_CLASS}
-              >
-                <IconChip>
-                  <Icon />
-                </IconChip>
-                {label}
-              </a>
-            ))}
-          </div>
-
-          <div className="col-span-2 min-[901px]:col-span-1">
-            <h3 className={HEADING_CLASS}>Contact</h3>
-            <p className="mb-[18px] max-w-[340px] font-sans text-[14px] leading-[1.7] text-white/72">
-              <strong className="font-bold text-white">
-                {CONTACT_INFO.company}
-              </strong>
-              {CONTACT_INFO.addressLines.map((line) => (
-                <span key={line}>
-                  <br />
-                  {line}
-                </span>
+          {/* Link grid: three equal columns plus a wider contact column from
+              901px. Below that it drops to two columns, which suits Product and
+              Explore — short labels that pair up without wrapping — but not
+              Social or Contact, whose rows carry an icon chip and, in Contact's
+              case, an address block. Those two span the full width instead, so
+              the grid reads as a 2-up row followed by two stacked blocks. */}
+          <div className="grid grid-cols-2 gap-[36px] pt-[34px] pb-[28px] lg:grid-cols-[repeat(3,minmax(120px,1fr))_minmax(300px,1.35fr)]">
+            <div>
+              <h3 className={HEADING_CLASS}>Product</h3>
+              {PRODUCT_LINKS.map((link) => (
+                <NavLink
+                  key={link.label}
+                  href={resolve(link)}
+                  className={LINK_CLASS}
+                >
+                  {link.label}
+                </NavLink>
               ))}
-            </p>
+            </div>
 
-            <a href={`mailto:${CONTACT_INFO.emails[0]}`} className={LINK_CLASS}>
-              <IconChip>
-                <Mail strokeWidth={1.8} />
-              </IconChip>
-              {CONTACT_INFO.emails[0]}
-            </a>
-            <a href={`mailto:${CONTACT_INFO.emails[1]}`} className={LINK_CLASS}>
-              <IconChip>
-                <Headset strokeWidth={1.8} />
-              </IconChip>
-              {CONTACT_INFO.emails[1]}
-            </a>
-            <a href={phoneHref(CONTACT_INFO.phone)} className={LINK_CLASS}>
-              <IconChip>
-                <Phone strokeWidth={1.8} />
-              </IconChip>
-              {CONTACT_INFO.phone}
-            </a>
+            <div>
+              <h3 className={HEADING_CLASS}>Explore</h3>
+              {EXPLORE_LINKS.map((link) => (
+                <NavLink
+                  key={link.label}
+                  href={resolve(link)}
+                  className={LINK_CLASS}
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+            </div>
+
+            <div className="col-span-2 lg:col-span-1">
+              <h3 className={HEADING_CLASS}>Social</h3>
+              {SOCIAL_LINKS.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={LINK_CLASS}
+                >
+                  <IconChip>
+                    <Icon />
+                  </IconChip>
+                  {label}
+                </a>
+              ))}
+            </div>
+
+            <div className="col-span-2 lg:col-span-1">
+              <h3 className={HEADING_CLASS}>Contact</h3>
+              <p className="mb-[18px] max-w-[340px] font-sans text-[14px] leading-[1.7] text-white/72">
+                <strong className="font-bold text-white">
+                  {CONTACT_INFO.company}
+                </strong>
+                {CONTACT_INFO.addressLines.map((line) => (
+                  <span key={line}>
+                    <br />
+                    {line}
+                  </span>
+                ))}
+              </p>
+
+              <a href={`mailto:${CONTACT_INFO.emails[0]}`} className={LINK_CLASS}>
+                <IconChip>
+                  <Mail strokeWidth={1.8} />
+                </IconChip>
+                {CONTACT_INFO.emails[0]}
+              </a>
+              <a href={`mailto:${CONTACT_INFO.emails[1]}`} className={LINK_CLASS}>
+                <IconChip>
+                  <Headset strokeWidth={1.8} />
+                </IconChip>
+                {CONTACT_INFO.emails[1]}
+              </a>
+              <a href={phoneHref(CONTACT_INFO.phone)} className={LINK_CLASS}>
+                <IconChip>
+                  <Phone strokeWidth={1.8} />
+                </IconChip>
+                {CONTACT_INFO.phone}
+              </a>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap justify-between gap-[18px] border-t border-white/10 pt-[22px] font-sans text-[13px] leading-[1.5] text-white/58">
+            <span>
+              © 2026 Growth Rocket by{" "}
+              <b className="font-bold text-white">Parashift Technologies</b>
+            </span>
+            <span className="flex flex-wrap gap-[16px]">
+              {LEGAL_LINKS.map((link) => (
+                <Link
+                  key={link.label}
+                  href={resolve(link)}
+                  className="text-white/58 transition-colors hover:text-[#e4fa65]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </span>
           </div>
         </div>
-
-        <div className="flex flex-wrap justify-between gap-[18px] border-t border-white/10 pt-[22px] font-sans text-[13px] leading-[1.5] text-white/58">
-          <span>
-            © 2026 Growth Rocket by{" "}
-            <b className="font-bold text-white">Parashift Technologies</b>
-          </span>
-          <span className="flex flex-wrap gap-[16px]">
-            {LEGAL_LINKS.map((link) => (
-              <Link
-                key={link.label}
-                href={resolve(link)}
-                className="text-white/58 transition-colors hover:text-[#e4fa65]"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </span>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }

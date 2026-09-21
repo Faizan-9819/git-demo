@@ -49,7 +49,7 @@ type Props = {
  * comment in CategoryFilter, which pairs with this.
  *
  * The floor is there for the COLOURED folds. The gallery cancels its phone
- * step through `className` (`max-[600px]:px-0!`) because its card is white on
+ * step through `className` (`max-sm:px-0!`) because its card is white on
  * a white page: there is no edge for copy to touch, and 22px of invisible
  * padding only pushed the grid inside the hero and CTA card edges above and
  * below it.
@@ -70,7 +70,7 @@ export default function DesignsFold({
   return (
     <section id={id} className="w-full">
       <div
-        className={`newfix-card rounded-[13px] px-[var(--fold-inset)] py-[clamp(52px,7vw,104px)] max-[600px]:px-[22px] max-[600px]:py-[46px] ${className ?? ""}`}
+        className={`newfix-card rounded-[13px] px-[var(--fold-inset)] py-[clamp(52px,7vw,104px)] max-sm:px-[22px] max-sm:py-[46px] ${className ?? ""}`}
       >
         {bleed}
         <div className={`fix px-0! ${innerClassName ?? ""}`}>{children}</div>

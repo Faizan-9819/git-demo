@@ -21,9 +21,9 @@ export default function PricingTeaser() {
     <section
       id="pricing"
       aria-labelledby="pricing-teaser-heading"
-      className="overflow-hidden rounded-[13px] bg-[#0a0516] py-[44px] text-white min-[761px]:py-[58px]"
+      className="overflow-hidden rounded-[13px] bg-[#0a0516] py-[44px] text-white md:py-[58px]"
     >
-      <div className="fix grid grid-cols-1 items-center gap-[clamp(24px,4vw,72px)] min-[901px]:grid-cols-[minmax(0,1.25fr)_auto]">
+      <div className="fix grid grid-cols-1 items-center gap-[clamp(24px,4vw,72px)] lg:grid-cols-[minmax(0,1.25fr)_auto]">
         <div>
           <h2
             id="pricing-teaser-heading"
@@ -34,7 +34,7 @@ export default function PricingTeaser() {
             <span className="text-[#e4fa65]">Growth Rocket</span> package.
           </h2>
 
-          <p className="mt-[16px] max-w-[660px] font-sans text-[16px] leading-[1.58] text-[#c9c2d4] min-[761px]:text-[17px]">
+          <p className="mt-[16px] max-w-[660px] font-sans text-[16px] leading-[1.58] text-[#c9c2d4] md:text-[17px]">
             Your professional website, Growth Rocket Hub, hosting, maintenance
             and support. One connected setup from{" "}
             <strong className="text-[#e4fa65]">€69 per month.</strong>
@@ -47,12 +47,12 @@ export default function PricingTeaser() {
             instead of letting them hug the left and leave a gap. Desktop only:
             below 901px this is a full-width row that stays left-aligned with
             the copy above it. */}
-        <div className="grid grid-cols-[max-content_max-content] items-end justify-items-start gap-x-[8px] gap-y-[4px] min-[901px]:min-w-[330px] min-[901px]:justify-end">
+        <div className="grid grid-cols-[max-content_max-content] items-end justify-items-start gap-x-[8px] gap-y-[4px] lg:min-w-[330px] lg:justify-end">
           <span className="col-span-2 font-sans text-[11px] font-bold leading-none tracking-[0.12em] text-[#c9c2d4]">
             FROM
           </span>
 
-          <strong className="font-bricolage text-[66px] font-bold leading-[0.88] tracking-[-0.025em] text-[#e4fa65] min-[761px]:text-[clamp(58px,5.4vw,86px)]">
+          <strong className="font-bricolage text-[66px] font-bold leading-[0.88] tracking-[-0.025em] text-[#e4fa65] md:text-[clamp(58px,5.4vw,86px)]">
             €69
           </strong>
 
@@ -62,7 +62,7 @@ export default function PricingTeaser() {
 
           <a
             href="#prijzen"
-            className="arrow-cta col-span-2 mt-[14px] inline-flex min-h-[52px] w-full items-center justify-center gap-[8px] rounded-full border border-transparent bg-[#e4fa65] px-[20px] py-[14px] font-sans text-[15px] font-semibold leading-[1.35] text-[#0a0516] hover:bg-white min-[761px]:w-auto"
+            className="arrow-cta col-span-2 mt-[14px] inline-flex min-h-[52px] w-full items-center justify-center gap-[8px] rounded-full border border-transparent bg-[#e4fa65] px-[20px] py-[14px] font-sans text-[15px] font-semibold leading-[1.35] text-[#0a0516] hover:bg-white md:w-auto"
           >
             View full pricing <ArrowIcon direction="up-right" size={18} />
           </a>

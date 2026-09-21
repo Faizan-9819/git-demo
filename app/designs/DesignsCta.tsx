@@ -41,7 +41,7 @@ export default function DesignsCta() {
   return (
     <DesignsFold
       className="bg-[#e4fa65] text-[#0a0516]"
-      innerClassName="flex items-center justify-between gap-[46px] max-[900px]:flex-col max-[900px]:items-start"
+      innerClassName="flex items-center justify-between gap-[46px] max-lg:flex-col max-lg:items-start"
     >
       <Reveal>
         <h2 className="font-bricolage text-[clamp(40px,4.5vw,66px)] leading-[0.94] font-semibold tracking-[-0.065em]">

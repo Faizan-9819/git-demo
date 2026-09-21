@@ -16,16 +16,15 @@
    source's own 371px step is folded into the clamp. `whitespace-nowrap` keeps
    a phrase from breaking at its own space when the line gets tight. */
 const STRONG =
-  "font-bricolage text-[clamp(11px,3.3vw,20px)] font-bold tracking-[-0.04em] whitespace-nowrap min-[761px]:text-[26px]";
+  "font-bricolage text-[16px] font-bold tracking-[-0.04em] whitespace-nowrap md:text-[26px]";
 
-const STAR =
-  "text-[clamp(10px,3vw,16px)] text-[#726e2b] min-[761px]:text-[25px]";
+const STAR = "text-[19px] text-[#726e2b] md:text-[25px]";
 
 export default function ValueStrip() {
   return (
-    <section className="full-bleed bg-[#e4fa65] py-[20px] text-[#0a0516] min-[761px]:py-[24px] md:px-5 min-[1220px]:px-0">
-      <div className="fix flex flex-wrap items-center justify-between gap-[6px] md:gap-[12px] min-[761px]:flex-nowrap min-[761px]:gap-[20px]">
-        <span className="basis-full font-sans text-[10px] font-semibold leading-[1.5] tracking-[0.1em] min-[761px]:max-w-[120px] min-[761px]:basis-auto min-[761px]:text-[11px]">
+    <section className="full-bleed bg-[#e4fa65] py-[20px] text-[#0a0516] md:py-[24px] md:px-5 xl:px-0">
+      <div className="fix flex flex-wrap items-center justify-between gap-[6px] md:gap-[12px] md:flex-nowrap md:gap-[20px]">
+        <span className="basis-full font-sans text-[10px] font-semibold leading-[1.5] tracking-[0.1em] md:max-w-[120px] md:basis-auto md:text-[11px]">
           BUILT FOR YOUR EVERYDAY
         </span>
 
@@ -34,7 +33,7 @@ export default function ValueStrip() {
             eyebrow's `basis-full`, which would otherwise let these break too.
             `contents` dissolves this wrapper from 761px up, so the desktop row
             is exactly the flat one it was. */}
-        <div className="flex basis-full flex-nowrap items-center justify-between gap-[6px] min-[761px]:contents">
+        <div className="flex basis-full flex-nowrap items-center justify-between gap-[6px] md:contents">
           <strong className={STRONG}>Get found.</strong>
           <span aria-hidden className={STAR}>
             ✳
