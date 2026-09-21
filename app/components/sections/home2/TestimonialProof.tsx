@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
+import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
 
 /**
  * Testimonial proof — ported from `section.testimonial-section` in
@@ -171,13 +172,17 @@ export default function TestimonialProof() {
       className="overflow-hidden rounded-[13px] bg-[#eeeeee] py-[56px] text-[#0a0516] md:py-[80px] lg:max-h-[730px]"
     >
       <div className="fix grid grid-cols-1 items-center gap-[28px] md:gap-[34px] lg:grid-cols-[minmax(430px,1fr)_minmax(0,520px)] lg:gap-[clamp(34px,5vw,86px)]">
-        <div>
+        {/* The headline already comes as four separate lines, so each one is
+            its own item — the nearest thing to a per-word reveal that costs
+            nothing here, and it reads as the lines stacking up. */}
+        <RevealGroup>
           <h2
             id="testimonial-heading"
             className="m-0 max-w-[720px] font-bricolage text-[40px] font-semibold leading-[1.02] tracking-[-0.045em] md:text-[clamp(42px,4.05vw,62px)]"
           >
             {HEADING_LINES.map((line, i) => (
-              <span
+              <RevealItem
+                as="span"
                 key={line}
                 className={
                   i === HEADING_LINES.length - 1
@@ -186,13 +191,18 @@ export default function TestimonialProof() {
                 }
               >
                 {line}
-              </span>
+              </RevealItem>
             ))}
           </h2>
 
+          <RevealItem
+            /* aria-hidden lives on the inner row: RevealItem forwards only
+               `as`, `media` and `className`. */
+            className="mt-[22px] md:mt-[28px]"
+          >
           <div
             aria-hidden
-            className="mt-[22px] flex items-center gap-[16px] text-left md:mt-[28px]"
+            className="flex items-center gap-[16px] text-left"
           >
             <span className="grid h-[54px] w-[54px] flex-none place-items-center rounded-full bg-[#e4fa65] text-[28px] text-[#0a0516] lg:h-[62px] lg:w-[62px] lg:text-[31px]">
               ✳
@@ -203,7 +213,8 @@ export default function TestimonialProof() {
               More room to build.
             </b>
           </div>
-        </div>
+          </RevealItem>
+        </RevealGroup>
 
         {/* The cards size to their own copy, so the window's height is its own
             number rather than a multiple of theirs — roughly two cards' worth,

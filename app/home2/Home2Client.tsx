@@ -20,12 +20,21 @@ import BlogTeaser from "../components/sections/home2/BlogTeaser";
 import ContactCta from "../components/sections/home2/ContactCta";
 // Footer2 renders the loop strip above itself, so home2 mounts the footer alone.
 import Footer2 from "../components/sections/home2/Footer2";
+import {
+  AnimationStyleProvider,
+  ANIMATION_STYLE_DEFAULT,
+  type AnimationStyle,
+} from "../features/FeatureReveal";
 import JsonLd from "../components/JsonLd";
 import { buildFaqJsonLd, HOME_FAQS } from "../lib/faqs";
 import { buildPageSchema } from "../lib/seo";
 import LocaleMeta from "../components/LocaleMeta";
 
-export default function Home2Client() {
+export default function Home2Client({
+  animationStyle = ANIMATION_STYLE_DEFAULT,
+}: {
+  animationStyle?: AnimationStyle;
+} = {}) {
   const openLeadForm = () => {
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("open-lead-form"));
@@ -33,45 +42,47 @@ export default function Home2Client() {
   };
 
   return (
-    <main className="relative min-h-screen lg:pb-0">
-      <JsonLd
-        data={buildPageSchema(
-          "/home2",
-          "Professional Websites for Small Businesses | Growth Rocket",
-          "A professional website for your small business — built, hosted and managed for you. Fixed yearly price, live in 7 days. See how it works.",
-        )}
-      />
-      <JsonLd data={buildFaqJsonLd(HOME_FAQS)} />
-      <LocaleMeta
-        title={{
-          en: "Professional Websites for Small Businesses | Growth Rocket",
-          nl: "Professional Websites for Small Businesses | Growth Rocket",
-        }}
-        description={{
-          en: "A professional website for your small business — built, hosted and managed for you. Fixed yearly price, live in 7 days. See how it works.",
-          nl: "A professional website for your small business — built, hosted and managed for you. Fixed yearly price, live in 7 days. See how it works.",
-        }}
-      />
-      <HomeShell>
-        <Hero2 onStartClick={openLeadForm} />
-        <ValueStrip />
-        <Problem />
-        <Solution />
-        <Audience />
-        <WhyUs />
-        <PricingTeaser />
-        <ProcessTimeline />
-        {/* <HowItWorks /> */}
-        {/* <Testimonials /> */}
-        <Examples />
-        <TestimonialProof />
-        {/* <FinalCta onStartClick={openLeadForm} /> */}
-        {/* <Faq2 /> */}
-        <FaqAccordion />
-        <BlogTeaser />
-        <ContactCta />
-        <Footer2 />
-      </HomeShell>
-    </main>
+    <AnimationStyleProvider value={animationStyle}>
+      <main className="relative min-h-screen lg:pb-0">
+        <JsonLd
+          data={buildPageSchema(
+            "/home2",
+            "Professional Websites for Small Businesses | Growth Rocket",
+            "A professional website for your small business — built, hosted and managed for you. Fixed yearly price, live in 7 days. See how it works.",
+          )}
+        />
+        <JsonLd data={buildFaqJsonLd(HOME_FAQS)} />
+        <LocaleMeta
+          title={{
+            en: "Professional Websites for Small Businesses | Growth Rocket",
+            nl: "Professional Websites for Small Businesses | Growth Rocket",
+          }}
+          description={{
+            en: "A professional website for your small business — built, hosted and managed for you. Fixed yearly price, live in 7 days. See how it works.",
+            nl: "A professional website for your small business — built, hosted and managed for you. Fixed yearly price, live in 7 days. See how it works.",
+          }}
+        />
+        <HomeShell>
+          <Hero2 onStartClick={openLeadForm} />
+          <ValueStrip />
+          <Problem />
+          <Solution />
+          <Audience />
+          <WhyUs />
+          {/* <PricingTeaser /> */}
+          <ProcessTimeline />
+          {/* <HowItWorks /> */}
+          {/* <Testimonials /> */}
+          <Examples />
+          <TestimonialProof />
+          {/* <FinalCta onStartClick={openLeadForm} /> */}
+          {/* <Faq2 /> */}
+          <FaqAccordion />
+          <BlogTeaser />
+          <ContactCta />
+          <Footer2 />
+        </HomeShell>
+      </main>
+    </AnimationStyleProvider>
   );
 }

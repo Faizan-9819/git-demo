@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import Home2Client from "./Home2Client";
+import type { AnimationStyle } from "../features/FeatureReveal";
+
+/* Scroll-reveal style for this page. See app/features/animationStyle.md.
+   "stagger" — children rise, scale and un-blur in sequence.
+   "simple"  — the original fade + 24px rise, whole blocks at once. */
+const animationStyle: AnimationStyle = "stagger";
 
 export const metadata: Metadata = {
   title: "Professional Websites for Small Businesses | Growth Rocket",
@@ -11,5 +17,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home2Page() {
-  return <Home2Client />;
+  return <Home2Client animationStyle={animationStyle} />;
 }

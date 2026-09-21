@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Reveal from "../../Reveal";
+import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
 import ArrowIcon from "../../ui/ArrowIcon";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 import { HOME_FAQS, type FaqAnswer, type FaqEntry } from "../../../lib/faqs";
@@ -68,8 +68,12 @@ function AnswerBody({ answer }: { answer: FaqAnswer }) {
   );
 }
 
-/** The lime tile from `FAQ.tsx`, in home2's lime and violet. */
-function ToggleIcon({ open }: { open: boolean }) {
+/**
+ * The lime tile from `FAQ.tsx`, in home2's lime and violet. Exported because
+ * `pricing/PricingFaq.tsx` wears this fold's styling and has to draw the exact
+ * same mark — both are client components, so the import crosses no boundary.
+ */
+export function ToggleIcon({ open }: { open: boolean }) {
   return (
     <span className="inline-flex size-[40px] shrink-0 items-center justify-center rounded-[10px] bg-[#e4fa65]">
       <svg width="21" height="21" viewBox="0 0 21 21" fill="none" aria-hidden>
@@ -97,21 +101,19 @@ function AccordionItem({
   index,
   isOpen,
   onToggle,
-  delay,
 }: {
   entry: FaqEntry;
   index: number;
   isOpen: boolean;
   onToggle: () => void;
-  delay: number;
 }) {
   const { t } = useLanguage();
   const panelId = `faq-panel-${index}`;
   const buttonId = `faq-button-${index}`;
 
   return (
-    <Reveal
-      delay={delay}
+    /* The per-item `delay` this used to take is the list group's stagger now. */
+    <RevealItem
       className={
         "w-full rounded-[13px] border bg-white transition-colors duration-200 " +
         (isOpen
@@ -158,7 +160,7 @@ function AccordionItem({
           </motion.div>
         )}
       </AnimatePresence>
-    </Reveal>
+    </RevealItem>
   );
 }
 
@@ -236,29 +238,43 @@ export default function FaqAccordion({
           to the full row height by default, leaving sticky nothing to travel
           in. It only matters from 761px, where the two columns exist. */}
       <div className="fix grid grid-cols-1 items-start gap-[35px] md:grid-cols-[0.85fr_1.15fr] md:gap-[50px] lg:gap-[90px]">
-        {/* top-[120px] clears the fixed navbar (76px) with breathing room. */}
-        <div className="self-start md:sticky md:top-[120px]">
+        {/* top-[120px] clears the fixed navbar (76px) with breathing room.
+            Under "stagger" the group is a plain container — it writes no
+            transform of its own — so the sticky column still travels. */}
+        <RevealGroup className="self-start md:sticky md:top-[120px]">
           {/* <p className="m-0 mb-[20px] flex items-center gap-[10px] font-sans text-[11px] font-semibold leading-[1.5] tracking-[0.07em]">
             07 / GOOD QUESTIONS
           </p> */}
 
-          <h2
-            id="faq-heading"
-            className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] font-semibold leading-[1.1] tracking-[-0.04em]"
-          >
-            {t({ en: "Frequently asked", nl: "Veelgestelde" })}
-            <br />
-            <span className="text-[#5b2dce]">
-              {t({ en: "Questions", nl: "vragen" })}
-            </span>
-          </h2>
+          <RevealItem>
+            <h2
+              id="faq-heading"
+              className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] font-semibold leading-[1.1] tracking-[-0.04em]"
+            >
+              {t({ en: "Frequently asked", nl: "Veelgestelde" })}
+              <br />
+              <span className="text-[#5b2dce]">
+                {t({ en: "Questions", nl: "vragen" })}
+              </span>
+            </h2>
+          </RevealItem>
 
-          <HelpCard onBookClick={onBookClick} />
-        </div>
+          <RevealItem>
+            <HelpCard onBookClick={onBookClick} />
+          </RevealItem>
+        </RevealGroup>
 
         {/* No scroll window and no fade: the list runs the full height of the
-            fold, so the page scrollbar is the only one on screen. */}
-        <div className="flex w-full flex-col gap-[16px]">
+            fold, so the page scrollbar is the only one on screen.
+
+            A column of eight questions at the fold default would finish more
+            than half a second after the first, well below the fold by then, so
+            the list runs at 0.05 and starts as soon as its top edge is in. */}
+        <RevealGroup
+          stagger={0.05}
+          amount={0.05}
+          className="flex w-full flex-col gap-[16px]"
+        >
           {entries.map((entry, idx) => (
             <AccordionItem
               key={entry.question.en}
@@ -266,10 +282,9 @@ export default function FaqAccordion({
               index={idx}
               isOpen={open === idx}
               onToggle={() => setOpen(idx)}
-              delay={Math.min(idx * 0.05, 0.2)}
             />
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );

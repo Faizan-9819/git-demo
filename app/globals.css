@@ -91,7 +91,7 @@
 :root {
   --bg: #ffffff;
   --fg: #0a0516;
-  --content-width: 1180px;
+  --content-width: 1320px;
   --nav-h: 74px;
 
   /* Features page fold geometry (see .newfix-card / .newfix).
@@ -235,7 +235,7 @@ html.lenis body {
     padding-right: 0;
   }
 }
-
+/*  */
 /* Breaks a section out of any centered ancestor so it spans the whole viewport
    — used for bands that must ignore HomeShell's sand padding and max width.
    Safe against horizontal scroll because html already sets overflow-x: hidden. */
@@ -278,7 +278,6 @@ html.lenis body {
     padding-inline: 0px;
   }
 }
-
 
 /* Footer background "ticker" marquee */
 @keyframes gr-ticker {

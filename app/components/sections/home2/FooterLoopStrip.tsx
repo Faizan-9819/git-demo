@@ -16,8 +16,10 @@ import { Fragment } from "react";
  * inverted here into a min-width step, so the base padding is the smallest one.
  *
  * This is the one home2 block that deliberately skips `.fix`: a marquee has to
- * run edge to edge, so it fills the shell's full width and only its type is
- * clipped by the overflow.
+ * run edge to edge, so `full-bleed` also cancels the 14px page gutter and
+ * max-width rail that HomeShell (and SiteFooter, off home2) wrap the footer in
+ * — the strip spans the whole viewport and only its type is clipped by the
+ * overflow.
  */
 
 const PHRASE = "Get started in 7 days";
@@ -62,7 +64,7 @@ export default function FooterLoopStrip() {
   return (
     <div
       aria-label="Get started in seven days"
-      className="w-full overflow-hidden bg-white py-[24px] whitespace-nowrap text-[#0a0516]"
+      className="full-bleed overflow-hidden bg-white py-[24px] whitespace-nowrap text-[#0a0516]"
     >
       <div className="gr-loop-strip-track flex w-max items-center">
         <LoopRun />

@@ -1,4 +1,4 @@
-import Reveal from "../components/Reveal";
+import { RevealGroup, RevealItem } from "../features/FeatureReveal";
 import DesignsFold from "./DesignsFold";
 
 /**
@@ -24,18 +24,23 @@ import DesignsFold from "./DesignsFold";
 export default function DesignsHero() {
   return (
     <DesignsFold className="mt-20 bg-[#0a0516] text-white">
-      <Reveal>
-        <h1 className="font-bricolage text-[clamp(48px,6.1vw,88px)] leading-[0.94]! font-semibold tracking-[-0.065em]! max-sm:text-[48px]">
-          Choose your design.
-          <br />
-          <span className="text-[#e4fa65]">Make it yours.</span>
-        </h1>
-        <p className="mt-[26px] max-w-[780px] text-[clamp(18px,1.5vw,22px)] leading-[1.55] text-[#c9c2d4]">
+      <RevealGroup>
+        <RevealItem>
+          <h1 className="font-bricolage text-[clamp(48px,6.1vw,88px)] leading-[0.94]! font-semibold tracking-[-0.065em]! max-sm:text-[48px]">
+            Choose your design.
+            <br />
+            <span className="text-[#e4fa65]">Make it yours.</span>
+          </h1>
+        </RevealItem>
+        <RevealItem
+          as="p"
+          className="mt-[26px] max-w-[780px] text-[clamp(18px,1.5vw,22px)] leading-[1.55] text-[#c9c2d4]"
+        >
           Explore a selection of professional website directions for growing
           businesses. Pick a style that feels right, and we&rsquo;ll shape it
           around your services, story and customers.
-        </p>
-      </Reveal>
+        </RevealItem>
+      </RevealGroup>
     </DesignsFold>
   );
 }

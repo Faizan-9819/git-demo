@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 import type { Translation } from "../../../i18n/config";
 
@@ -404,24 +405,37 @@ export default function WhyUs() {
       className="rounded-[13px] bg-[#5b2dce] py-[56px] lg:py-[64px]"
     >
       <div className="fix flex flex-col items-center text-left">
-        <h2
-          id="why-heading"
-          className="m-0 text-center font-bricolage text-[40px] font-semibold leading-[1.1] tracking-[-0.045em] text-white md:text-[clamp(42px,4vw,60px)]"
-        >
-          {t({ en: "Why Growth Rocket?", nl: "Waarom Growth Rocket?" })}
-        </h2>
+        <RevealGroup>
+          <RevealItem>
+            <h2
+              id="why-heading"
+              className="m-0 text-center font-bricolage text-[40px] font-semibold leading-[1.1] tracking-[-0.045em] text-white md:text-[clamp(42px,4vw,60px)]"
+            >
+              {t({ en: "Why Growth Rocket?", nl: "Waarom Growth Rocket?" })}
+            </h2>
+          </RevealItem>
+        </RevealGroup>
 
         {/* 1 → 2 → 3 columns. At the two-column step the photo takes the whole
             right-hand side (`grid-row: 1 / 3`) and the two text columns stack
             down the left; below that it is pulled to the top of the flow, which
-            is what `order-first` reproduces from the source's `order: -1`. */}
-        <div className="mt-[30px] grid w-full max-w-[1240px] grid-cols-1 items-stretch gap-[14px] md:mt-[32px] md:grid-cols-2 lg:grid-cols-3">
+            is what `order-first` reproduces from the source's `order: -1`.
+
+            `amount: 0.1` because the row is 450px tall on desktop: the fold's
+            default fifth would hold the cards back until they are already well
+            up the screen. The three columns stagger in DOM order, so on mobile
+            the photo — which `order-first` puts at the top — still arrives
+            second. */}
+        <RevealGroup
+          amount={0.1}
+          className="mt-[30px] grid w-full max-w-[1240px] grid-cols-1 items-stretch gap-[14px] md:mt-[32px] md:grid-cols-2 lg:grid-cols-3"
+        >
           {/* `grid-rows-[1fr_1fr]`, not Tailwind's `grid-rows-2`: that utility
               emits `minmax(0, 1fr)`, which would cap each card at exactly half
               the photo's 450px and crush the copy against the bottom edge. The
               source's plain `1fr` is `minmax(auto, 1fr)` — the rows stay equal
               to each other but grow to fit, and the photo stretches to match. */}
-          <div className="grid min-w-0 gap-[14px] md:grid-rows-[1fr_1fr]">
+          <RevealItem className="grid min-w-0 gap-[14px] md:grid-rows-[1fr_1fr]">
             {cards.slice(0, 2).map((card) => (
               <Card
                 key={card.title.en}
@@ -430,13 +444,22 @@ export default function WhyUs() {
                 body={t(card.body)}
               />
             ))}
-          </div>
+          </RevealItem>
 
+          {/* The reveal goes on a box INSIDE the figure, not on the figure
+              itself, so the height chain the comment on FadeImages describes
+              survives: `h-full` on this wrapper resolves against the figure
+              exactly as the first photo's did, falling back to auto when the
+              figure is auto-height and filling it once the cards stretch it.
+              `relative` is what the three layered photos position against —
+              it was the figure's job before this box existed. */}
           <figure className="relative m-0 min-h-[330px] overflow-hidden rounded-[13px] bg-[#0a0516] order-first md:order-none md:row-start-1 md:row-end-3 md:min-h-0 lg:row-auto lg:min-h-[450px]">
-            <FadeImages />
+            <RevealItem media className="relative h-full w-full">
+              <FadeImages />
+            </RevealItem>
           </figure>
 
-          <div className="grid min-w-0 gap-[14px] md:grid-rows-[1fr_1fr]">
+          <RevealItem className="grid min-w-0 gap-[14px] md:grid-rows-[1fr_1fr]">
             {cards.slice(2).map((card) => (
               <Card
                 key={card.title.en}
@@ -445,8 +468,8 @@ export default function WhyUs() {
                 body={t(card.body)}
               />
             ))}
-          </div>
-        </div>
+          </RevealItem>
+        </RevealGroup>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import ArrowIcon from "../../ui/ArrowIcon";
+import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
 
 /* ------------------------------------------------------------------ */
 /*  PREVIOUS HERO — kept for reference, replaced by the                */
@@ -231,16 +232,21 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
             className="pointer-events-none absolute -left-[120px] -top-[130px] h-[410px] w-[410px] rounded-full bg-[#5b2dce] opacity-[0.18] blur-[110px]"
           />
 
-          <div className="relative max-w-[560px]">
-            <h1 className="m-0 font-bricolage text-[36px] xs:text-[clamp(42px,4.3vw,62px)] font-semibold leading-[1.05] tracking-[-0.06em] text-white">
-              Not just a website.
-              <br />
-              <span className="text-[#e4fa65]">A complete system</span>
-              <br />
-              <span className="text-white">for your business.</span>
-            </h1>
+          {/* Only the copy column reveals. The photo beside it is the hero's
+              `priority` image and almost certainly its LCP element, so it is
+              left painted from the first frame rather than faded in. */}
+          <RevealGroup className="relative max-w-[560px]">
+            <RevealItem>
+              <h1 className="m-0 font-bricolage text-[36px] xs:text-[clamp(42px,4.3vw,62px)] font-semibold leading-[1.05] tracking-[-0.06em] text-white">
+                Not just a website.
+                <br />
+                <span className="text-[#e4fa65]">A complete system</span>
+                <br />
+                <span className="text-white">for your business.</span>
+              </h1>
+            </RevealItem>
 
-            <div className="mt-[30px] flex flex-wrap items-center gap-[18px]">
+            <RevealItem className="mt-[30px] flex flex-wrap items-center gap-[18px]">
               <button
                 type="button"
                 onClick={onStartClick}
@@ -255,13 +261,16 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
               >
                 See how it works <ArrowIcon direction="right" />
               </a>
-            </div>
+            </RevealItem>
 
-            <p className="mt-[30px] flex items-center gap-[10px] font-sans text-[13px] text-[#c9c2d4]">
+            <RevealItem
+              as="p"
+              className="mt-[30px] flex items-center gap-[10px] font-sans text-[13px] text-[#c9c2d4]"
+            >
               <i className="h-[8px] w-[8px] shrink-0 rounded-full bg-[#e4fa65]" />
               For freelancers and small businesses · from €69 per month
-            </p>
-          </div>
+            </RevealItem>
+          </RevealGroup>
         </div>
 
         {/* Right: photo panel */}

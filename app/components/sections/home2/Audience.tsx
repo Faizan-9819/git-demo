@@ -390,7 +390,7 @@ import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Reveal from "../../Reveal";
+import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
 import EyebrowLabel from "../../ui/EyebrowLabel";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 import type { Translation } from "../../../i18n/config";
@@ -501,8 +501,8 @@ export default function Audience() {
           minmax(260px,420px)` grid with a 42px gap, bottom-aligned, collapsing
           to one column with an 18px gap at the source's 900px step (`md:` is
           the nearest one this project defines). */}
-      <div className="fix grid grid-cols-1 items-start gap-[18px] md:grid-cols-[1fr_minmax(260px,420px)] md:items-end md:gap-[42px]">
-        <div className="flex flex-col gap-4">
+      <RevealGroup className="fix grid grid-cols-1 items-start gap-[18px] md:grid-cols-[1fr_minmax(260px,420px)] md:items-end md:gap-[42px]">
+        <RevealItem className="flex flex-col gap-4">
           {/* <EyebrowLabel align="left">
             {t({ en: "Who it's for", nl: "Voor wie" })}
           </EyebrowLabel> */}
@@ -521,8 +521,8 @@ export default function Audience() {
               }),
             )}
           </h2>
-        </div>
-        <Reveal delay={0.1}>
+        </RevealItem>
+        <div>
           {/* The fold's second column in the source. Five rules in
               grsolidvariant.html hit it, all at the same specificity, so each
               property is settled by the last one to declare it:
@@ -539,23 +539,29 @@ export default function Audience() {
               survives, and the last colour rule is a descendant selector that
               reaches this paragraph as well. `--gr-brand-ink` is redefined
               further down the sheet, so it resolves to #5b2dce, not #5b219f. */}
-          <p className="m-0 mb-[4px] font-sans text-[16px] leading-[1.6] tracking-[0.1em] text-[#5b2dce]">
+          <RevealItem
+            as="p"
+            className="m-0 mb-[4px] font-sans text-[16px] leading-[1.6] tracking-[0.1em] text-[#5b2dce]"
+          >
             {t({
               en: "For freelancers and small businesses who want to look professional, stay organised and spend more time on the work they love.",
               nl: "Voor ZZP'ers en MKB'ers die professioneel willen overkomen, georganiseerd willen blijven en meer tijd willen besteden aan het werk waar ze van houden.",
             })}
-          </p>
-        </Reveal>
-      </div>
+          </RevealItem>
+        </div>
+      </RevealGroup>
       {/*  */}
       {/* Mobile: unchanged drag carousel */}
       <div className="fix-wide pt-[8px] pb-7 sm:hidden">
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-4">
-            {TRADES.map((trade, i) => (
-              <Reveal
+          {/* The per-card `delay` the slides used to carry is now the group's
+              stagger — a tight one, because only the first card is on screen
+              and the rest arrive by swipe. */}
+          <RevealGroup stagger={0.05} className="flex gap-4">
+            {TRADES.map((trade) => (
+              <RevealItem
+                media
                 key={trade.name.en}
-                delay={Math.min(i * 0.04, 0.3)}
                 className="relative shrink-0 w-full sm:w-[220px] h-[300px] rounded-[26px] overflow-hidden flex flex-col justify-end p-[22px]"
               >
                 <Image
@@ -576,9 +582,9 @@ export default function Audience() {
                 <span className="relative font-bricolage text-[19px] font-semibold text-white">
                   {t(trade.name)}
                 </span>
-              </Reveal>
+              </RevealItem>
             ))}
-          </div>
+          </RevealGroup>
         </div>
       </div>
 

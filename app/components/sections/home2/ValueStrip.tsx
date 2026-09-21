@@ -1,3 +1,5 @@
+import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
+
 /**
  * Value strip — ported from `div.value-strip` in grsolidvariant.html.
  *
@@ -23,28 +25,48 @@ const STAR = "text-[19px] text-[#726e2b] md:text-[25px]";
 export default function ValueStrip() {
   return (
     <section className="full-bleed bg-[#e4fa65] py-[20px] text-[#0a0516] md:py-[24px] md:px-5 xl:px-0">
-      <div className="fix flex flex-wrap items-center justify-between gap-[6px] md:gap-[12px] md:flex-nowrap md:gap-[20px]">
-        <span className="basis-full font-sans text-[10px] font-semibold leading-[1.5] tracking-[0.1em] md:max-w-[120px] md:basis-auto md:text-[11px]">
+      {/* The strip is one row of short phrases, so it gets a tighter stagger
+          than the fold default — at 0.08 the last "Get organised." landed
+          almost half a second after the eyebrow on a band you read in one
+          glance. */}
+      <RevealGroup
+        stagger={0.05}
+        className="fix flex flex-wrap items-center justify-between gap-[6px] md:gap-[12px] md:flex-nowrap md:gap-[20px]"
+      >
+        <RevealItem
+          as="span"
+          className="basis-full font-sans text-[10px] font-semibold leading-[1.5] tracking-[0.1em] md:max-w-[120px] md:basis-auto md:text-[11px]"
+        >
           BUILT FOR YOUR EVERYDAY
-        </span>
+        </RevealItem>
 
         {/* On mobile the five items get their own non-wrapping row under the
             eyebrow — the outer container has to keep `flex-wrap` for the
             eyebrow's `basis-full`, which would otherwise let these break too.
             `contents` dissolves this wrapper from 761px up, so the desktop row
-            is exactly the flat one it was. */}
+            is exactly the flat one it was.
+            It stays a plain <div> for that reason: a RevealItem here would be
+            handed a transform it cannot paint once `display:contents` removes
+            its box. The five phrases inside carry the reveal instead — variants
+            reach them through context, so the plain wrapper costs nothing. */}
         <div className="flex basis-full flex-nowrap items-center justify-between gap-[6px] md:contents">
-          <strong className={STRONG}>Get found.</strong>
-          <span aria-hidden className={STAR}>
-            ✳
-          </span>
-          <strong className={STRONG}>Get booked.</strong>
-          <span aria-hidden className={STAR}>
-            ✳
-          </span>
-          <strong className={STRONG}>Get organised.</strong>
+          <RevealItem as="span">
+            <strong className={STRONG}>Get found.</strong>
+          </RevealItem>
+          <RevealItem as="span" className={STAR}>
+            <span aria-hidden>✳</span>
+          </RevealItem>
+          <RevealItem as="span">
+            <strong className={STRONG}>Get booked.</strong>
+          </RevealItem>
+          <RevealItem as="span" className={STAR}>
+            <span aria-hidden>✳</span>
+          </RevealItem>
+          <RevealItem as="span">
+            <strong className={STRONG}>Get organised.</strong>
+          </RevealItem>
         </div>
-      </div>
+      </RevealGroup>
     </section>
   );
 }

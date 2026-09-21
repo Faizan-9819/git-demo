@@ -1,4 +1,5 @@
 import ArrowIcon from "../../ui/ArrowIcon";
+import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
 
 /**
  * Contact call-to-action — ported from `section#contact.contact-section` in
@@ -33,12 +34,15 @@ export default function ContactCta() {
       aria-labelledby="contact-heading"
       className="overflow-hidden rounded-[13px] bg-[#e4fa65] py-[64px] text-[#0a0516]"
     >
-      <div className="fix">
-        <p className="m-0 flex items-center gap-[10px] font-sans text-[12px] font-semibold leading-[1.5] tracking-[0.12em]">
+      <RevealGroup className="fix">
+        <RevealItem
+          as="p"
+          className="m-0 flex items-center gap-[10px] font-sans text-[12px] font-semibold leading-[1.5] tracking-[0.12em]"
+        >
           YOUR NEXT CHAPTER STARTS HERE
-        </p>
+        </RevealItem>
 
-        <div className="mt-[24px] flex items-end justify-between gap-[16px] md:items-center md:gap-[30px]">
+        <RevealItem className="mt-[24px] flex items-end justify-between gap-[16px] md:items-center md:gap-[30px]">
           <h2
             id="contact-heading"
             className="m-0 font-bricolage text-[28px] font-semibold leading-[1.05] tracking-[-0.055em]  md:text-[76px]"
@@ -55,9 +59,9 @@ export default function ContactCta() {
           >
             <ArrowIcon direction="up-right" className="btn-arrow--xl" />
           </a>
-        </div>
+        </RevealItem>
 
-        <div className="mt-[30px] flex flex-col items-start gap-[20px] border-t border-[#b8ce50] pt-[25px] md:mt-[40px] md:flex-row md:items-end md:justify-between md:gap-[24px]">
+        <RevealItem className="mt-[30px] flex flex-col items-start gap-[20px] border-t border-[#b8ce50] pt-[25px] md:mt-[40px] md:flex-row md:items-end md:justify-between md:gap-[24px]">
           <p className="m-0 font-sans text-[14px] leading-[1.65]">
             Tell us about your business.
             <br />
@@ -79,8 +83,8 @@ export default function ContactCta() {
             +31 85 744 4176
             <ArrowIcon direction="up-right" size={14} />
           </a>
-        </div>
-      </div>
+        </RevealItem>
+      </RevealGroup>
     </section>
   );
 }

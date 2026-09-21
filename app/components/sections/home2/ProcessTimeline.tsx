@@ -6,6 +6,7 @@ import {
   type Transition,
   type Variants,
 } from "framer-motion";
+import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
 
 /**
  * Process timeline — ported from `section.how-section` in grsolidvariant.html.
@@ -110,19 +111,28 @@ export default function ProcessTimeline() {
       className="full-bleed bg-white py-[60px] text-[#0a0516] md:py-[94px]"
     >
       <div className="fix">
-        <div className="mb-[30px] md:mb-[44px]">
-          <h2
-            id="how-heading"
-            className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] font-semibold leading-[1.1] tracking-[-0.04em]"
+        {/* Only the head joins the shared reveal system. The timeline below it
+            keeps its own choreography: one clock drives the cards AND the rule
+            segments drawn between them, and a RevealGroup would take the cards
+            off that clock and leave the line drawing to nothing. */}
+        <RevealGroup className="mb-[30px] md:mb-[44px]">
+          <RevealItem>
+            <h2
+              id="how-heading"
+              className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] font-semibold leading-[1.1] tracking-[-0.04em]"
+            >
+              Ready in just <span className="text-[#5b2dce]">7 days.</span>
+              <br />
+              Without the tech headache.
+            </h2>
+          </RevealItem>
+          <RevealItem
+            as="p"
+            className="mt-[22px] max-w-[420px] font-sans text-[17px] font-normal leading-[1.7] tracking-normal text-[#625a70]"
           >
-            Ready in just <span className="text-[#5b2dce]">7 days.</span>
-            <br />
-            Without the tech headache.
-          </h2>
-          <p className="mt-[22px] max-w-[420px] font-sans text-[17px] font-normal leading-[1.7] tracking-normal text-[#625a70]">
             Four clear steps. We do the setup, you have the say.
-          </p>
-        </div>
+          </RevealItem>
+        </RevealGroup>
 
         <motion.div
           variants={list}

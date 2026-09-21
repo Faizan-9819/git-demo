@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { RevealGroup, RevealItem } from "../features/FeatureReveal";
 import CategoryFilter from "./CategoryFilter";
 import DesignsFold from "./DesignsFold";
 import FeaturedTemplatesGrid from "./FeaturedTemplatesGrid";
@@ -67,12 +68,17 @@ export default function TemplatesPageClient() {
         />
       }
     >
-      <div className="mt-[66px] mb-[32px] flex items-end justify-between gap-[30px] max-lg:flex-col max-lg:items-start max-sm:mt-[46px] max-sm:mb-[26px]">
-        <h2 className="font-bricolage text-[clamp(36px,4vw,58px)] leading-[0.94] font-semibold tracking-[-0.065em]">
-          Latest designs
-        </h2>
-      </div>
+      <RevealGroup className="mt-[66px] mb-[32px] flex items-end justify-between gap-[30px] max-lg:flex-col max-lg:items-start max-sm:mt-[46px] max-sm:mb-[26px]">
+        <RevealItem>
+          <h2 className="font-bricolage text-[clamp(36px,4vw,58px)] leading-[0.94] font-semibold tracking-[-0.065em]">
+            Latest designs
+          </h2>
+        </RevealItem>
+      </RevealGroup>
 
+      {/* The grid stays outside the reveal: its own `AnimatePresence`
+          crossfade already plays it in, and re-keys it on every category
+          change — a scroll reveal on top would fight that. */}
       <FeaturedTemplatesGrid selectedCategory={selectedCategory} />
     </DesignsFold>
   );

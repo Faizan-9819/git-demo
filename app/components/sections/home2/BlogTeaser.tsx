@@ -188,8 +188,10 @@
  * Kept exactly as it was, as asked: the carousel. Same Embla setup (aligned
  * left, looping), the same doubled track, the same three-per-view sizing from
  * `sm` up, and the same arrow pair in the head — only repainted for the dark
- * fold. That is also why the head keeps two columns on desktop where the source
- * has one: the arrows need the right-hand side.
+ * fold. That is also why the head keeps two columns from `md` up where the
+ * source has one: the arrows need the right-hand side. Below `md` there is no
+ * room beside the headline, so the pair moves under the cards instead and the
+ * head collapses to the source's single column.
  *
  * The source sheet is desktop-first with max-width steps at 900px and 760px;
  * those are inverted into min-width steps here.
@@ -200,7 +202,7 @@ import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
-import Reveal from "../../Reveal";
+import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
 import ArrowIcon from "../../ui/ArrowIcon";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 import type { Translation } from "../../../i18n/config";
@@ -300,18 +302,30 @@ export default function BlogTeaser() {
       className="relative overflow-hidden rounded-[13px] bg-[#0a0516] py-[56px] text-white md:py-[80px]"
     >
       <div className="fix">
-        {/* `.legacy-blog .legacy-section-head` is `align-items:center`. The
-            arrows the source keeps in the right-hand column now sit under the
-            cards instead, so the head is the heading alone. */}
-        <h2
-          id="guides-heading"
-          className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] font-semibold leading-[1.1] tracking-[-0.04em] text-white md:whitespace-nowrap"
-        >
-          {t({
-            en: "Helpful ideas for your next step.",
-            nl: "Handige ideeën voor je volgende stap.",
-          })}
-        </h2>
+        {/* `.legacy-blog .legacy-section-head` is `align-items:center`; the
+            right-hand column here holds the carousel arrows rather than the
+            copy the other folds put there. Below `md` that column is dropped
+            and the pair moves under the cards, so the head is the heading
+            alone — the width where the source releases the headline from one
+            line is also the width where the arrows stop fitting beside it. */}
+        <RevealGroup className="grid grid-cols-1 items-center md:grid-cols-[1fr_auto] md:gap-[42px]">
+          <RevealItem>
+            <h2
+              id="guides-heading"
+              className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] font-semibold leading-[1.1] tracking-[-0.04em] text-white md:whitespace-nowrap"
+            >
+              {t({
+                en: "Helpful ideas for your next step.",
+                nl: "Handige ideeën voor je volgende stap.",
+              })}
+            </h2>
+          </RevealItem>
+
+          <RevealItem className="hidden gap-[10px] md:flex md:justify-self-end">
+            <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
+            <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
+          </RevealItem>
+        </RevealGroup>
 
         {/* `.legacy-blog-grid`: 44px below the head, three columns from 900px up
             with a 20px gutter — reproduced here as the carousel's slide width
@@ -326,14 +340,17 @@ export default function BlogTeaser() {
           className="mt-[24px] -mx-[20px] -mb-[16px] overflow-hidden p-[20px]"
           ref={emblaRef}
         >
-          <div className="-ml-[20px] flex">
+          {/* The per-card `delay` is the group's stagger now, and a tight one:
+              the track is doubled for the loop, so only the first three cards
+              are ever on screen when this plays. */}
+          <RevealGroup stagger={0.05} className="-ml-[20px] flex">
             {POSTS.concat(POSTS).map((post, i) => (
               <div
                 key={`${post.title.en}-${i}`}
                 className="w-full shrink-0 pl-[20px] sm:w-1/3"
               >
-                <Reveal
-                  delay={Math.min(i * 0.05, 0.2)}
+                <RevealItem
+                  media
                   /* Card hover as in Examples — a lime (#e4fa65) glow, no lift
                      — plus a fill flip to that same lime. `group` sits on the
                      card rather than the slide so the gutter between cards
@@ -373,16 +390,17 @@ export default function BlogTeaser() {
                     {t({ en: "Read more", nl: "Lees meer" })}
                     <ArrowIcon direction="right" size={14} />
                   </a>
-                </Reveal>
+                </RevealItem>
               </div>
             ))}
-          </div>
+          </RevealGroup>
         </div>
 
-        {/* Controls sit under the cards, at the right edge. The viewport above
-            already leaves 4px below them (20px of padding less the -16px pull),
-            so this adds the rest of the gap. */}
-        <div className="mt-[20px] flex justify-end gap-[10px]">
+        {/* Phones only: the head drops its arrow column below `md`, so the
+            controls come back under the cards at the right edge. The viewport
+            above already leaves 4px below them (20px of padding less the -16px
+            pull), so this adds the rest of the gap. */}
+        <div className="mt-[20px] flex justify-end gap-[10px] md:hidden">
           <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
           <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
         </div>

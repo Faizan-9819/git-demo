@@ -279,10 +279,10 @@ export default function CategoryFilter({
           wrapper. The source can afford it — its control is a native <select>
           whose popup the browser draws outside the DOM — so here the shadow
           moves onto the pill itself and the wrapper stays a plain anchor. */}
-        <div
-          ref={containerRef}
-          className="relative w-[250px] max-sm:w-full"
-        >
+        <p className="m-0 text-[13px] block lg:hidden font-medium opacity-[0.72]">
+          Select your industry
+        </p>
+        <div ref={containerRef} className="relative w-[250px] max-sm:w-full">
           <button
             type="button"
             onClick={() => setIsOpen((open) => !open)}
@@ -354,7 +354,7 @@ export default function CategoryFilter({
           </AnimatePresence>
         </div>
 
-        <p className="m-0 text-[13px] font-medium opacity-[0.72]">
+        <p className="m-0 text-[13px] hidden font-medium opacity-[0.72]">
           Select your industry
         </p>
       </div>

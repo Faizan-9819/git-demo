@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
-import Reveal from "../../Reveal";
+import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
 import { useLanguage } from "../../../i18n/LanguageProvider";
 import type { Translation } from "../../../i18n/config";
 import { withBreaks } from "@/app/lib/withBreaks";
@@ -33,9 +33,11 @@ import { withBreaks } from "@/app/lib/withBreaks";
  * 520px; those are inverted here into min-width steps, so the base values are
  * the smallest ones. Two deliberate deviations: horizontal spacing comes from
  * the shared `.fix` container rather than the source's own `--fold-inset`, so
- * this fold lines up with every other one on the page; and the arrow pair sits
- * under the cards at the right edge instead of beside the heading, which is
- * where every carousel on this page keeps its controls.
+ * this fold lines up with every other one on the page; and the arrow pair only
+ * keeps the source's place in the head from `md` up. Below that the head is a
+ * column — `.legacy-examples-head` stays a `space-between` row at every width,
+ * which at phone widths leaves the heading about 190px next to the arrows — and
+ * the pair moves under the cards at the right edge instead.
  */
 
 const CASES: { name: string; meta: Translation; image: string }[] = [
@@ -125,25 +127,43 @@ export default function Examples() {
       aria-labelledby="examples-heading"
       className="relative overflow-hidden rounded-[13px] bg-[#0a0516] py-[56px] md:pt-[80px] md:pb-[64px]"
     >
-      <div className="fix">
-        <h2
-          id="examples-heading"
-          className="m-0 font-bricolage text-[31px] font-semibold leading-[1.1] tracking-[-0.04em] text-white xs:text-[clamp(40px,4vw,58px)]"
-        >
-          {withBreaks(
-            t({
-              en: "Real businesses.<br/>Beautiful first impressions.",
-              nl: "Echte ondernemers.<br/>Een sterke eerste indruk.",
-            }),
-          )}
-        </h2>
-        <span className="mt-[15px] block font-sans text-[16px] leading-[1.6] text-[#c9c2d4]">
-          {t({
-            en: "Built around each business, its people and its purpose.",
-            nl: "Gebouwd rond elk bedrijf, de mensen en het doel erachter.",
-          })}
-        </span>
-      </div>
+      {/* `.legacy-examples-head`: a `space-between` row with the copy on the
+          left and `.legacy-arrows` on the right, both bottom-aligned
+          (`align-items:end`) and 30px apart. That row is kept from `md` up; the
+          copy column below it is what the source's own head holds. */}
+      <RevealGroup className="fix md:flex md:items-end md:justify-between md:gap-[30px]">
+        <div>
+          <RevealItem>
+            <h2
+              id="examples-heading"
+              className="m-0 font-bricolage text-[31px] font-semibold leading-[1.1] tracking-[-0.04em] text-white xs:text-[clamp(40px,4vw,58px)]"
+            >
+              {withBreaks(
+                t({
+                  en: "Real businesses.<br/>Beautiful first impressions.",
+                  nl: "Echte ondernemers.<br/>Een sterke eerste indruk.",
+                }),
+              )}
+            </h2>
+          </RevealItem>
+          <RevealItem
+            as="span"
+            className="mt-[15px] block font-sans text-[16px] leading-[1.6] text-[#c9c2d4]"
+          >
+            {t({
+              en: "Built around each business, its people and its purpose.",
+              nl: "Gebouwd rond elk bedrijf, de mensen en het doel erachter.",
+            })}
+          </RevealItem>
+        </div>
+
+        {/* The source's arrow slot. Hidden below `md`, where the pair under the
+            cards takes over — the two are the same control, never both shown. */}
+        <RevealItem className="hidden flex-none gap-[10px] md:flex">
+          <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
+          <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
+        </RevealItem>
+      </RevealGroup>
 
       <div className="fix mt-[18px]">
         {/* Embla's viewport does the clipping, so the strip never becomes a
@@ -158,8 +178,12 @@ export default function Examples() {
             edge lands exactly on that boundary, so a wider inset would let a
             slide show outside the container. */}
         <div className="-mx-5 overflow-hidden p-5" ref={emblaRef}>
-          <div className="flex gap-[20px]">
-            {CASES.map((c, i) => (
+          {/* The per-card `delay` the slides used to carry is the group's
+              stagger now. It is tighter than the fold default because only the
+              first two or three cards are ever on screen — the rest arrive by
+              arrow, already revealed. */}
+          <RevealGroup stagger={0.05} className="flex gap-[20px]">
+            {CASES.map((c) => (
               /* Cards are sized as a share of the track, not the source's flat
                  400px: at `--content-width` (1180px) three 400px cards plus
                  their gaps overflow, which cut the third one. */
@@ -167,8 +191,8 @@ export default function Examples() {
                 key={c.name}
                 className="min-w-0 flex-none basis-full sm:basis-[calc((100%-20px)/2)] lg:basis-[calc((100%-40px)/3)]"
               >
-                <Reveal
-                  delay={Math.min(i * 0.05, 0.2)}
+                <RevealItem
+                  media
                   /* Same card hover as BlogTeaser: the lime glow plus a fill
                      flip to that same lime, with the two lines of copy going
                      dark against it. Fill, glow and both colours share one
@@ -198,16 +222,17 @@ export default function Examples() {
                       {t(c.meta)}
                     </span>
                   </div>
-                </Reveal>
+                </RevealItem>
               </div>
             ))}
-          </div>
+          </RevealGroup>
         </div>
 
-        {/* Controls sit under the cards, at the right edge. The viewport's
-            own 20px of bottom padding already stands in for most of the gap,
-            so only the remainder is added here. */}
-        <div className="mt-[4px] flex justify-end gap-[10px]">
+        {/* Phones only: the controls sit under the cards at the right edge,
+            where the head has no room for them. The viewport's own 20px of
+            bottom padding already stands in for most of the gap, so only the
+            remainder is added here. */}
+        <div className="mt-[4px] flex justify-end gap-[10px] md:hidden">
           <ArrowButton dir="prev" disabled={!canPrev} onClick={scrollPrev} />
           <ArrowButton dir="next" disabled={!canNext} onClick={scrollNext} />
         </div>

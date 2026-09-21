@@ -2,6 +2,15 @@ import type { Metadata } from "next";
 import DesignsCta from "./DesignsCta";
 import DesignsHero from "./DesignsHero";
 import TemplatesPageClient from "./TemplatesPageClient";
+import {
+  AnimationStyleProvider,
+  type AnimationStyle,
+} from "../features/FeatureReveal";
+
+/* Scroll-reveal style for this page. See app/features/animationStyle.md.
+   "stagger" — children rise, scale and un-blur in sequence.
+   "simple"  — the original fade + 24px rise, whole blocks at once. */
+const animationStyle: AnimationStyle = "stagger";
 
 export const metadata: Metadata = {
   title: "Lorem Ipsum Templates | Growth Rocket",
@@ -51,13 +60,15 @@ export default function TemplatesPage() {
  */
 export default function TemplatesPage() {
   return (
-    <main
-      id="main"
-      className="relative flex min-h-screen flex-col gap-[14px] bg-white pt-[14px] pb-[14px] text-[16px] leading-[1.65] text-[#0a0516]"
-    >
-      <DesignsHero />
-      <TemplatesPageClient />
-      <DesignsCta />
-    </main>
+    <AnimationStyleProvider value={animationStyle}>
+      <main
+        id="main"
+        className="relative flex min-h-screen flex-col gap-[14px] bg-white pt-[14px] pb-[14px] text-[16px] leading-[1.65] text-[#0a0516]"
+      >
+        <DesignsHero />
+        <TemplatesPageClient />
+        <DesignsCta />
+      </main>
+    </AnimationStyleProvider>
   );
 }
