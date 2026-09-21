@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Reveal from "../components/Reveal";
+import { RevealGroup, RevealItem } from "./FeatureReveal";
 import SectionCard from "./SectionCard";
 import { MANAGED_POINTS } from "./data";
 
@@ -7,19 +7,22 @@ export default function ManagedFold() {
   return (
     <SectionCard className="bg-white text-[#0a0516] py-[clamp(36px,4vw,46px)]">
       <div className="flex items-stretch gap-[clamp(34px,5vw,72px)] max-[900px]:flex-col">
-        <Reveal className="w-[56%] max-w-[650px] max-[900px]:w-full max-[900px]:max-w-none">
-          <h2 className="font-bricolage text-[clamp(39px,4.3vw,68px)] leading-[0.99] font-bold tracking-[-0.055em] max-[600px]:text-[38px]">
+        <RevealGroup className="w-[56%] max-w-[650px] max-[900px]:w-full max-[900px]:max-w-none">
+          <RevealItem>
+            <h2 className="font-bricolage text-[clamp(39px,4.3vw,68px)] leading-[0.99] font-bold tracking-[-0.055em] max-[600px]:text-[38px]">
             We take care of the{" "}
             <span className="text-[#5b2dce]">technical side.</span>
           </h2>
-          <p className="mt-[20px] text-[18px] leading-[1.65] text-[#625a70]">
+          </RevealItem>
+          <RevealItem as="p" className="mt-[20px] text-[18px] leading-[1.65] text-[#625a70]">
             You focus on your business. We handle hosting, maintenance and
             technical upkeep, with support when you need help or a change.
-          </p>
+          </RevealItem>
 
           <div className="mt-[18px] flex w-full flex-col">
             {MANAGED_POINTS.map((point, index) => (
-              <article
+              <RevealItem
+                as="article"
                 key={point.number}
                 className={`flex items-center gap-[15px] py-[20px] ${
                   index === 0 ? "" : "border-t border-[#ded8e7]"
@@ -36,12 +39,12 @@ export default function ManagedFold() {
                     {point.body}
                   </p>
                 </div>
-              </article>
+              </RevealItem>
             ))}
           </div>
-        </Reveal>
+        </RevealGroup>
 
-        <Reveal
+        <RevealGroup
           delay={0.08}
           className="w-[44%] min-w-0 self-stretch max-[900px]:h-[330px] max-[900px]:w-full max-[600px]:h-[280px]"
         >
@@ -54,7 +57,7 @@ export default function ManagedFold() {
               className="object-cover object-center"
             />
           </figure>
-        </Reveal>
+        </RevealGroup>
       </div>
     </SectionCard>
   );

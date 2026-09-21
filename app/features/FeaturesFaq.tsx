@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import Reveal from "../components/Reveal";
+import { RevealGroup, RevealItem } from "./FeatureReveal";
 import SectionCard from "./SectionCard";
 import { FAQ_ITEMS } from "./data";
 
@@ -14,22 +14,27 @@ export default function FeaturesFaq() {
   return (
     <SectionCard id="faq" className="bg-[#eeeeee] text-[#0a0516]">
       <div className="flex gap-[70px] max-[900px]:flex-col max-[900px]:gap-[34px]">
-        <Reveal className="w-[32%] max-[900px]:w-full">
-          <h2 className="font-bricolage text-[clamp(39px,4.3vw,68px)] leading-[0.99] font-bold tracking-[-0.055em] max-[600px]:text-[38px]">
-            A few questions, <span className="text-[#5b2dce]">answered.</span>
-          </h2>
-          <p className="mt-[18px] text-[17px] leading-[1.65] text-[#625a70]">
+        <RevealGroup className="w-[32%] max-[900px]:w-full">
+          <RevealItem>
+            <h2 className="font-bricolage text-[clamp(39px,4.3vw,68px)] leading-[0.99] font-bold tracking-[-0.055em] max-[600px]:text-[38px]">
+              A few questions, <span className="text-[#5b2dce]">answered.</span>
+            </h2>
+          </RevealItem>
+          <RevealItem
+            as="p"
+            className="mt-[18px] text-[17px] leading-[1.65] text-[#625a70]"
+          >
             Clear answers about your Growth Rocket website and connected business
             tools.
-          </p>
-        </Reveal>
+          </RevealItem>
+        </RevealGroup>
 
-        <Reveal delay={0.08} className="w-[68%] max-[900px]:w-full">
+        <RevealGroup delay={0.08} className="w-[68%] max-[900px]:w-full">
           <div className="flex w-full flex-col">
             {FAQ_ITEMS.map((item, index) => {
               const open = openIndex === index;
               return (
-                <div
+                <RevealItem
                   key={item.question}
                   className={`py-[21px] ${
                     index === 0 ? "" : "border-t border-[#0a051626]"
@@ -69,11 +74,11 @@ export default function FeaturesFaq() {
                       </motion.div>
                     ) : null}
                   </AnimatePresence>
-                </div>
+                </RevealItem>
               );
             })}
           </div>
-        </Reveal>
+        </RevealGroup>
       </div>
     </SectionCard>
   );

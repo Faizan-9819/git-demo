@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import FeaturesClient from "@/app/features/FeaturesClient";
+import type { AnimationStyle } from "@/app/features/FeatureReveal";
+
+/* Keep in step with app/features/page.tsx. See animationStyle.md. */
+const animationStyle: AnimationStyle = "simple";
 
 export const metadata: Metadata = {
   title: "Functies — Uw website en zakelijke tools | Growth Rocket",
@@ -15,5 +19,5 @@ export const metadata: Metadata = {
 };
 
 export default function NlFeaturesPage() {
-  return <FeaturesClient />;
+  return <FeaturesClient animationStyle={animationStyle} />;
 }

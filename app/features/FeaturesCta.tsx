@@ -1,4 +1,4 @@
-import Reveal from "../components/Reveal";
+import { RevealGroup, RevealItem } from "./FeatureReveal";
 import SectionCard from "./SectionCard";
 import FeatureButton from "./FeatureButton";
 
@@ -9,22 +9,24 @@ export default function FeaturesCta() {
       className="bg-[#e4fa65] mb-[14px] text-[#0a0516]"
     >
       <div className="flex items-center justify-between gap-[40px] max-[900px]:flex-col max-[900px]:items-start">
-        <Reveal className="w-[58%] max-[900px]:w-full">
-          <h2 className="w-full max-w-[800px] font-bricolage text-[clamp(39px,4.3vw,68px)] leading-[0.99] font-bold tracking-[-0.055em] max-[600px]:text-[38px]">
+        <RevealGroup className="w-[58%] max-[900px]:w-full">
+          <RevealItem>
+            <h2 className="w-full max-w-[800px] font-bricolage text-[clamp(39px,4.3vw,68px)] leading-[0.99] font-bold tracking-[-0.055em] max-[600px]:text-[38px]">
             Bring your website and customer management{" "}
             <span className="text-[#5b2dce]">together.</span>
-          </h2>
-          <p className="mt-[18px] w-full max-w-[760px] text-[18px] leading-[1.65]">
+            </h2>
+          </RevealItem>
+          <RevealItem as="p" className="mt-[18px] w-full max-w-[760px] text-[18px] leading-[1.65]">
             Give your customers a professional online presence while keeping the
             tools your business needs organised behind the scenes. One connected
             setup from{" "}
             <strong className="font-extrabold text-[#5b2dce]">
               €69 a month.
             </strong>
-          </p>
-        </Reveal>
+          </RevealItem>
+        </RevealGroup>
 
-        <Reveal
+        <RevealGroup
           delay={0.08}
           className="flex w-[330px] shrink-0 flex-col items-start gap-[13px] max-[900px]:w-full max-[900px]:max-w-[330px]"
         >
@@ -57,7 +59,7 @@ export default function FeaturesCta() {
           >
             Contact our sales team
           </FeatureButton>
-        </Reveal>
+        </RevealGroup>
       </div>
     </SectionCard>
   );
