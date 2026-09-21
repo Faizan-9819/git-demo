@@ -48,6 +48,12 @@ type Props = {
  * binds — `.full-bleed` is what actually spans the viewport. See the band
  * comment in CategoryFilter, which pairs with this.
  *
+ * The floor is there for the COLOURED folds. The gallery cancels its phone
+ * step through `className` (`max-[600px]:px-0!`) because its card is white on
+ * a white page: there is no edge for copy to touch, and 22px of invisible
+ * padding only pushed the grid inside the hero and CTA card edges above and
+ * below it.
+ *
  * `px-0!` is load-bearing, not tidying. `.fix` is unlayered CSS while Tailwind
  * utilities live in `@layer utilities`, so unlayered wins on order alone — the
  * `!` is what lets this cancel `.fix`'s sub-768px `padding-inline: 20px`, which

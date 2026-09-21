@@ -88,13 +88,21 @@
     #f5f3ff 30%,
     #fed7aa 100%
   );
+
+  /* Scrollbar rail — the lightest violet tint, so the thumb sits in a groove
+     instead of floating over the page. Shared by the page bar and the inner
+     scrollers (blog tables, booking slots/services) so they all match. */
+  --scrollbar-track: #ede9fe;
 }
 
 html {
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: #c084fc transparent;
+  /* Firefox takes only solid colors: thumb, then the track the thumb runs in.
+     A transparent track left the thumb floating over whatever section it
+     happened to be passing, so it reads as a rail now. */
+  scrollbar-color: #c084fc var(--scrollbar-track);
   overflow-x: hidden;
 }
 
@@ -124,7 +132,8 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbar-track);
+  border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #5b219f 0%, #922698 100%);
@@ -134,7 +143,7 @@ body {
   background: linear-gradient(180deg, #7c3aed 0%, #a21caf 100%);
 }
 ::-webkit-scrollbar-corner {
-  background: transparent;
+  background: var(--scrollbar-track);
 }
 
 * {
@@ -777,13 +786,14 @@ html.lenis body {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: #7c2ba0 transparent;
+  scrollbar-color: #7c2ba0 var(--scrollbar-track);
 }
 .blog-content table::-webkit-scrollbar {
   height: 5px;
 }
 .blog-content table::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbar-track);
+  border-radius: 999px;
 }
 .blog-content table::-webkit-scrollbar-thumb {
   background: linear-gradient(90deg, #5b219f 0%, #922698 100%);
@@ -999,13 +1009,14 @@ html.lenis body {
 /* ── BookingForm: time slots row ── */
 .slots-row {
   scrollbar-width: thin;
-  scrollbar-color: #7c2ba0 transparent;
+  scrollbar-color: #7c2ba0 var(--scrollbar-track);
 }
 .slots-row::-webkit-scrollbar {
   height: 3px;
 }
 .slots-row::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbar-track);
+  border-radius: 999px;
 }
 .slots-row::-webkit-scrollbar-thumb {
   background: linear-gradient(90deg, #5b219f 0%, #922698 100%);
@@ -1018,13 +1029,14 @@ html.lenis body {
 /* ── BookingForm: services list ── */
 .services-list {
   scrollbar-width: thin;
-  scrollbar-color: #7c2ba0 transparent;
+  scrollbar-color: #7c2ba0 var(--scrollbar-track);
 }
 .services-list::-webkit-scrollbar {
   width: 3px;
 }
 .services-list::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbar-track);
+  border-radius: 999px;
 }
 .services-list::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #5b219f 0%, #922698 100%);

@@ -46,10 +46,20 @@ export default function TemplatesPageClient() {
 
   return (
     /* The filter band goes through `bleed` so it runs to the card's edges,
-       while the heading and grid sit on the rail inside it. */
+       while the heading and grid sit on the rail inside it.
+
+       `max-[600px]:px-0!` drops the fold's phone inset for this fold only.
+       DesignsFold carries it as a floor so copy never touches a COLOURED card
+       edge (the hero and the CTA), but this card is white on a white page, so
+       the inset is invisible padding that only pushes the heading and the grid
+       22px inside the hero/CTA card edges they should line up with. Without it
+       the rail sits on the card's own edge — 14px off the viewport, the same
+       gutter `.newfix-card` gives every fold and the same 14px the page uses
+       between them. The `!` is needed because this lands in the same Tailwind
+       layer as the base `max-[600px]:px-[22px]` it has to beat. */
     <DesignsFold
       id="designs"
-      className="bg-white pt-0! text-[#0a0516]"
+      className="bg-white pt-0! text-[#0a0516] max-[600px]:px-0!"
       bleed={
         <CategoryFilter
           selectedCategory={selectedCategory}

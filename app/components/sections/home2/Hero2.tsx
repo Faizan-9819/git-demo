@@ -232,7 +232,7 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
           />
 
           <div className="relative max-w-[560px]">
-            <h1 className="m-0 font-bricolage text-[40px] min-[521px]:text-[clamp(42px,4.3vw,62px)] font-semibold leading-[1.05] tracking-[-0.06em] text-white">
+            <h1 className="m-0 font-bricolage text-[36px] min-[521px]:text-[clamp(42px,4.3vw,62px)] font-semibold leading-[1.05] tracking-[-0.06em] text-white">
               Not just a website.
               <br />
               <span className="text-[#e4fa65]">A complete system</span>

@@ -376,7 +376,11 @@ function AccordionItem({
 
 export default function Faq2() {
   const { t, locale } = useLanguage();
-  const [open, setOpen] = useState(0);
+  // `null` = every item collapsed. It has to be a distinct value from any index
+  // for the second click on an open item to have somewhere to go — with a plain
+  // `number` the only reachable states are "some item is open", so a click on
+  // the open one was a no-op and the fold could never be fully closed.
+  const [open, setOpen] = useState<number | null>(0);
 
   return (
     <section
@@ -416,7 +420,7 @@ export default function Faq2() {
             <AccordionItem
               item={item}
               isOpen={open === i}
-              onToggle={() => setOpen(i)}
+              onToggle={() => setOpen((cur) => (cur === i ? null : i))}
             />
           </Reveal>
         ))}
