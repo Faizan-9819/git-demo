@@ -34,7 +34,7 @@ export default function FeaturesHero() {
               <a
                 key={link.href}
                 href={link.href}
-                className={`${PILL} border-white/30 text-white transition-colors duration-200 hover:border-[#e4fa65] hover:bg-[#e4fa65] hover:text-[#0a0516] focus-visible:border-[#e4fa65] focus-visible:bg-[#e4fa65] focus-visible:text-[#0a0516] focus-visible:outline-none`}
+                className={`${PILL} cursor-pointer border-white/30 text-white transition-colors duration-200 hover:border-[#e4fa65] hover:bg-[#e4fa65] hover:text-[#0a0516] focus-visible:border-[#e4fa65] focus-visible:bg-[#e4fa65] focus-visible:text-[#0a0516] focus-visible:outline-none`}
               >
                 {link.label}
               </a>

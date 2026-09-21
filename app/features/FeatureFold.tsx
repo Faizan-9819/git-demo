@@ -133,7 +133,7 @@ export function WebsiteAccordion({
               type="button"
               aria-expanded={open}
               onClick={() => setOpenIndex(open ? null : index)}
-              className="flex w-full items-center justify-between gap-[20px] py-[13px] text-left font-sans text-[16px] leading-[1.35] font-bold text-white"
+              className="flex w-full cursor-pointer items-center justify-between gap-[20px] py-[13px] text-left font-sans text-[16px] leading-[1.35] font-bold text-white"
             >
               {row.title}
               <span
