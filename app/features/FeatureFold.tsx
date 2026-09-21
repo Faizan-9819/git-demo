@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import Reveal from "../components/Reveal";
+import { RevealGroup, RevealItem, RevealWords } from "./FeatureReveal";
 import { useLanguage } from "../i18n/LanguageProvider";
 import SectionCard from "./SectionCard";
 import VideoPreview from "./VideoPreview";
@@ -45,26 +45,32 @@ export default function FeatureFold({
           content.reverse ? "flex-row-reverse" : "flex-row"
         }`}
       >
-        <Reveal className="w-[52%] max-w-[670px] max-[900px]:w-full max-[900px]:max-w-none">
-          <p
+        <RevealGroup className="w-[52%] max-w-[670px] max-[900px]:w-full max-[900px]:max-w-none">
+          <RevealItem
+            as="p"
             className={`mb-[18px] font-sans text-[12px] font-[850] tracking-[0.14em] uppercase ${accent}`}
           >
             {content.kicker}
-          </p>
+          </RevealItem>
           <h2 className="font-bricolage text-[clamp(34px,3.4vw,54px)] leading-[0.99] font-bold tracking-[-0.055em] max-[600px]:text-[38px]">
-            {content.heading}
-            <span className={accent}>{content.headingAccent}</span>
+            <RevealWords
+              text={content.heading}
+              accent={content.headingAccent}
+              accentClassName={accent}
+            />
           </h2>
-          <p
+          <RevealItem
+            as="p"
             className={`mt-[15px] w-full max-w-[620px] text-[17px] leading-[1.66] ${bodyColor}`}
           >
             {content.intro}
-          </p>
+          </RevealItem>
 
           {content.items.length > 0 ? (
             <ul className="mt-[22px] flex w-full flex-col">
               {content.items.map((item, index) => (
-                <li
+                <RevealItem
+                  as="li"
                   key={item}
                   className={`relative py-[11px] pl-[30px] text-[16px] leading-[1.3] font-medium ${
                     index === content.items.length - 1
@@ -79,31 +85,33 @@ export default function FeatureFold({
                     ✓
                   </span>
                   {item}
-                </li>
+                </RevealItem>
               ))}
             </ul>
           ) : null}
 
-          {children}
-        </Reveal>
+          {children ? <RevealItem>{children}</RevealItem> : null}
+        </RevealGroup>
 
-        <Reveal
-          delay={0.08}
+        <RevealGroup
+          delay={0.12}
           className="w-[48%] min-w-0 max-[900px]:w-full"
         >
-          <VideoPreview
-            title={content.videoTitle}
-            caption={content.videoCaption}
-            thumb={content.videoThumb}
-            onOpen={(rect) =>
-              onOpenVideo({
-                youtubeId: content.youtubeId[locale] ?? content.youtubeId.en,
-                title: content.videoTitle,
-                origin: rect,
-              })
-            }
-          />
-        </Reveal>
+          <RevealItem media>
+            <VideoPreview
+              title={content.videoTitle}
+              caption={content.videoCaption}
+              thumb={content.videoThumb}
+              onOpen={(rect) =>
+                onOpenVideo({
+                  youtubeId: content.youtubeId[locale] ?? content.youtubeId.en,
+                  title: content.videoTitle,
+                  origin: rect,
+                })
+              }
+            />
+          </RevealItem>
+        </RevealGroup>
       </div>
     </SectionCard>
   );

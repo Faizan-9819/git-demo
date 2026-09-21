@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import FeaturesClient from "./FeaturesClient";
+import type { AnimationStyle } from "./FeatureReveal";
+
+/* Scroll-reveal style for this page. See app/features/animationStyle.md.
+   "stagger" — children rise, scale and un-blur in sequence; headlines by word.
+   "simple"  — the original fade + 24px rise, whole blocks at once. */
+const animationStyle: AnimationStyle = "simple";
 
 export const metadata: Metadata = {
   title: "Features — Your Website and Business Tools | Growth Rocket",
@@ -15,5 +21,5 @@ export const metadata: Metadata = {
 };
 
 export default function FeaturesPage() {
-  return <FeaturesClient />;
+  return <FeaturesClient animationStyle={animationStyle} />;
 }
