@@ -185,20 +185,24 @@ export default function Footer2() {
 
           <NavLink
             href={resolve({ label: "Pricing", href: "#pricing" })}
-            className="arrow-cta inline-flex min-h-[52px] w-full items-center justify-center gap-[8px] rounded-full bg-[#e4fa65] px-[20px] py-[13px] font-sans text-[14px] font-bold leading-none whitespace-nowrap text-[#0a0516] min-[521px]:w-max"
+            className="arrow-cta inline-flex min-h-[52px] w-fit md:w-full items-center justify-center gap-[8px] rounded-full bg-[#e4fa65] px-[20px] py-[13px] font-sans text-[15px] font-bold leading-none whitespace-nowrap text-[#0a0516] min-[521px]:w-max"
           >
             View full pricing
             <ArrowIcon
               direction="up-right"
-              size={21}
+              // size={21}
               className="text-[#5b2dce]"
             />
           </NavLink>
         </div>
 
-        {/* Link grid: three equal columns plus a wider contact column, all
-            collapsing to a single column at 900px. */}
-        <div className="grid grid-cols-1 gap-[36px] pt-[34px] pb-[28px] min-[901px]:grid-cols-[repeat(3,minmax(120px,1fr))_minmax(300px,1.35fr)]">
+        {/* Link grid: three equal columns plus a wider contact column from
+            901px. Below that it drops to two columns, which suits Product and
+            Explore — short labels that pair up without wrapping — but not
+            Social or Contact, whose rows carry an icon chip and, in Contact's
+            case, an address block. Those two span the full width instead, so
+            the grid reads as a 2-up row followed by two stacked blocks. */}
+        <div className="grid grid-cols-2 gap-[36px] pt-[34px] pb-[28px] min-[901px]:grid-cols-[repeat(3,minmax(120px,1fr))_minmax(300px,1.35fr)]">
           <div>
             <h3 className={HEADING_CLASS}>Product</h3>
             {PRODUCT_LINKS.map((link) => (
@@ -225,7 +229,7 @@ export default function Footer2() {
             ))}
           </div>
 
-          <div>
+          <div className="col-span-2 min-[901px]:col-span-1">
             <h3 className={HEADING_CLASS}>Social</h3>
             {SOCIAL_LINKS.map(({ label, href, Icon }) => (
               <a
@@ -243,7 +247,7 @@ export default function Footer2() {
             ))}
           </div>
 
-          <div>
+          <div className="col-span-2 min-[901px]:col-span-1">
             <h3 className={HEADING_CLASS}>Contact</h3>
             <p className="mb-[18px] max-w-[340px] font-sans text-[14px] leading-[1.7] text-white/72">
               <strong className="font-bold text-white">

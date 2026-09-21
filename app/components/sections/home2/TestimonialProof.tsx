@@ -102,7 +102,15 @@ function QuoteGroup({ hidden }: { hidden?: boolean }) {
   );
 }
 
-/** BlogTeaser's chevron pill, recoloured for this fold's light surface. */
+/**
+ * BlogTeaser's chevron pill, recoloured for this fold's light surface.
+ *
+ * Hover is the same move BlogTeaser makes — one step of the pill's own
+ * surface, not the yellow accent, which belongs to the cards and CTAs. Here
+ * that means resting at a softened white over the grey fold and lifting to
+ * pure white with a firmer border and a small shadow, so the feedback reads
+ * without introducing a second accent next to the carousel.
+ */
 function ArrowButton({
   dir,
   disabled,
@@ -118,7 +126,7 @@ function ArrowButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={dir === "prev" ? "Previous testimonial" : "Next testimonial"}
-      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-black/[0.12] bg-white text-[#0a0516] transition-colors hover:bg-[#e4fa65] disabled:pointer-events-none disabled:opacity-40"
+      className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-black/[0.12] bg-white/70 text-[#0a0516] transition-[background-color,border-color,box-shadow] duration-200 hover:border-black/20 hover:bg-white hover:shadow-[0_2px_10px_rgba(10,5,22,0.12)] disabled:pointer-events-none disabled:opacity-40 disabled:shadow-none"
     >
       {dir === "prev" ? (
         <ChevronLeft size={18} strokeWidth={2.25} />

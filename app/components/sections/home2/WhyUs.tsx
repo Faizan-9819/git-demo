@@ -229,6 +229,41 @@ const BoltIcon = () => (
   </svg>
 );
 
+/**
+ * The hover transition lists `translate` and `scale`, NOT `transform`, and that
+ * is the whole reason it reads as smooth rather than as a snap.
+ *
+ * `hover:-translate-y-1` does not touch `transform` in Tailwind v4 — it
+ * compiles to the separate `translate` property:
+ *
+ *   --tw-translate-y: calc(4px * -1);
+ *   translate: var(--tw-translate-x) var(--tw-translate-y);
+ *
+ * and `hover:scale-[1.01]` likewise compiles to standalone `scale`. So a list
+ * naming `transform` transitions a property nothing here animates. The lift
+ * then jumped to its end state on the first frame while the colours and shadow
+ * eased in behind it over the full duration — two different clocks on one
+ * gesture, which is what made the card feel broken rather than quick.
+ * Tailwind's own `transition-transform` is `transform, translate, scale,
+ * rotate` for exactly this reason; anything added here later has to be named in
+ * the list too or it will snap the same way. The matching `translate-y-0` and
+ * `scale-100` in the base classes are what give each property a from-value to
+ * ease out of on mouse-leave.
+ *
+ * Enter and leave run on different clocks on purpose. Entering is 300ms on
+ * `cubic-bezier(.22,1,.36,1)` — an expo-out that spends most of its distance in
+ * the first third, so the card answers the pointer immediately and then settles
+ * instead of gliding at a constant speed. Leaving is the longer 380ms on the
+ * symmetric `ease-in-out`, because nothing is waiting on it; a fast
+ * snap back to rest is what reads as cheap, and the gentler curve lets the card
+ * fall away. Tailwind applies the base `duration`/`ease` on leave and the
+ * `hover:` ones on enter, which is how both sit on one element.
+ *
+ * The travel grew from the source's 2px to 4px plus a 1% scale for the same
+ * reason: over a readable duration a 2px lift is too small to register as
+ * motion, so it only registers as lag. `motion-reduce` keeps the colour change
+ * and drops the movement entirely rather than just shortening it.
+ */
 function Card({
   icon,
   title,
@@ -239,7 +274,7 @@ function Card({
   body: string;
 }) {
   return (
-    <article className="flex flex-col items-start gap-[14px] rounded-[13px] border border-white/[0.34] bg-[#f5f3ff] px-[23px] pb-[15px] pt-[20px] text-[#0a0516] shadow-[0_14px_34px_rgba(10,5,22,0.08)] transition-[background-color,border-color,transform,box-shadow] duration-[180ms] ease-[ease] hover:-translate-y-[2px] hover:border-white/[0.46] hover:bg-[#ebe6ff] hover:shadow-[0_18px_38px_rgba(10,5,22,0.11)] min-[901px]:px-[28px] min-[901px]:pb-[16px] min-[901px]:pt-[22px]">
+    <article className="flex translate-y-0 scale-100 flex-col items-start gap-[14px] rounded-[13px] border border-white/[0.34] bg-[#f5f3ff] px-[23px] pb-[15px] pt-[20px] text-[#0a0516] shadow-[0_14px_34px_rgba(10,5,22,0.08)] transition-[background-color,border-color,translate,scale,box-shadow] duration-380 ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:border-white/[0.46] hover:bg-[#ebe6ff] hover:shadow-[0_22px_46px_rgba(10,5,22,0.14)] hover:duration-300 hover:ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-[background-color,border-color] motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100 min-[901px]:px-[28px] min-[901px]:pb-[16px] min-[901px]:pt-[22px]">
       <span className="grid h-[38px] w-[38px] flex-none place-items-center rounded-[13px] bg-[#e4fa65] text-[#5b2dce]">
         {icon}
       </span>
@@ -315,50 +350,53 @@ function FadeImages() {
 export default function WhyUs() {
   const { t } = useLanguage();
 
-  const cards: { icon: React.ReactNode; title: Translation; body: Translation }[] =
-    [
-      {
-        icon: <GridIcon />,
-        title: { en: "Everything in one place", nl: "Alles op één plek" },
-        body: {
-          en: "Your website, enquiries, appointments, customers, quotes and invoices work together in one clear system.",
-          nl: "Je website, aanvragen, afspraken, klanten, offertes en facturen werken samen in één overzichtelijk systeem.",
-        },
+  const cards: {
+    icon: React.ReactNode;
+    title: Translation;
+    body: Translation;
+  }[] = [
+    {
+      icon: <GridIcon />,
+      title: { en: "Everything in one place", nl: "Alles op één plek" },
+      body: {
+        en: "Your website, enquiries, appointments, customers, quotes and invoices work together in one clear system.",
+        nl: "Je website, aanvragen, afspraken, klanten, offertes en facturen werken samen in één overzichtelijk systeem.",
       },
-      {
-        icon: <WandIcon />,
-        title: {
-          en: "We take care of it for you",
-          nl: "Wij regelen het voor je",
-        },
-        body: {
-          en: "Your website is professionally set up for you, and we handle hosting, maintenance, security and support.",
-          nl: "Je website wordt professioneel voor je opgezet en wij regelen hosting, onderhoud, beveiliging en support.",
-        },
+    },
+    {
+      icon: <WandIcon />,
+      title: {
+        en: "We take care of it for you",
+        nl: "Wij regelen het voor je",
       },
-      {
-        icon: <ToolsIcon />,
-        title: {
-          en: "Built for freelancers & SMEs",
-          nl: "Gemaakt voor ZZP & MKB",
-        },
-        body: {
-          en: "No complicated business software full of features you’ll never use. Just the tools a small business needs every day.",
-          nl: "Geen ingewikkelde bedrijfssoftware vol functies die je nooit gebruikt. Alleen de tools die een klein bedrijf dagelijks nodig heeft.",
-        },
+      body: {
+        en: "Your website is professionally set up for you, and we handle hosting, maintenance, security and support.",
+        nl: "Je website wordt professioneel voor je opgezet en wij regelen hosting, onderhoud, beveiliging en support.",
       },
-      {
-        icon: <BoltIcon />,
-        title: {
-          en: "More for one fixed price",
-          nl: "Meer voor één vaste prijs",
-        },
-        body: {
-          en: "No separate bills for website, hosting, maintenance, appointments, customer management, quotes and invoices.",
-          nl: "Geen losse rekeningen voor website, hosting, onderhoud, afspraken, klantbeheer, offertes en facturen.",
-        },
+    },
+    {
+      icon: <ToolsIcon />,
+      title: {
+        en: "Built for freelancers & SMEs",
+        nl: "Gemaakt voor ZZP & MKB",
       },
-    ];
+      body: {
+        en: "No complicated business software full of features you’ll never use. Just the tools a small business needs every day.",
+        nl: "Geen ingewikkelde bedrijfssoftware vol functies die je nooit gebruikt. Alleen de tools die een klein bedrijf dagelijks nodig heeft.",
+      },
+    },
+    {
+      icon: <BoltIcon />,
+      title: {
+        en: "More for one fixed price",
+        nl: "Meer voor één vaste prijs",
+      },
+      body: {
+        en: "No separate bills for website, hosting, maintenance, appointments, customer management, quotes and invoices.",
+        nl: "Geen losse rekeningen voor website, hosting, onderhoud, afspraken, klantbeheer, offertes en facturen.",
+      },
+    },
+  ];
 
   return (
     <section

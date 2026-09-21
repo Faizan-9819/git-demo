@@ -182,19 +182,22 @@ type CategoryFilterProps = {
  * The source uses a native <select>; this keeps the page's existing custom
  * dropdown (it is what drives the animated grid) and wears the same shape.
  *
- * Two numbers above are deliberately NOT matched, because together they open a
- * ~24px void between the label and the chevron disc. The disc is 42px wide and
- * inset 4px, so it ends 46px in from the right edge: the source's 58px of
- * padding-right leaves a 12px lane beside it, and its 250px min-width adds
- * ~12px more as slack inside the content box, since every label here is
- * narrower than that floor. The source can carry both — a native <select>
- * centres its own arrow in the padding — but this pill positions the disc
- * absolutely, so the slack all lands in one place and reads as a gap.
+ * The pill is a FIXED 250px above 600px — the source's `.filter-control`
+ * floor, as a width rather than a min-width. A shrink-to-fit trigger is the
+ * one thing a select must not be: picking "Dentist" after "Professional
+ * services" collapsed the pill to roughly half its width and dragged the
+ * "Select your industry" label left with it, so the band reflowed on every
+ * choice. 250px holds the longest label ("Real Estate Consultant", ~157px at
+ * 15px Inter SemiBold) inside the 176px the 20px/54px padding leaves, so
+ * nothing truncates and nothing moves. The dropdown panel inherits the same
+ * width through `w-full` and keeps `min-w-[250px]` as its own floor.
  *
- * So the pill hugs its label above 600px (no min-width) and padding-right is
- * 54px, leaving a single deliberate 8px gap. The trigger is then only as wide
- * as the current selection; the dropdown panel keeps its own `min-w-[250px]`
- * so the list stays readable behind a short one.
+ * The cost is a gap between a short label and the chevron disc, which is what
+ * a fixed-width select looks like. Padding-right stays 54px rather than the
+ * source's 58px: the disc is 42px wide and inset 4px, so it ends 46px in, and
+ * 58px would leave a 12px lane beside it. The source can afford that — a
+ * native <select> centres its own arrow inside the padding — but this pill
+ * positions the disc absolutely, so that slack would read as part of the gap.
  */
 export default function CategoryFilter({
   selectedCategory,
@@ -254,6 +257,13 @@ export default function CategoryFilter({
        centres on the viewport and so does the card, so `.fix` resolves to the
        same 1180px column in both.
 
+       Below 600px that inset is 14px, not the source's 22px, because the
+       gallery drops the fold's phone padding (see TemplatesPageClient) and its
+       heading and grid then sit on the card's own edge — 14px off the
+       viewport. The band is measured from the viewport, so it has to restate
+       that 14px itself to keep the pill under "Latest designs". The vertical
+       22px is the source's and stays.
+
        The ROW inside it rides the page's `.fix` rail, so the pill's left edge
        lines up with "Latest designs", the grid, and the footer below — a bar
        whose control floated 279px left of everything else was the spacing
@@ -262,14 +272,17 @@ export default function CategoryFilter({
        `relative z-30` lifts the whole band above the heading and grid that
        follow it in source order, so the open dropdown paints over them. It
        stays under the navbar, which is z-50 (z-[60] for its mobile sheet). */
-    <div className="full-bleed relative z-30 bg-[#e4fa65] px-[var(--fold-inset)] py-[25px] text-[#0a0516] max-[600px]:p-[22px]">
+    <div className="full-bleed relative z-30 bg-[#e4fa65] px-[var(--fold-inset)] py-[25px] text-[#0a0516] max-[600px]:px-[14px] max-[600px]:py-[22px]">
       <div className="fix flex items-center justify-start gap-[14px] px-0! max-[600px]:flex-col max-[600px]:items-start">
         {/* The source's drop-shadow belongs to `.filter-control`, but `filter`
           creates a stacking context, which would trap the dropdown inside this
           wrapper. The source can afford it — its control is a native <select>
           whose popup the browser draws outside the DOM — so here the shadow
           moves onto the pill itself and the wrapper stays a plain anchor. */}
-        <div ref={containerRef} className="relative max-[600px]:w-full">
+        <div
+          ref={containerRef}
+          className="relative w-[250px] max-[600px]:w-full"
+        >
           <button
             type="button"
             onClick={() => setIsOpen((open) => !open)}

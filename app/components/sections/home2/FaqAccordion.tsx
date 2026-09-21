@@ -218,6 +218,12 @@ export default function FaqAccordion({
 } = {}) {
   const { t } = useLanguage();
   const entries = items ?? HOME_FAQS;
+  // Exactly one answer is open at all times — the first one on load, and after
+  // that whichever question was clicked last. There is deliberately no "all
+  // closed" state: clicking the open question is a no-op rather than a toggle,
+  // so the fold never collapses to a bare list of headings and the sticky left
+  // column always has something beside it. Swapping a closed item in for the
+  // open one is also what keeps the two columns near the same height.
   const [open, setOpen] = useState(0);
 
   return (
@@ -259,7 +265,7 @@ export default function FaqAccordion({
               entry={entry}
               index={idx}
               isOpen={open === idx}
-              onToggle={() => setOpen(open === idx ? -1 : idx)}
+              onToggle={() => setOpen(idx)}
               delay={Math.min(idx * 0.05, 0.2)}
             />
           ))}
