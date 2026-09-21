@@ -61,7 +61,7 @@ function HelpCard() {
 
         <a
           href="#contact"
-          className="arrow-cta mt-[4px] inline-flex min-h-[52px] items-center gap-[8px] self-start rounded-full bg-[#5b2dce] px-[20px] py-[14px] font-sans text-[14px] font-semibold text-white hover:bg-[#e4fa65] hover:text-[#0a0516]"
+          className="arrow-cta mt-[4px] inline-flex min-h-[46px] items-center gap-[8px] self-start rounded-full bg-[#5b2dce] px-[16px] py-[11px] font-sans text-[13px] font-semibold text-white hover:bg-[#e4fa65] hover:text-[#0a0516] md:min-h-[52px] md:px-[20px] md:py-[14px] md:text-[14px]"
         >
           Talk to us
           <ArrowIcon direction="up-right" />

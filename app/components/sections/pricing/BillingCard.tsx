@@ -69,7 +69,7 @@ export default function BillingCard() {
           type="button"
           onClick={() => setBilling("annual")}
           aria-pressed={isAnnual}
-          className={`inline-flex min-h-[38px] flex-auto items-center justify-center gap-[9px] rounded-full px-[12px] py-[10px] font-sans text-[13px] leading-none font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white ${
+          className={`inline-flex min-h-[38px] flex-auto items-center justify-center gap-[9px] rounded-full px-[12px] py-[10px] font-sans text-[13px] leading-none font-bold cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white ${
             isAnnual ? "bg-white text-[#0a0516]" : "bg-[#262626] text-white"
           }`}
         >
@@ -90,7 +90,7 @@ export default function BillingCard() {
           type="button"
           onClick={() => setBilling("monthly")}
           aria-pressed={!isAnnual}
-          className={`min-h-[38px] flex-auto rounded-full px-[12px] py-[10px] font-sans text-[13px] leading-none font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white ${
+          className={`min-h-[38px] flex-auto rounded-full px-[12px] py-[10px] font-sans text-[13px] leading-none font-bold transition-colors focus-visible:outline-2 cursor-pointer focus-visible:outline-offset-[3px] focus-visible:outline-white ${
             !isAnnual ? "bg-white text-[#0a0516]" : "bg-[#262626] text-white"
           }`}
         >
@@ -132,7 +132,7 @@ export default function BillingCard() {
 
       <a
         href="#contact"
-        className="arrow-cta mt-[10px] flex min-h-[52px] w-fit items-center justify-between gap-[8px] rounded-full border border-transparent bg-[#e4fa65] px-[20px] py-[14px] text-left font-sans text-[14px] leading-[1.35] font-semibold text-[#0a0516] transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white"
+        className="arrow-cta mt-[10px] flex min-h-[46px] w-fit items-center justify-between gap-[8px] rounded-full border border-transparent bg-[#e4fa65] px-[16px] py-[11px] text-left font-sans text-[13px] leading-[1.35] font-semibold text-[#0a0516] transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white md:min-h-[52px] md:px-[20px] md:py-[14px] md:text-[14px]"
       >
         Get started with Growth Rocket
         <ArrowIcon direction="up-right" size={18} />

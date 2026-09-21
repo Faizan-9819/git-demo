@@ -211,6 +211,17 @@ html.lenis body {
   }
 }
 
+/* Below the 1440px design width the rail stops being a fixed 1320px and becomes
+   a 90% column instead, so the 5% side gutters scale with the viewport rather
+   than collapsing to zero as the window narrows toward 1320px. */
+@media (max-width: 1439.98px) {
+  .fix {
+    width: 90%;
+    margin-inline: auto;
+    padding-inline: 0;
+  }
+}
+
 /* Left-edge-only companion to .fix. Lines content up with the .fix container's
    left gutter but adds nothing on the right, so it can run flush to its own
    edge. Used by the home2 hero, whose copy panel is a half-width grid column:

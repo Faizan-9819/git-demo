@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Plus } from "lucide-react";
 
 /**
  * The two inclusion cards — ported from `.pricing-product-b > .offer-grid` in
@@ -199,12 +200,18 @@ export default function OfferCards() {
         />
 
         {/* Centred on the seam in both axes once the grid is two columns wide,
-            a flow element straddling the stacked cards below that. */}
+            a flow element straddling the stacked cards below that.
+
+            The mark is lucide's `Plus`, the same one `home2/Solution.tsx` sets
+            between its two cards, rather than a `+` character — that glyph is
+            typographic, so its weight and centring drifted with the font. The
+            badge keeps the source's own palette here (lime disc, deep mark),
+            which is the inverse of Solution's deep disc with a lime ring. */}
         <span
           aria-hidden="true"
-          className="z-[2] mx-auto my-[-9px] grid h-[43px] w-[43px] place-items-center rounded-full border-[5px] border-[#e4fa65] bg-[#e4fa65] text-[26px] leading-none text-[#0a0516] md:h-[42px] md:w-[42px] lg:absolute lg:top-1/2 lg:left-1/2 lg:z-[1] lg:my-0 lg:-translate-x-1/2 lg:-translate-y-1/2"
+          className="z-[2] mx-auto my-[-9px] grid h-[43px] w-[43px] place-items-center rounded-full border-[5px] border-[#e4fa65] bg-[#e4fa65] text-[#0a0516] md:h-[42px] md:w-[42px] lg:absolute lg:top-1/2 lg:left-1/2 lg:z-[1] lg:my-0 lg:-translate-x-1/2 lg:-translate-y-1/2"
         >
-          +
+          <Plus size={20} strokeWidth={2.5} />
         </span>
 
         <OfferCard

@@ -55,7 +55,7 @@ export default function BespokeBanner() {
 
           <a
             href={mailto}
-            className="arrow-cta flex min-h-[52px] w-full items-center max-w-fit gap-[8px] rounded-full border border-transparent bg-[#e4fa65] px-[20px] py-[14px] font-sans text-[15px] leading-[1.35] font-semibold text-[#0a0516] transition-colors hover:bg-white "
+            className="arrow-cta flex min-h-[46px] w-full items-center max-w-fit gap-[8px] rounded-full border border-transparent bg-[#e4fa65] px-[16px] py-[11px] font-sans text-[13px] leading-[1.35] font-semibold text-[#0a0516] transition-colors hover:bg-white md:min-h-[52px] md:px-[20px] md:py-[14px] md:text-[15px]"
           >
             Discuss your requirements
             <ArrowIcon direction="up-right" size={18} />
