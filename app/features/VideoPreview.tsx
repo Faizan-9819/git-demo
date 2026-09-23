@@ -24,7 +24,7 @@ export default function VideoPreview({ title, caption, thumb, onOpen }: Props) {
         const rect = ref.current?.getBoundingClientRect();
         if (rect) onOpen(rect);
       }}
-      className="group relative flex aspect-[16/13] w-full cursor-pointer flex-col justify-end overflow-hidden rounded-[13px] p-[24px] text-left text-white max-[600px]:p-[22px]"
+      className="group relative flex aspect-[16/10] w-full cursor-pointer flex-col justify-end overflow-hidden rounded-[13px] p-[24px] text-left text-white max-[600px]:p-[22px]"
     >
       <Image
         src={thumb}
