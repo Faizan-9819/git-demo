@@ -5,9 +5,6 @@ import PricingPlan from "../components/sections/pricing/PricingPlan";
 import BespokeBanner from "../components/sections/pricing/BespokeBanner";
 import PricingFaq from "../components/sections/pricing/PricingFaq";
 import { PRICING_FAQS } from "../components/sections/pricing/faqs";
-import ContactCta from "../components/sections/home2/ContactCta";
-// Footer2 renders the loop strip above itself, so this page mounts the footer alone.
-import Footer2 from "../components/sections/home2/Footer2";
 import JsonLd from "../components/JsonLd";
 import { buildFaqJsonLdFromItems, buildPageSchema } from "../lib/seo";
 
@@ -38,9 +35,11 @@ export const metadata: Metadata = {
  * heading, the cards, the banner and the FAQ on one set of margins and lines
  * this page up with the rest of the site.
  *
- * The last two folds are the existing components, not new ports: the source's
- * `section#contact.contact-section` is already `ContactCta` ("Big plans? Let's
- * make room for them.") and its footer is already `Footer2`.
+ * The source's last two folds are not ported here at all: its
+ * `section#contact.contact-section` ("Big plans? Let's make room for them.") and
+ * its footer are `ContactCta` and `Footer2`, which the root layout already
+ * mounts through `SiteFooter` — so this page ends at the FAQ and they arrive
+ * underneath it.
  */
 export default function PricingPage() {
   const faqSchema = buildFaqJsonLdFromItems(
@@ -57,9 +56,6 @@ export default function PricingPage() {
         <PricingPlan />
         <BespokeBanner />
         <PricingFaq />
-        <ContactCta />
-        {/* <Footer2 /> */}
-        {/*  */}
       </HomeShell>
     </main>
   );

@@ -23,12 +23,11 @@ const getLinks = (t: any, locale: Locale) => [
     href: home2Anchor("voorwie", locale),
   },
   {
-    label: t({ en: "Examples", nl: "Voorbeelden" }),
-    href: home2Anchor("voorbeelden", locale),
-  },
-  {
+    // Its own route, not a home2 anchor: the #prijzen fold (FinalCta) is no
+    // longer mounted on home2, and /pricing is the real page. Left unlocalized
+    // like /designs — there is no /nl/pricing route to send NL visitors to.
     label: t({ en: "Pricing", nl: "Prijzen" }),
-    href: home2Anchor("prijzen", locale),
+    href: "/pricing",
   },
   {
     label: t({ en: "Designs", nl: "Designs" }),
@@ -201,7 +200,7 @@ export default function Navbar() {
       <div
         className="pointer-events-auto mx-auto flex h-[64px] items-center justify-between gap-6 rounded-full border border-[var(--color-mist)] bg-white/65 shadow-[0_2px_10px_rgba(91,33,182,0.05)] backdrop-blur-2xl backdrop-saturate-150 transition-[max-width,height,padding,box-shadow] duration-500 ease-[cubic-bezier(.22,1,.36,1)] px-6"
         style={{
-          maxWidth: compact ? 1250 : "100%",
+          maxWidth: compact ? 1320 : "100%",
           boxShadow: compact
             ? "0 10px 30px rgba(10,5,22,0.10)"
             : "0 2px 10px rgba(91,33,182,0.05)",

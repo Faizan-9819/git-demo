@@ -11,6 +11,7 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 import ArrowIcon from "../../ui/ArrowIcon";
+import ContactCta from "./ContactCta";
 import FooterLoopStrip from "./FooterLoopStrip";
 import { CONTACT_INFO, phoneHref } from "@/app/lib/contact";
 import { localizedHref } from "@/app/i18n/locale-href";
@@ -26,6 +27,13 @@ import type { Locale } from "@/app/i18n/config";
  * instead of a child of it: the strip prints on the page's own white, while the
  * card is a deep, rounded surface, and on home2 the two are separate children
  * of HomeShell's flex column so its 12px gap still falls between them.
+ *
+ * {@link ContactCta} rides along above the strip for the same reason: it is the
+ * fold the source puts directly before it, and every page that wants the closing
+ * "Big plans?" pitch wants it in exactly that position. Pages that don't — the
+ * legal boilerplate, /contact, anything that closes on its own CTA — turn it off
+ * with `showContactCta={false}`; routes that take the footer from the root
+ * layout say so through {@link SiteFooter} instead, which owns that list.
  *
  * home2 renders it itself as the last fold inside HomeShell; every other route
  * gets it from the root layout via {@link SiteFooter}, which supplies the page
@@ -60,10 +68,18 @@ type FooterLink = {
   localize?: false;
 };
 
+/**
+ * Every `#hash` below is an id that home2 actually renders — `#oplossing` and
+ * `#hub-heading` on Solution's two offer cards, `#how` on ProcessTimeline,
+ * `#voorwie` on Audience, `#voorbeelden` on Examples, `#faq` on FaqAccordion.
+ * Pricing is the one that is not: its old `#pricing` target (PricingTeaser) is
+ * no longer mounted, so it points at the /pricing route instead — unlocalized,
+ * since there is no /nl/pricing.
+ */
 const PRODUCT_LINKS: FooterLink[] = [
   { label: "Professional website", href: "#oplossing" },
-  { label: "Growth Rocket Hub", href: "#oplossing" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Growth Rocket Hub", href: "#hub-heading" },
+  { label: "Pricing", href: "/pricing", localize: false },
   { label: "How it works", href: "#how" },
 ];
 
@@ -148,7 +164,12 @@ function NavLink({
   );
 }
 
-export default function Footer2() {
+export default function Footer2({
+  /** Drop the closing contact fold on pages that shouldn't end on that pitch. */
+  showContactCta = true,
+}: {
+  showContactCta?: boolean;
+} = {}) {
   const pathname = usePathname() || "/";
   const locale: Locale =
     pathname === "/nl" || pathname.startsWith("/nl/") ? "nl" : "en";
@@ -166,6 +187,7 @@ export default function Footer2() {
 
   return (
     <>
+      {showContactCta && <ContactCta />}
       <FooterLoopStrip />
       <footer className="overflow-hidden rounded-[13px] bg-[#0a0516] pt-[34px] pb-[22px] text-white xs:pt-[40px] xs:pb-[28px]">
         <div className="fix">
@@ -193,7 +215,11 @@ export default function Footer2() {
             </div>
 
             <NavLink
-              href={resolve({ label: "Pricing", href: "#pricing" })}
+              href={resolve({
+                label: "Pricing",
+                href: "/pricing",
+                localize: false,
+              })}
               className="arrow-cta inline-flex min-h-[52px] w-fit md:w-full items-center justify-center gap-[8px] rounded-full bg-[#e4fa65] px-[20px] py-[13px] font-sans text-[15px] font-bold leading-none whitespace-nowrap text-[#0a0516] xs:w-max"
             >
               View full pricing

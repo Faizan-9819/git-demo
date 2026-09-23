@@ -72,11 +72,33 @@ function AnswerBody({ answer }: { answer: FaqAnswer }) {
  * The lime tile from `FAQ.tsx`, in home2's lime and violet. Exported because
  * `pricing/PricingFaq.tsx` wears this fold's styling and has to draw the exact
  * same mark — both are client components, so the import crosses no boundary.
+ *
+ * `tileClassName` sizes the lime tile, `iconClassName` the `+`/`−` inside it.
+ * Both are classes rather than px numbers so a caller can size the mark per
+ * breakpoint — `size-[17px] md:size-[21px]` — which an inline width cannot
+ * express. The defaults are what this fold has always drawn.
+ *
+ * The svg carries no width/height attributes: the class is the only size, and
+ * the paths live in a fixed `0 0 21 21` box, so the bar weight scales with the
+ * glyph instead of staying pinned at 2px and going spindly when it grows.
  */
-export function ToggleIcon({ open }: { open: boolean }) {
+export function ToggleIcon({
+  open,
+  tileClassName = "size-[40px] rounded-[10px]",
+  iconClassName = "size-[21px]",
+}: {
+  open: boolean;
+  tileClassName?: string;
+  iconClassName?: string;
+}) {
   return (
-    <span className="inline-flex size-[40px] shrink-0 items-center justify-center rounded-[10px] bg-[#e4fa65]">
-      <svg width="21" height="21" viewBox="0 0 21 21" fill="none" aria-hidden>
+    <span
+      className={
+        "inline-flex shrink-0 items-center justify-center bg-[#e4fa65] " +
+        tileClassName
+      }
+    >
+      <svg viewBox="0 0 21 21" fill="none" aria-hidden className={iconClassName}>
         <path
           d="M3 10.5h15"
           stroke="#5b2dce"

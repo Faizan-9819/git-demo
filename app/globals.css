@@ -122,6 +122,12 @@
 
 html {
   scroll-behavior: smooth;
+  /* Clears the fixed Navbar on `#hash` navigation. The bar is `top-3` (12px)
+     and 64px tall, so it ends at 76px; the extra 14px matches the gap the
+     bento sections keep between each other. Next.js skips fixed/sticky
+     elements when it picks a scroll target, so without this an anchored
+     section lands underneath the bar. */
+  scroll-padding-top: 90px;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
   /* Firefox takes only solid colors: thumb, then the track the thumb runs in.
@@ -581,14 +587,16 @@ html.lenis body {
 .btn:hover .btn-arrow__slot--first,
 .btn-primary:hover .btn-arrow__slot--first,
 .btn-secondary:hover .btn-arrow__slot--first,
-.arrow-cta:hover .btn-arrow__slot--first {
+.arrow-cta:hover .btn-arrow__slot--first,
+.arrow-swap:hover .btn-arrow__slot--first {
   transform: translate(var(--tx-out), var(--ty-out));
   opacity: 0;
 }
 .btn:hover .btn-arrow__slot--second,
 .btn-primary:hover .btn-arrow__slot--second,
 .btn-secondary:hover .btn-arrow__slot--second,
-.arrow-cta:hover .btn-arrow__slot--second {
+.arrow-cta:hover .btn-arrow__slot--second,
+.arrow-swap:hover .btn-arrow__slot--second {
   transform: translate(0, 0);
   opacity: 1;
 }
@@ -733,10 +741,107 @@ html.lenis body {
   );
 }
 
+/* ---------- Blog theme (home2 palette) ----------
+
+   The blog pages were built against the old brand sheet: Poppins throughout,
+   the violet ramp (`--color-violet-42` = #5b21b6) for every accent, and the
+   two-stop `--grad-brand` on buttons and headline emphasis. /home2 replaced all
+   of that — Bricolage for display type, Inter for copy, one flat violet
+   (#5b2dce), lime (#e4fa65) as the accent, deep #0a0516 folds and a single 13px
+   radius.
+
+   Rather than rewrite the ~140 per-post components that reference those tokens,
+   `.blog-theme` on the page root repoints the tokens themselves at the home2
+   values. Anything written as `var(--color-…)` inside a blog page therefore
+   lands on the new palette without being touched; only the hard-coded hexes in
+   the newer posts had to be remapped by hand.
+
+   These rules are unlayered, so they beat Tailwind's utility layer whatever the
+   specificity — which is the point for the font rules below, where an explicit
+   `font-poppins` on a heading has to give way to Bricolage.
+
+   Scoped, never global: the same tokens still carry the old values on every
+   page that has not been ported. */
+
+.blog-theme {
+  /* Display/ink */
+  --color-haiti: #0a0516;
+  --color-ebony: #0a0516;
+
+  /* Accent — home2 has one violet, not a ramp. The lighter steps stay
+     distinguishable so borders and hairlines don't collapse into the accent. */
+  --color-violet-42: #5b2dce;
+  --color-violet-58: #6f3ff0;
+  --color-violet-75: #b9a6f2;
+  --color-violet-76: #b9a6f2;
+  --color-violet-92: #ded8e7;
+  --color-violet-98: #f5f3ff;
+
+  /* Copy. #625a70 is home2's body colour on light folds, #554c64 its stronger
+     step; the greys the blog borrowed from Tailwind's slate ramp are folded
+     onto the same two so the page reads in one hue. */
+  --color-dolphin: #625a70;
+  --color-slate-700: #554c64;
+  --color-slate-600: #554c64;
+  --color-slate-500: #8b8398;
+  --color-slate-300: #ded8e7;
+  --color-slate-200: #ded8e7;
+
+  /* Panels. These four were referenced by the guide components but never
+     defined anywhere, so those blocks have been rendering on a transparent
+     background — they get real values here. */
+  --color-blog-panel: #f5f3ff;
+  --color-blog-panel-light: #faf8ff;
+  --color-blog-panel-wash: #f7f4ff;
+  --color-blog-media: #ece7f6;
+
+  /* home2's buttons are flat violet, not a gradient. Kept as a one-stop
+     gradient rather than a colour so the `background-image` uses of this token
+     (`bg-[image:var(--grad-brand)]`, `.text-grad-brand`) stay valid. */
+  --grad-brand: linear-gradient(90deg, #5b2dce 0%, #5b2dce 100%);
+
+  /* Lime, for the accents the blog gained with this theme. */
+  --blog-lime: #e4fa65;
+}
+
+/* Display type. Every heading in a blog page is Bricolage at home2's weight and
+   tracking however the component asked for it; everything else is Inter. The
+   components say `font-poppins` in both places, which is why this is a scope
+   rule rather than a find-and-replace. */
+.blog-theme h1,
+.blog-theme h2,
+.blog-theme h3,
+.blog-theme h4,
+.blog-theme h5 {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-weight: 600;
+}
+.blog-theme h1,
+.blog-theme h2 {
+  letter-spacing: -0.04em;
+}
+.blog-theme h3,
+.blog-theme h4,
+.blog-theme h5 {
+  letter-spacing: -0.03em;
+}
+.blog-theme .font-poppins {
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+/* …unless the element is itself a heading, where the rule above wins anyway —
+   spelled out so the intent survives a reorder. */
+.blog-theme h1.font-poppins,
+.blog-theme h2.font-poppins,
+.blog-theme h3.font-poppins,
+.blog-theme h4.font-poppins,
+.blog-theme h5.font-poppins {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+}
+
 /* ---------- Blog content (rendered from WordPress HTML) ---------- */
 
 .blog-content {
-  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   color: var(--color-dolphin);
 }
 
@@ -821,7 +926,7 @@ html.lenis body {
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
-  border-radius: 8px;
+  border-radius: 13px;
   margin: 32px 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -843,7 +948,7 @@ html.lenis body {
   background: linear-gradient(90deg, #7c3aed 0%, #a21caf 100%);
 }
 .blog-content th {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-violet-92);
   background: var(--color-violet-98);
   padding: 12px 16px;
   text-align: left;
@@ -853,7 +958,7 @@ html.lenis body {
   white-space: nowrap;
 }
 .blog-content td {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-violet-92);
   background: #fff;
   padding: 12px 16px;
   font-size: 14px;
@@ -867,7 +972,7 @@ html.lenis body {
 
 .blog-content img {
   margin: 32px 0;
-  border-radius: 8px;
+  border-radius: 13px;
   max-width: 100%;
   width: 100%;
   height: auto;
@@ -875,7 +980,7 @@ html.lenis body {
 
 .blog-content blockquote {
   margin: 32px 0;
-  border-radius: 16px;
+  border-radius: 13px;
   background: var(--color-violet-98);
   padding: 32px;
   font-size: 15px;
@@ -893,9 +998,9 @@ html.lenis body {
 .blog-content .elementor {
   margin: 40px 0;
   padding: 20px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #efe6fc 0%, #f6effd 60%, #faf3ff 100%);
-  border: 1px solid #e8defa;
+  border-radius: 13px;
+  background: var(--color-violet-98);
+  border: 1px solid var(--color-violet-92);
   overflow: hidden;
 }
 
@@ -914,7 +1019,7 @@ html.lenis body {
 
 .blog-content .elementor .elementor-widget-heading h3 {
   margin: 0;
-  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-family: var(--font-bricolage), system-ui, sans-serif;
   font-size: clamp(18px, 2.4vw, 22px);
   font-weight: 600;
   line-height: 1.25;
@@ -922,7 +1027,7 @@ html.lenis body {
 }
 
 .blog-content .elementor .elementor-widget-text-editor {
-  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.6;
   color: var(--color-dolphin);
@@ -937,7 +1042,7 @@ html.lenis body {
 }
 .blog-content .elementor .elementor-widget-image img {
   margin: 0;
-  border-radius: 16px;
+  border-radius: 13px;
   width: 100%;
   max-width: 280px;
   height: auto;
@@ -952,7 +1057,7 @@ html.lenis body {
   align-items: center;
   gap: 8px;
   padding: 0.5rem 22px;
-  border-radius: 10px;
+  border-radius: 999px;
   background: var(--grad-brand);
   color: #fff;
   font-family: var(--font-inter), system-ui, sans-serif;
@@ -1031,7 +1136,7 @@ html.lenis body {
 @media (max-width: 768px) {
   .blog-content .elementor {
     padding: 24px;
-    border-radius: 20px;
+    border-radius: 13px;
   }
   .blog-content .elementor > .e-con {
     grid-template-columns: 1fr;

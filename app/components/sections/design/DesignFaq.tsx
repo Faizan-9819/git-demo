@@ -5,43 +5,52 @@ import { AnimatePresence, motion } from "framer-motion";
 import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
 import { ToggleIcon } from "../home2/FaqAccordion";
 import ArrowIcon from "../../ui/ArrowIcon";
-import { PRICING_FAQS } from "./faqs";
 
 /**
- * Pricing FAQ — the questions from `section#pricing-faq.pricing-faq-section` in
- * Pricing.html, wearing `home2/FaqAccordion.tsx`'s styling rather than the
- * source's own.
+ * "A few things you might ask." — the questions from `section.dc-faq.dc-panel
+ * #faq` in dentalcare.html, wearing `pricing/PricingFaq.tsx`'s styling rather
+ * than the source's own. That fold in turn wears `home2/FaqAccordion.tsx`'s, so
+ * all three now draw the same accordion and cannot drift apart.
  *
- * The content is this page's; everything around it follows the home2 FAQ fold:
+ * The content and the surface are this page's; everything else follows the
+ * pricing fold:
  *
- * - The white surface at `56/80px` and the FAQ's `0.85fr / 1.15fr` rail with a
- *   sticky left column, in place of the source's `0.72fr / 1fr` static pair.
+ * - The fold keeps dentalcare.css's `#eeeeef` panel (`.dc-faq{background:
+ *   #eeeeef}`) instead of the pricing fold's white, so it still sits in this
+ *   page's palette between `DesignPackage` and `DesignRelated`. The question
+ *   cards are white on top of it, as they are on pricing.
+ * - The `0.85fr / 1.15fr` rail with a sticky left column, in place of the
+ *   source's static `.8fr / 1.2fr` pair.
  * - Questions are bordered white cards that turn violet when open, in place of
- *   the source's divider rows.
- * - The toggle is the FAQ's own lime tile, imported rather than copied, so the
- *   two folds cannot drift apart. It replaces the lime `+` circle that rotated
- *   into an `×` via `details[open] summary span` in the original. Its glyph is
- *   sized at the call site below — 17px on phones, the fold's own 21px from
- *   768px up — so this page can scale the mark without moving home2's.
+ *   the source's `<details>` divider rows.
+ * - The toggle is the home2 FAQ's lime tile, imported rather than copied. It
+ *   replaces the violet `+` glyph that rotated 45° via `details[open] summary
+ *   span`. Its glyph is sized at the call site below — 17px on phones, the
+ *   fold's own 21px from 768px up.
  * - Violet `#5b2dce` carries the accent — the heading's second line, the open
  *   question, the open card's border.
- * - The supporting sentence sits in the FAQ's `HelpCard` shell under the
- *   heading, bordered and radial-tinted.
+ * - The source's "Still have a question? / Talk to our team" line sits in the
+ *   FAQ's `HelpCard` shell under the heading, bordered and radial-tinted, and
+ *   keeps its `mailto:` rather than pricing's `#contact` anchor: `SiteFooter`
+ *   holds the contact fold back on /designs/*, so there is no `#contact` on
+ *   this page to point at.
  *
- * The behaviour is unchanged from the previous pass, and is the same rule the
- * home2 fold follows: exactly one answer is open at all times. `onClick` sets
- * the index rather than toggling it, so clicking the open question is a no-op
- * and the fold never collapses to a bare list of headings.
+ * The behaviour is the pricing fold's, which is the home2 rule: exactly one
+ * answer is open at all times. `onClick` sets the index rather than toggling
+ * it, so clicking the open question is a no-op and the fold never collapses to
+ * a bare list of headings. That replaces the native `<details>` rows, which let
+ * every answer be open at once — the trade is that this fold is now a client
+ * component, as an animated single-open accordion has to be.
  *
  * Note the section deliberately has no `overflow-hidden`: it would make the
  * fold a scroll container and leave the sticky left column nothing to travel in.
  *
- * The copy lives in `./faqs` rather than here — see the note in that file for
- * why the `"use client"` boundary above makes that necessary.
+ * As everywhere else on this page, the horizontal inset is the shared `.fix`
+ * rail rather than `.dc-panel`'s `clamp(24px,5vw,80px)`.
  */
 
 /** `FaqAccordion`'s HelpCard, carrying this page's supporting copy. */
-function HelpCard() {
+function HelpCard({ title, mailto }: { title: string; mailto: string }) {
   return (
     <div className="relative mt-[28px] flex w-full max-w-[378px] flex-col gap-[16px] overflow-hidden rounded-[13px] border border-[#ded8e7] p-[26px] md:mt-[32px] md:p-[30px]">
       <div
@@ -54,18 +63,18 @@ function HelpCard() {
       />
       <div className="relative flex flex-col gap-[14px]">
         <p className="m-0 font-bricolage text-[24px] leading-[1.15] font-semibold tracking-[-0.03em] text-[#5b2dce]">
-          Still have questions?
+          Still have a question?
         </p>
         <p className="m-0 font-sans text-[15px] leading-[1.6] text-[#625a70]">
-          Clear answers before you decide if Growth Rocket is the right setup
-          for your business.
+          Ask us anything about {title} — what is included, how it is set up and
+          what happens after it goes live.
         </p>
 
         <a
-          href="#contact"
+          href={mailto}
           className="arrow-cta mt-[4px] inline-flex min-h-[46px] items-center gap-[8px] self-start rounded-full bg-[#5b2dce] px-[16px] py-[11px] font-sans text-[13px] font-semibold text-white hover:bg-[#e4fa65] hover:text-[#0a0516] md:min-h-[52px] md:px-[20px] md:py-[14px] md:text-[14px]"
         >
-          Talk to us
+          Talk to our team
           <ArrowIcon direction="up-right" />
         </a>
       </div>
@@ -86,8 +95,8 @@ function AccordionItem({
   isOpen: boolean;
   onOpen: () => void;
 }) {
-  const panelId = `pricing-faq-panel-${index}`;
-  const buttonId = `pricing-faq-button-${index}`;
+  const panelId = `design-faq-panel-${index}`;
+  const buttonId = `design-faq-button-${index}`;
 
   return (
     <RevealItem
@@ -144,14 +153,24 @@ function AccordionItem({
   );
 }
 
-export default function PricingFaq() {
+export default function DesignFaq({
+  title,
+  faqs,
+}: {
+  title: string;
+  faqs: { question: string; answer: string }[];
+}) {
   const [open, setOpen] = useState(0);
+
+  const mailto = `mailto:sales@getgrowthrocket.com?subject=${encodeURIComponent(
+    `${title} website enquiry`,
+  )}`;
 
   return (
     <section
-      id="pricing-faq"
-      aria-labelledby="pricing-faq-heading"
-      className="rounded-[13px] bg-white py-[56px] text-[#0a0516] md:py-[80px]"
+      id="faq"
+      aria-labelledby="design-faq-heading"
+      className="rounded-[13px] bg-[#eeeeef] py-[56px] text-[#0a0516] md:py-[80px]"
     >
       {/* items-start is what lets the left column stick: a grid item stretches
           to the full row height by default, leaving sticky nothing to travel
@@ -161,33 +180,33 @@ export default function PricingFaq() {
         <RevealGroup className="self-start md:sticky md:top-[120px]">
           <RevealItem>
             <h2
-              id="pricing-faq-heading"
+              id="design-faq-heading"
               className="m-0 font-bricolage text-[clamp(40px,4vw,58px)] leading-[1.1] font-semibold tracking-[-0.04em]"
             >
-              Pricing questions,
+              A few things
               <br />
-              <span className="text-[#5b2dce]">answered.</span>
+              <span className="text-[#5b2dce]">you might ask.</span>
             </h2>
           </RevealItem>
 
           <RevealItem>
-            <HelpCard />
+            <HelpCard title={title} mailto={mailto} />
           </RevealItem>
         </RevealGroup>
 
-        {/* Six cards at the group default would finish well after the first is
-            read, so the list runs at the same 0.05 step as home2's FAQ and
+        {/* Several cards at the group default would finish well after the first
+            is read, so the list runs at the same 0.05 step as home2's FAQ and
             starts as soon as its top edge is in. */}
         <RevealGroup
           stagger={0.05}
           amount={0.05}
           className="flex w-full flex-col gap-[16px]"
         >
-          {PRICING_FAQS.map(({ q, a }, i) => (
+          {faqs.map(({ question, answer }, i) => (
             <AccordionItem
-              key={q}
-              question={q}
-              answer={a}
+              key={question}
+              question={question}
+              answer={answer}
               index={i}
               isOpen={open === i}
               onOpen={() => setOpen(i)}

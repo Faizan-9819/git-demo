@@ -210,15 +210,16 @@ export default function Examples() {
                       className="object-cover"
                     />
                   </div>
-                  {/* The two lines take BlogTeaser's mapping against the lime:
-                      the name to the card ground (#151021), the secondary line
-                      to violet — the same pair its title and "Read more" use,
-                      so a lit card reads the same in both folds. */}
+                  {/* Both lines go to the card ground (#151021) against the
+                      lime. BlogTeaser sends its secondary line to violet
+                      instead, but here that line is the case's trade and
+                      country — plain metadata, not a link — and violet on lime
+                      read as a second accent competing with the name. */}
                   <div className="grid gap-[4px] px-[6px] pt-[16px] pb-[4px] text-white">
                     <strong className="font-sans text-[17px] font-bold transition-colors duration-300 ease-out group-hover:text-[#151021]">
                       {c.name}
                     </strong>
-                    <span className="font-sans text-[13px] text-[#c9c2d4] transition-colors duration-300 ease-out group-hover:text-[#5b2dce]">
+                    <span className="font-sans text-[13px] text-[#c9c2d4] transition-colors duration-300 ease-out group-hover:text-[#151021]">
                       {t(c.meta)}
                     </span>
                   </div>

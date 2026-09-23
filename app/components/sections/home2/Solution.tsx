@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { Plus } from "lucide-react";
 import ArrowIcon from "../../ui/ArrowIcon";
 import { RevealGroup, RevealItem } from "../../../features/FeatureReveal";
@@ -418,13 +419,15 @@ export default function Solution() {
                 change on hover — the source's `#49217b` is dropped so this
                 reacts like the rest. */}
             {/*  */}
-            <a
-              href="#pricing"
+            {/* /pricing, not the old `#pricing` anchor — the fold that owned
+                that id (PricingTeaser) is no longer mounted on home2. */}
+            <Link
+              href="/pricing"
               className="arrow-cta inline-flex min-h-[51px] items-center justify-center gap-2 rounded-full border border-transparent bg-[#0a0516] px-3 py-1 lg:px-[17px] lg:py-[13px] font-sans text-[12px] font-semibold leading-[1.35] whitespace-nowrap text-[#e4fa65] md:min-h-[52px] md:gap-2 md:px-5 md:py-[14px] md:text-[15px]"
             >
               {t({ en: "Explore the package", nl: "Bekijk het pakket" })}
               <ArrowIcon direction="up-right" size={18} />
-            </a>
+            </Link>
           </RevealItem>
         </RevealGroup>
       </div>

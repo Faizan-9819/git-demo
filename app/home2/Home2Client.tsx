@@ -17,8 +17,8 @@ import FinalCta from "../components/sections/home2/FinalCta";
 // import Faq2 from "../components/sections/home2/Faq2";
 import FaqAccordion from "../components/sections/home2/FaqAccordion";
 import BlogTeaser from "../components/sections/home2/BlogTeaser";
-import ContactCta from "../components/sections/home2/ContactCta";
-// Footer2 renders the loop strip above itself, so home2 mounts the footer alone.
+// Footer2 renders the contact fold and the loop strip above itself, so home2
+// mounts the footer alone.
 import Footer2 from "../components/sections/home2/Footer2";
 import {
   AnimationStyleProvider,
@@ -79,7 +79,6 @@ export default function Home2Client({
           {/* <Faq2 /> */}
           <FaqAccordion />
           <BlogTeaser />
-          <ContactCta />
           <Footer2 />
         </HomeShell>
       </main>

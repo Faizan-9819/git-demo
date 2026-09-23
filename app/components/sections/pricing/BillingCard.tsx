@@ -132,7 +132,7 @@ export default function BillingCard() {
 
       <a
         href="#contact"
-        className="arrow-cta mt-[10px] flex min-h-[46px] w-fit items-center justify-between gap-[8px] rounded-full border border-transparent bg-[#e4fa65] px-[16px] py-[11px] text-left font-sans text-[13px] leading-[1.35] font-semibold text-[#0a0516] transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white md:min-h-[52px] md:px-[20px] md:py-[14px] md:text-[14px]"
+        className="arrow-cta mt-[10px] flex min-h-[46px] w-fit items-center justify-between gap-[8px] rounded-full border border-transparent bg-[#e4fa65] px-[16px] py-[11px] text-left font-sans text-[12px] leading-[1.35] font-semibold text-[#0a0516] transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white md:min-h-[52px] md:px-[20px] md:py-[14px] md:text-[14px]"
       >
         Get started with Growth Rocket
         <ArrowIcon direction="up-right" size={18} />

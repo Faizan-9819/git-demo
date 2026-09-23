@@ -1,5 +1,32 @@
 "use client";
 
+/**
+ * /blog — repainted in the /home2 design language.
+ *
+ * Nothing about how the page works has changed: the same debounced search, the
+ * same ACF-category filter, the same nine-per-page slice, the same Lenis
+ * scroll corrections. Only the surface is new, and it is the one /home2 and
+ * /pricing already use:
+ *
+ * - `HomeShell` supplies the macro-layout — full-width rounded 13px folds over
+ *   white, a uniform 12px gap, and the top padding that clears the fixed
+ *   Navbar. Each fold then takes its horizontal spacing from the shared `.fix`
+ *   rail, so the hero, the featured card and the grid sit on one set of
+ *   margins with the rest of the site.
+ * - Folds alternate the way they do on /home2: deep `#0a0516` masthead, lime
+ *   `#e4fa65` featured card, white article grid. The closing contact fold and
+ *   footer come from the layout's `SiteFooter`, which is why the old gradient
+ *   `<CTA>` that used to sit at the bottom of this page is gone — it was a
+ *   second call to action immediately above the one `Footer2` already brings.
+ * - Bricolage at home2's weight/tracking for display type, Inter for copy.
+ *   The `blog-theme` class on the root repoints the old violet ramp at the
+ *   home2 palette for everything further down the tree (see globals.css).
+ * - The twelve-colour category map is gone. /home2 carries one accent, so a
+ *   category now reads as a violet chip on light folds and a lime chip on dark
+ *   ones; the names themselves are unchanged, and cover images sit on one
+ *   shared `#ece7f6` media tint instead of twelve different ones.
+ */
+
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -8,16 +35,15 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
-  useCallback,
 } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import HomeShell from "../sections/home2/HomeShell";
 import ArrowIcon from "../ui/ArrowIcon";
 import { formatBlogDate } from "../../lib/blog-posts";
 import type { BlogPost } from "../../lib/blog-posts";
 import { useLanguage } from "../../i18n/LanguageProvider";
 import { localizedHref } from "../../i18n/locale-href";
-import CTA from "../sections/CTA";
 import { lenisScrollTo } from "../LenisProvider";
 
 const ITEMS_PER_PAGE = 9;
@@ -25,39 +51,33 @@ const ITEMS_PER_PAGE = 9;
 // filter bar doesn't land underneath it when we scroll to it.
 const NAVBAR_HEIGHT = 74;
 
-const CATEGORY_STYLES: Record<string, { color: string; bg: string }> = {
-  "Business Growth": { color: "#4f1ba8", bg: "#e8defa" },
-  "Contractor Websites": { color: "#6b2cc9", bg: "#f2eefc" },
-  "Conversion Optimization": { color: "#c92668", bg: "#fce8f3" },
-  "Digital Strategy": { color: "#1e5a8e", bg: "#e3f2fd" },
-  "Google Business Profile": { color: "#ea8400", bg: "#fef3e6" },
-  "Local Marketing": { color: "#7c3aed", bg: "#f3e8ff" },
-  "Local SEO": { color: "#059669", bg: "#d1fae5" },
-  "Online Visibility": { color: "#dc2626", bg: "#fee2e2" },
-  "Professional Websites": { color: "#0891b2", bg: "#cffafe" },
-  Websites: { color: "#2e7d4f", bg: "#d8efdf" },
-  "Booking Systems": { color: "#b45309", bg: "#fef3c7" },
-  "Case Studies": { color: "#0f766e", bg: "#ccfbf1" },
-  Blog: { color: "#6b2cc9", bg: "#f2eefc" },
-};
+/** Shared tint behind every cover image while it loads — see --color-blog-media. */
+const MEDIA_TINT = "#ece7f6";
 
-function getCategoryStyle(category: string) {
-  return CATEGORY_STYLES[category] ?? { color: "#6b2cc9", bg: "#f2eefc" };
-}
-
-function CategoryBadge({ category }: { category: string }) {
-  const { color, bg } = getCategoryStyle(category);
+/**
+ * Category chip. `tone` picks the fold it is sitting on: `lime` for the deep
+ * fold, `dark` for the lime featured card, `violet` for the white grid.
+ */
+function CategoryBadge({
+  category,
+  tone = "violet",
+}: {
+  category: string;
+  tone?: "violet" | "dark" | "lime";
+}) {
+  const skin =
+    tone === "dark"
+      ? "bg-[#0a0516] text-[#e4fa65]"
+      : tone === "lime"
+        ? "bg-[#e4fa65] text-[#0a0516]"
+        : "bg-[#ede8fb] text-[#5b2dce]";
   return (
-    <div
-      className="rounded-[6px] px-[21px] py-[6px] text-[10.5px] font-bold tracking-[1.26px] uppercase inline-flex items-center gap-[11px] self-start"
-      style={{ backgroundColor: bg, color }}
+    <span
+      className={`inline-flex w-max items-center gap-[7px] rounded-full px-[12px] py-[6px] font-sans text-[11px] font-bold tracking-[0.06em] uppercase ${skin}`}
     >
-      <div
-        className="w-[5px] h-[5px] rounded-[2.5px] opacity-65"
-        style={{ backgroundColor: color }}
-      />
+      <i className="h-[5px] w-[5px] rounded-full bg-current opacity-70" />
       {category}
-    </div>
+    </span>
   );
 }
 
@@ -76,106 +96,109 @@ function useDebouncedValue<T>(value: T, delay: number): T {
   return debounced;
 }
 
+/**
+ * The featured fold. Lime is /home2's "stop and read this" surface (Solution,
+ * ContactCta), which is exactly what the top post is doing here.
+ */
 function FeaturedPost({ post }: { post: BlogPost }) {
   const { locale } = useLanguage();
   const ui = BLOG_UI[locale] ?? BLOG_UI.en;
   const primaryCat = getPrimaryCategory(post);
-  const { color, bg } = getCategoryStyle(primaryCat);
   const initials = post.authorName
     .split(" ")
     .map((n) => n[0])
     .join("")
     .slice(0, 2);
+
   return (
-    <div className="md:max-w-[1400px] md:mx-auto fix">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="bg-white w-full lg:p-10 p-3.5 rounded-[18px] lg:rounded-[22px] border border-[#ece8f5] shadow-[0px_10px_40px_-28px_rgba(42,21,104,0.3)] grid lg:grid-cols-[1.05fr_1fr] gap-[20px] 2xl:gap-[48px]"
-      >
-        <div
-          className="rounded-[14px] lg:rounded-[16px] overflow-hidden min-h-[220px] lg:min-h-[422px] relative"
-          style={{ backgroundColor: bg }}
+    <section className="overflow-hidden rounded-[13px] bg-[#e4fa65] py-[40px] text-[#0a0516] md:py-[52px]">
+      <div className="fix">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="grid gap-[24px] lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-[48px]"
         >
-          <Image
-            src={post.coverImage}
-            alt={post.title}
-            fill
-            sizes="(min-width: 768px) 50vw, 100vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="flex flex-col justify-center py-[12px] lg:py-[24px] pr-[6px] lg:pr-[24px]">
-          <div className="flex flex-wrap items-center gap-[10px] mb-[10px]">
-            <div
-              className="rounded-[6px] px-[21px] py-[6px] text-[10.5px] font-bold tracking-[1.26px] uppercase flex items-center gap-[11px]"
-              style={{ backgroundColor: bg, color }}
-            >
-              <div
-                className="w-[5px] h-[5px] rounded-[2.5px] opacity-65"
-                style={{ backgroundColor: color }}
-              />
-              {primaryCat}
-            </div>
-            <div className="text-[11px] font-bold text-[#9a97ab] tracking-[1.54px] uppercase">
-              {ui.featuredLabel} ·{" "}
-              {post.readTime
-                .replace(" read", "")
-                .replace(" lezen", "")
-                .replace(" min", "")}{" "}
-              {ui.featuredLabel}
-            </div>
-          </div>
-          <h2 className="text-[22px] sm:text-[28px] 2xl:text-[38px] font-extrabold tracking-[-0.5px] 2xl:tracking-[-0.76px] leading-[1.15] 2xl:leading-[41px] mb-[14px] 2xl:mb-[16px] text-[#0d0b1f]">
-            {post.title}
-          </h2>
-          <p className=" line-clamp-3 text-[14px] lg:text-[16px] text-[#6b6880] leading-[22px] lg:leading-[25.6px] mb-[20px] lg:mb-[33px]">
-            {post.excerpt}
-          </p>
-          <div className="flex items-center gap-[14px] mb-[18px]">
-            <div className="w-[40px] h-[40px] bg-[#6b2cc9] rounded-full flex items-center justify-center text-white font-bold text-[13px] border-2 border-white shadow-[0px_0px_0px_1px_#e3dff0]">
-              {initials}
-            </div>
-            <div>
-              <div className="text-[13px] font-semibold text-[#0d0b1f]">
-                {post.authorName}
-              </div>
-              <div className="text-[13px] text-[#9a97ab]">
-                {formatBlogDate(post.publishedAt)}
-              </div>
-            </div>
-          </div>
-          <Link
-            href={localizedHref(`/blog/${post.slug}`, locale)}
-            className="btn btn--primary btn--md self-start shadow-[0px_6px_18px_-8px_rgba(107,44,201,0.6)]"
+          <div
+            className="relative min-h-[220px] overflow-hidden rounded-[13px] lg:min-h-[400px]"
+            style={{ backgroundColor: MEDIA_TINT }}
           >
-            <span className="btn__label">{ui.readArticle}</span>
-            <ArrowIcon direction="up-right" />
-          </Link>
-        </div>
-      </motion.div>
-    </div>
+            <Image
+              src={post.coverImage}
+              alt={post.title}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+              priority
+            />
+          </div>
+
+          <div className="flex flex-col items-start">
+            <div className="flex flex-wrap items-center gap-[10px]">
+              <CategoryBadge category={primaryCat} tone="dark" />
+              <span className="font-sans text-[11px] font-bold tracking-[0.12em] text-[#657221] uppercase">
+                {ui.featuredLabel}
+              </span>
+            </div>
+
+            <h2 className="mt-[16px] m-0 font-bricolage text-[28px] font-semibold leading-[1.08] tracking-[-0.045em] sm:text-[34px] lg:text-[clamp(34px,3.2vw,46px)]">
+              {post.title}
+            </h2>
+
+            <p className="mt-[14px] line-clamp-3 font-sans text-[15px] leading-[1.65] text-[#4b5220] lg:text-[16px]">
+              {post.excerpt}
+            </p>
+
+            <div className="mt-[22px] flex items-center gap-[12px] border-t border-[#b8ce50] pt-[20px]">
+              <span className="grid h-[40px] w-[40px] place-items-center rounded-full bg-[#0a0516] font-sans text-[13px] font-bold text-[#e4fa65]">
+                {initials}
+              </span>
+              <span className="font-sans text-[13px] leading-[1.45]">
+                <span className="block font-semibold">{post.authorName}</span>
+                <span className="block text-[#657221]">
+                  {formatBlogDate(post.publishedAt)} · {post.readTime}
+                </span>
+              </span>
+            </div>
+
+            <Link
+              href={localizedHref(`/blog/${post.slug}`, locale)}
+              className="arrow-cta mt-[24px] inline-flex min-h-[45px] items-center gap-[8px] rounded-full bg-[#0a0516] px-[22px] py-[10px] font-sans text-[14px] font-semibold text-[#e4fa65] hover:bg-[#151021]"
+            >
+              {ui.readArticle}
+              <ArrowIcon direction="up-right" />
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 }
 
+/**
+ * Grid card. The lift-and-glow is /home2's light-fold card behaviour (WhyUs),
+ * not the lime fill the dark folds use — the fill needs a dark card under it
+ * to read as a flip.
+ */
 function PostCard({ post, index }: { post: BlogPost; index: number }) {
   const { locale } = useLanguage();
   const ui = BLOG_UI[locale] ?? BLOG_UI.en;
   const primaryCat = getPrimaryCategory(post);
-  const { bg } = getCategoryStyle(primaryCat);
+
   return (
-    <Link href={localizedHref(`/blog/${post.slug}`, locale)}>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: index * 0.1 }}
-        whileHover={{ y: -8 }}
-        className="bg-white rounded-[18px] border border-[#ece8f5] overflow-hidden flex flex-col h-full cursor-pointer"
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
+      className="h-full"
+    >
+      <Link
+        href={localizedHref(`/blog/${post.slug}`, locale)}
+        className="arrow-cta-host group flex h-full translate-y-0 flex-col overflow-hidden rounded-[13px] border border-[#ded8e7] bg-[#f5f3ff] transition-[background-color,border-color,translate,box-shadow] duration-380 ease-in-out hover:-translate-y-1 hover:border-[#c9bff0] hover:bg-[#ebe6ff] hover:shadow-[0_22px_46px_rgba(10,5,22,0.14)] hover:duration-300 hover:ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-[background-color,border-color] motion-reduce:hover:translate-y-0"
       >
         <div
-          className="h-[180px] lg:h-[241px] relative border-b border-[#ece8f5]"
-          style={{ backgroundColor: bg }}
+          className="relative h-[180px] overflow-hidden lg:h-[218px]"
+          style={{ backgroundColor: MEDIA_TINT }}
         >
           <Image
             src={post.coverImage}
@@ -185,70 +208,69 @@ function PostCard({ post, index }: { post: BlogPost; index: number }) {
             className="object-cover"
           />
         </div>
-        <div className="p-[22px] flex flex-col flex-1">
+
+        <div className="flex flex-1 flex-col gap-[12px] p-[22px]">
           <CategoryBadge category={primaryCat} />
-          <h3 className="mt-[10px] text-[18px] font-bold tracking-[-0.09px] leading-[23.4px] text-[#0d0b1f] mb-[10px] line-clamp-3">
+
+          <h3 className="m-0 line-clamp-3 font-bricolage text-[20px] font-semibold leading-[1.2] tracking-[-0.03em] text-[#0a0516]">
             {post.title}
           </h3>
-          <p className="text-[14px] text-[#6b6880] leading-[21.7px] mb-auto line-clamp-2">
+
+          <p className="m-0 line-clamp-2 font-sans text-[14px] leading-[1.6] text-[#625a70]">
             {post.excerpt}
           </p>
-          <div className="flex items-center justify-between pt-[14px] mt-[14px] border-t border-[#ece8f5]">
-            <div className="flex items-center gap-[10px] text-[12px] text-[#9a97ab]">
+
+          <div className="mt-auto flex items-center justify-between gap-[10px] border-t border-[#ded8e7] pt-[14px]">
+            <span className="flex items-center gap-[8px] font-sans text-[12px] text-[#8b8398]">
               <span>{formatBlogDate(post.publishedAt)}</span>
-              <div className="w-[3px] h-[3px] rounded-full bg-[#9a97ab] opacity-60" />
+              <i className="h-[3px] w-[3px] rounded-full bg-current opacity-60" />
               <span>{post.readTime}</span>
-            </div>
-            <span className="text-[#6b2cc9] font-semibold text-[13px] flex items-center gap-[6px]">
-              {ui.read} <ArrowRight size={14} strokeWidth={2.25} aria-hidden />
+            </span>
+            <span className="arrow-cta inline-flex items-center gap-[6px] font-sans text-[13px] font-semibold text-[#5b2dce]">
+              {ui.read}
+              <ArrowIcon direction="right" size={14} />
             </span>
           </div>
         </div>
-      </motion.div>
-    </Link>
+      </Link>
+    </motion.div>
   );
 }
 
 const BLOG_UI = {
   en: {
-    eyebrow: "INSIGHTS & GUIDES",
+    eyebrow: "Insights & guides",
     heroFrom: "From the",
     heroBlog: "blog.",
     heroDesc:
       "Practical guides on growing a service business online — bookings, websites, and enquiries written for the trade. No fluff, no filler.",
     industries: "Industries",
     searchPlaceholder: "Search articles…",
-    featuredLabel: "FEATURED",
-
+    featuredLabel: "Featured",
+    allArticles: "All articles",
     latestPosts: "Latest posts",
     showing: (a: number, b: number, total: number) =>
       `Showing ${a}–${b} of ${total} articles`,
     readArticle: "Read the article",
     read: "Read",
-    ctaHeading: "Ready to get organised?",
-    ctaBody:
-      "Start capturing every enquiry and booking more jobs with Growth Rocket.",
-    ctaButton: "Book your 14-day trial",
+    empty: "No articles match that search yet.",
   },
   nl: {
-    eyebrow: "INZICHTEN & GIDSEN",
+    eyebrow: "Inzichten & gidsen",
     heroFrom: "Vanuit de",
-    heroBlog: "blog",
+    heroBlog: "blog.",
     heroDesc:
       "Praktische gidsen over het online laten groeien van een servicebedrijf — van boekingen en websites tot aanvragen, speciaal geschreven voor vakbedrijven. Geen onnodige praatjes, gewoon duidelijke informatie.",
     industries: "Sectoren",
     searchPlaceholder: "Artikelen zoeken…",
-    featuredLabel: "UITGELICHT",
-    allArticles: "ALLE ARTIKELEN",
+    featuredLabel: "Uitgelicht",
+    allArticles: "Alle artikelen",
     latestPosts: "Nieuwste berichten",
     showing: (a: number, b: number, total: number) =>
       `${a}–${b} van ${total} artikelen`,
     readArticle: "Lees het artikel",
     read: "Lezen",
-    ctaHeading: "Klaar om te beginnen?",
-    ctaBody:
-      "Mis geen enkele aanvraag meer en boek meer opdrachten met Growth Rocket.",
-    ctaButton: "Start je 14-daagse proef",
+    empty: "Geen artikelen gevonden voor deze zoekopdracht.",
   },
 };
 
@@ -351,313 +373,291 @@ export default function BlogLandingClient({ posts }: { posts: BlogPost[] }) {
   // Dynamic dropdown categories from ACF fields
   const dropdownCategories = allAcfCategories;
 
-  function openLeadForm() {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("open-lead-form"));
-    }
-  }
-
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        background:
-          "linear-gradient(90deg, rgb(242, 238, 252) 0%, rgb(242, 238, 252) 100%)",
-        // borderBottom: "1px solid #ece8f5",
-      }}
-    >
-      {/* Hero */}
-      <div
-        className="relative pt-[40px] lg:pt-[160px] pb-[32px] lg:pb-[45px] fix"
-        style={{
-          background:
-            "linear-gradient(90deg, rgb(242, 238, 252) 0%, rgb(242, 238, 252) 100%)",
-          // borderBottom: "1px solid #ece8f5",
-        }}
-      >
-        <div className="">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-[11px] font-bold text-[#6b2cc9] tracking-[1.98px] uppercase mb-[15.3px]">
-              {ui.eyebrow}
-            </div>
-            <h1 className="flex gap-[10px] lg:gap-[14px] items-start mb-[15.3px] flex-wrap text-[30px] sm:text-[40px] lg:text-[56px] font-bold tracking-[-1px] lg:tracking-[-2px] leading-tight text-[#0a0516]">
-              <span>{ui.heroFrom}</span>
-              <span
-                style={{
-                  background: "linear-gradient(to right, #5b219f, #922698)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                {ui.heroBlog}
-              </span>
-            </h1>
-            <div className="text-[15px] lg:text-[17px] text-[#6b6880] leading-[24px] lg:leading-[26.35px] max-w-[620px]">
-              {ui.heroDesc}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Featured */}
-      {featuredPost && !debouncedSearch && (
-        <div
-          className="plcont perspective-origin-center  pb-[28px] lg:pb-[40px]"
-          style={{
-            background:
-              "linear-gradient(90deg, rgb(242, 238, 252) 0%, rgb(242, 238, 252) 100%)",
-          }}
+    <main className="blog-theme relative min-h-screen">
+      <HomeShell>
+        {/* Masthead — the deep fold /pricing and /home2 open on. */}
+        <section
+          aria-labelledby="blog-hero-heading"
+          className="overflow-hidden rounded-[13px] bg-[#0a0516] py-[48px] text-white md:py-[64px]"
         >
-          <FeaturedPost post={featuredPost} />
-        </div>
-      )}
-
-      {/* Filter Bar */}
-      <div
-        ref={filterBarRef}
-        className="py-[18px] lg:py-5 lg:h-fit flex items-center justify-center"
-        style={{
-          background:
-            "linear-gradient(90deg, rgb(91, 33, 159) 0%, rgb(146, 38, 152) 100%)",
-          borderBottom: "1px solid #ece8f5",
-        }}
-      >
-        <div className="w-full fix flex flex-wrap items-center justify-between gap-3 lg:gap-4">
-          <div className="w-full lg:w-auto flex flex-wrap items-center gap-[8px] lg:gap-[10px]">
-            {/* Dropdown */}
-            <div className="relative w-full lg:w-auto">
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="relative overflow-hidden w-full lg:w-[220px] bg-black text-white rounded-[999px] px-[19px] py-[11px] flex items-center gap-[8px] font-semibold text-[13px] hover:bg-gray-900 transition-colors"
-              >
-                <span
-                  className="flex-1 min-w-0 overflow-hidden whitespace-nowrap text-left"
-                  style={{
-                    maskImage:
-                      "linear-gradient(to right, black 75%, transparent 100%)",
-                    WebkitMaskImage:
-                      "linear-gradient(to right, black 75%, transparent 100%)",
-                  }}
-                >
-                  {selectedCategory ?? ui.industries}
-                </span>
-                <svg
-                  className={`w-[11px] h-[6.5px] flex-shrink-0 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
-                  fill="none"
-                  viewBox="0 0 11.7071 6.85355"
-                >
-                  <path
-                    d="M0.353553 0.353553L5.85355 5.85355L11.3536 0.353553"
-                    stroke="white"
-                  />
-                </svg>
-              </button>
-              <AnimatePresence>
-                {isDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full mt-2 left-0 bg-white rounded-lg shadow-lg border border-[#e3dff0] py-2 min-w-[280px] z-50"
-                  >
-                    {dropdownCategories.map(({ name }) => (
-                      <button
-                        key={name}
-                        onClick={() => handleCategoryClick(name)}
-                        className={`w-full flex items-center justify-between text-left px-4 py-2.5 hover:bg-gray-50 transition-colors text-[14px] border-b border-[#ece8f5] last:border-b-0 ${selectedCategory === name ? "bg-[#f2eefc] text-[#6b2cc9] font-semibold" : "text-[#6b6880]"}`}
-                      >
-                        {name}
-                        {selectedCategory === name && (
-                          <svg
-                            width="10"
-                            height="10"
-                            viewBox="0 0 10 10"
-                            fill="none"
-                          >
-                            <path
-                              d="M1 1L9 9M9 1L1 9"
-                              stroke="currentColor"
-                              strokeWidth="1.4"
-                              strokeLinecap="round"
-                            />
-                          </svg>
-                        )}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Top category pills — first 4 ACF categories */}
-            {allAcfCategories.slice(0, 4).map((cat) => (
-              <motion.button
-                key={cat.name}
-                onClick={() => handleTopPillClick(cat.name)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`hidden lg:flex rounded-[999px] px-[19px] py-[7px] items-center gap-[8px] border font-semibold text-[13px] transition-all ${selectedCategory === cat.name ? "bg-[#f2eefc] border-[#6b2cc9]" : "bg-white border-[#e3dff0]"}`}
-              >
-                <span
-                  className={
-                    selectedCategory === cat.name
-                      ? "text-[#6b2cc9]"
-                      : "text-[#1a1530]"
-                  }
-                >
-                  {cat.name}
-                </span>
-                <span
-                  className={`text-[11px] font-medium ${selectedCategory === cat.name ? "text-[#6b2cc9]" : "text-[#9a97ab]"}`}
-                >
-                  · {cat.count}
-                </span>
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Search — input updates instantly, filtering is debounced */}
-          <div className="bg-white rounded-[999px] px-[15px] py-[10px] lg:py-[11px] flex items-center gap-[10px] border border-[#e3dff0] w-full lg:w-auto lg:min-w-[260px]">
-            <svg className="w-[16px] h-[16px]" fill="none" viewBox="0 0 16 16">
-              <path
-                d="M7.33333 12C9.91066 12 12 9.91066 12 7.33333C12 4.756 9.91066 2.66667 7.33333 2.66667C4.756 2.66667 2.66667 4.756 2.66667 7.33333C2.66667 9.91066 4.756 12 7.33333 12Z"
-                stroke="#6B6880"
-                strokeWidth="1.2"
-              />
-              <path
-                d="M13.3333 13.3333L11.3333 11.3333"
-                stroke="#6B6880"
-                strokeLinecap="round"
-                strokeWidth="1.2"
-              />
-            </svg>
-            <input
-              type="text"
-              placeholder={ui.searchPlaceholder}
-              value={searchInput}
-              onChange={(e) => {
-                setSearchInput(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="flex-1 outline-none text-[14px] text-[#1a1530] placeholder-[#9a97ab]"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Latest Posts */}
-      <div className="plcont perspective-origin-center mb-[48px] lg:mb-[80px] mt-[28px] lg:mt-[40px]">
-        <div className="md:max-w-[1400px] md:mx-auto fix">
-          <div className="flex flex-wrap items-end justify-between gap-3 mb-[10px] lg:mb-[28px]">
-            <div>
-              <div className="text-[11px] font-bold text-[#6b2cc9] tracking-[1.98px] uppercase mb-[6.75px]">
-                {ui.allArticles}
-              </div>
-              <h2 className="text-[28px] font-extrabold tracking-[-0.28px] leading-[43.4px] text-[#0d0b1f]">
-                {ui.latestPosts}
-              </h2>
-            </div>
-            <div className="text-[13px] text-[#6b6880]">
-              {ui.showing(
-                startIndex + 1,
-                Math.min(startIndex + ITEMS_PER_PAGE, regularPosts.length),
-                regularPosts.length,
-              )}
-            </div>
-          </div>
-
-          <AnimatePresence mode="wait">
+          <div className="fix">
             <motion.div
-              key={`${currentPage}-${selectedCategory}-${debouncedSearch}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-[18px] lg:gap-[24px] mb-[40px] lg:mb-[60px]"
+              transition={{ duration: 0.6 }}
             >
-              {currentPosts.map((post, i) => (
-                <PostCard key={post.slug} post={post} index={i} />
-              ))}
-            </motion.div>
-          </AnimatePresence>
+              <p className="m-0 flex items-center gap-[10px] font-sans text-[11px] font-semibold tracking-[0.12em] text-[#e4fa65] uppercase">
+                <i className="h-[7px] w-[7px] rounded-full bg-[#e4fa65]" />
+                {ui.eyebrow}
+              </p>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-wrap items-center justify-center gap-[6px] lg:gap-[8px]"
-            >
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                aria-label="Previous page"
-                className="w-[40px] h-[40px] rounded-full bg-white border border-[#e3dff0] flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+              <h1
+                id="blog-hero-heading"
+                className="m-0 mt-[18px] font-bricolage text-[clamp(38px,4.3vw,64px)] font-semibold leading-[1.04] tracking-[-0.055em] text-white"
               >
-                <ChevronLeft size={16} strokeWidth={2.25} aria-hidden />
-              </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
+                {ui.heroFrom}{" "}
+                <span className="text-[#e4fa65]">{ui.heroBlog}</span>
+              </h1>
+
+              <p className="mt-[18px] max-w-[620px] font-sans text-[clamp(15px,1.25vw,18px)] leading-[1.6] text-[#c9c2d4]">
+                {ui.heroDesc}
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Featured */}
+        {featuredPost && !debouncedSearch && (
+          <FeaturedPost post={featuredPost} />
+        )}
+
+        {/* Filters + grid. One white fold rather than the old full-bleed violet
+            filter band, so the controls sit on the same rail as the cards they
+            drive. */}
+        <section className="rounded-[13px] bg-white py-[48px] text-[#0a0516] md:py-[64px]">
+          <div className="fix">
+            <div className="flex flex-wrap items-end justify-between gap-[14px]">
+              <div>
+                <p className="m-0 flex items-center gap-[10px] font-sans text-[11px] font-semibold tracking-[0.07em] text-[#5b2dce] uppercase">
+                  <i className="h-[7px] w-[7px] rounded-full bg-[#e4fa65]" />
+                  {ui.allArticles}
+                </p>
+                <h2 className="m-0 mt-[14px] font-bricolage text-[clamp(32px,3.4vw,48px)] font-semibold leading-[1.1] tracking-[-0.04em]">
+                  {ui.latestPosts}
+                </h2>
+              </div>
+              <p className="m-0 font-sans text-[13px] text-[#8b8398]">
+                {ui.showing(
+                  regularPosts.length === 0 ? 0 : startIndex + 1,
+                  Math.min(startIndex + ITEMS_PER_PAGE, regularPosts.length),
+                  regularPosts.length,
+                )}
+              </p>
+            </div>
+
+            {/* Filter bar */}
+            <div
+              ref={filterBarRef}
+              className="mt-[26px] flex flex-wrap items-center justify-between gap-[12px] border-y border-[#ded8e7] py-[18px] md:gap-[16px]"
+            >
+              <div className="flex w-full flex-wrap items-center gap-[10px] lg:w-auto">
+                {/* Dropdown */}
+                <div className="relative w-full lg:w-auto">
                   <button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    className={`w-[40px] h-[40px] rounded-full flex items-center justify-center font-semibold text-[14px] transition-all ${currentPage === page ? "bg-[#6b2cc9] text-white" : "bg-white border border-[#e3dff0] text-[#1a1530] hover:bg-gray-50"}`}
+                    type="button"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="arrow-cta flex w-full items-center gap-[8px] overflow-hidden rounded-full bg-[#0a0516] px-[19px] py-[11px] font-sans text-[13px] font-semibold text-white hover:bg-[#151021] lg:w-[220px]"
                   >
-                    {page}
+                    <span
+                      className="min-w-0 flex-1 overflow-hidden text-left whitespace-nowrap"
+                      style={{
+                        maskImage:
+                          "linear-gradient(to right, black 75%, transparent 100%)",
+                        WebkitMaskImage:
+                          "linear-gradient(to right, black 75%, transparent 100%)",
+                      }}
+                    >
+                      {selectedCategory ?? ui.industries}
+                    </span>
+                    <svg
+                      className={`h-[6.5px] w-[11px] flex-shrink-0 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
+                      fill="none"
+                      viewBox="0 0 11.7071 6.85355"
+                      aria-hidden
+                    >
+                      <path
+                        d="M0.353553 0.353553L5.85355 5.85355L11.3536 0.353553"
+                        stroke="#e4fa65"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
                   </button>
-                ),
-              )}
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                aria-label="Next page"
-                className="w-[40px] h-[40px] rounded-full bg-white border border-[#e3dff0] flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
-              >
-                <ChevronRight size={16} strokeWidth={2.25} aria-hidden />
-              </button>
-            </motion.div>
-          )}
-        </div>
-      </div>
+                  <AnimatePresence>
+                    {isDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full left-0 z-50 mt-2 min-w-[280px] overflow-hidden rounded-[13px] border border-[#ded8e7] bg-white py-2 shadow-[0_22px_46px_rgba(10,5,22,0.14)]"
+                      >
+                        {dropdownCategories.map(({ name }) => (
+                          <button
+                            key={name}
+                            type="button"
+                            onClick={() => handleCategoryClick(name)}
+                            className={`flex w-full items-center justify-between border-b border-[#ded8e7] px-4 py-2.5 text-left font-sans text-[14px] transition-colors last:border-b-0 hover:bg-[#f5f3ff] ${selectedCategory === name ? "bg-[#f5f3ff] font-semibold text-[#5b2dce]" : "text-[#625a70]"}`}
+                          >
+                            {name}
+                            {selectedCategory === name && (
+                              <svg
+                                width="10"
+                                height="10"
+                                viewBox="0 0 10 10"
+                                fill="none"
+                                aria-hidden
+                              >
+                                <path
+                                  d="M1 1L9 9M9 1L1 9"
+                                  stroke="currentColor"
+                                  strokeWidth="1.4"
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                            )}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
-      {/* Footer CTA */}
-      {/* <div
-        className="py-[48px] lg:py-[60px] px-4 sm:px-6 lg:px-[100px] text-center"
-        style={{ background: "linear-gradient(to right, #5b219f, #922698)" }}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="max-w-[600px] mx-auto"
-        >
-          <h2 className="text-white text-[26px] sm:text-[32px] lg:text-[42px] font-extrabold mb-[16px] lg:mb-[20px]">
-            {ui.ctaHeading}
-          </h2>
-          <p className="text-white/90 text-[14px] lg:text-[16px] mb-[24px] lg:mb-[30px]">
-            {ui.ctaBody}
-          </p>
-          <button
-            type="button"
-            onClick={() =>
-              window.dispatchEvent(new CustomEvent("open-lead-form"))
-            }
-            className="btn btn--secondary btn--lg"
-          >
-            <span className="btn__label">{ui.ctaButton}</span>
-            <ArrowIcon direction="up-right" />
-          </button>
-        </motion.div>
-      </div> */}
-      <CTA onStartClick={openLeadForm} />
-    </div>
+                {/* Top category pills — first 4 ACF categories */}
+                {allAcfCategories.slice(0, 4).map((cat) => {
+                  const active = selectedCategory === cat.name;
+                  return (
+                    <button
+                      key={cat.name}
+                      type="button"
+                      onClick={() => handleTopPillClick(cat.name)}
+                      className={`arrow-cta hidden items-center gap-[8px] rounded-full border px-[19px] py-[8px] font-sans text-[13px] font-semibold transition-colors lg:flex ${
+                        active
+                          ? "border-[#0a0516] bg-[#e4fa65] text-[#0a0516]"
+                          : "border-[#ded8e7] bg-[#f5f3ff] text-[#0a0516] hover:bg-[#ebe6ff]"
+                      }`}
+                    >
+                      <span>{cat.name}</span>
+                      <span
+                        className={`text-[11px] font-medium ${active ? "text-[#657221]" : "text-[#8b8398]"}`}
+                      >
+                        · {cat.count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Search — input updates instantly, filtering is debounced */}
+              <div className="flex w-full items-center gap-[10px] rounded-full border border-[#ded8e7] bg-[#f5f3ff] px-[16px] py-[10px] lg:w-auto lg:min-w-[260px]">
+                <svg
+                  className="h-[16px] w-[16px] flex-none"
+                  fill="none"
+                  viewBox="0 0 16 16"
+                  aria-hidden
+                >
+                  <path
+                    d="M7.33333 12C9.91066 12 12 9.91066 12 7.33333C12 4.756 9.91066 2.66667 7.33333 2.66667C4.756 2.66667 2.66667 4.756 2.66667 7.33333C2.66667 9.91066 4.756 12 7.33333 12Z"
+                    stroke="#5b2dce"
+                    strokeWidth="1.2"
+                  />
+                  <path
+                    d="M13.3333 13.3333L11.3333 11.3333"
+                    stroke="#5b2dce"
+                    strokeLinecap="round"
+                    strokeWidth="1.2"
+                  />
+                </svg>
+                <input
+                  type="text"
+                  placeholder={ui.searchPlaceholder}
+                  value={searchInput}
+                  onChange={(e) => {
+                    setSearchInput(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="flex-1 bg-transparent font-sans text-[14px] text-[#0a0516] outline-none placeholder:text-[#8b8398]"
+                />
+              </div>
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`${currentPage}-${selectedCategory}-${debouncedSearch}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+                className="mt-[28px] grid gap-[18px] sm:grid-cols-2 lg:grid-cols-3 lg:gap-[22px]"
+              >
+                {currentPosts.map((post, i) => (
+                  <PostCard key={post.slug} post={post} index={i} />
+                ))}
+              </motion.div>
+            </AnimatePresence>
+
+            {currentPosts.length === 0 && (
+              <p className="mt-[40px] font-sans text-[15px] text-[#625a70]">
+                {ui.empty}
+              </p>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="mt-[36px] flex flex-wrap items-center justify-center gap-[8px]"
+              >
+                <PageArrow
+                  dir="prev"
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                />
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      type="button"
+                      onClick={() => handlePageChange(page)}
+                      className={`grid h-[40px] w-[40px] cursor-pointer place-items-center rounded-full font-sans text-[14px] font-semibold transition-colors ${
+                        currentPage === page
+                          ? "bg-[#0a0516] text-[#e4fa65]"
+                          : "border border-[#ded8e7] bg-[#f5f3ff] text-[#0a0516] hover:bg-[#ebe6ff]"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ),
+                )}
+                <PageArrow
+                  dir="next"
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                />
+              </motion.div>
+            )}
+          </div>
+        </section>
+      </HomeShell>
+    </main>
+  );
+}
+
+/** Pagination arrow — the circular control /home2's carousels use, light fold. */
+function PageArrow({
+  dir,
+  disabled,
+  onClick,
+}: {
+  dir: "prev" | "next";
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={dir === "prev" ? "Previous page" : "Next page"}
+      className="grid h-[40px] w-[40px] cursor-pointer place-items-center rounded-full border border-[#ded8e7] bg-[#f5f3ff] text-[#0a0516] transition-colors hover:bg-[#ebe6ff] disabled:pointer-events-none disabled:opacity-40"
+    >
+      {dir === "prev" ? (
+        <ChevronLeft size={16} strokeWidth={2.25} aria-hidden />
+      ) : (
+        <ChevronRight size={16} strokeWidth={2.25} aria-hidden />
+      )}
+    </button>
   );
 }

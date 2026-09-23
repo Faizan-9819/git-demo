@@ -255,8 +255,11 @@ export default function Hero2({ onStartClick }: { onStartClick?: () => void }) {
                 Start with Growth Rocket <ArrowIcon direction="right" />
               </button>
 
+              {/* `#how` (ProcessTimeline) — the source's `#product` id is not
+                  rendered by any fold this page mounts, so the link did
+                  nothing. */}
               <a
-                href="#product"
+                href="#how"
                 className="arrow-cta inline-flex items-center gap-[8px] border-b border-white/55 font-sans text-[14px] font-semibold text-white"
               >
                 See how it works <ArrowIcon direction="right" />
