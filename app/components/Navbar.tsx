@@ -49,7 +49,7 @@ function Logo({ locale }: { locale: Locale }) {
   return (
     <Link
       href={localizedHref("/", locale)}
-      className="flex items-center shrink-0"
+      className="flex items-center shrink-0 justify-self-start"
       aria-label="Growth Rocket"
     >
       <img
@@ -198,7 +198,7 @@ export default function Navbar() {
   return (
     <header className="fixed top-3 left-0 right-0 z-50 px-3.5 pointer-events-none">
       <div
-        className="pointer-events-auto mx-auto flex h-[64px] items-center justify-between gap-6 rounded-full border border-[var(--color-mist)] bg-white/65 shadow-[0_2px_10px_rgba(91,33,182,0.05)] backdrop-blur-2xl backdrop-saturate-150 transition-[max-width,height,padding,box-shadow] duration-500 ease-[cubic-bezier(.22,1,.36,1)] px-6"
+        className="pointer-events-auto mx-auto flex h-[64px] items-center justify-between gap-6 lg:grid lg:grid-cols-[1fr_auto_1fr] rounded-full border border-[var(--color-mist)] bg-white/65 shadow-[0_2px_10px_rgba(91,33,182,0.05)] backdrop-blur-2xl backdrop-saturate-150 transition-[max-width,height,padding,box-shadow] duration-500 ease-[cubic-bezier(.22,1,.36,1)] px-6"
         style={{
           maxWidth: compact ? 1320 : "100%",
           boxShadow: compact
@@ -208,13 +208,13 @@ export default function Navbar() {
       >
         <Logo locale={locale} />
 
-        <nav className="hidden lg:flex items-center gap-[28px] flex-nowrap whitespace-nowrap">
+        <nav className="hidden lg:flex items-center gap-[28px] flex-nowrap whitespace-nowrap lg:-translate-x-[24px]">
           {LINKS.map((l) => (
             <NavLink key={l.label} href={l.href} label={l.label} />
           ))}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-[12px] shrink-0">
+        <div className="hidden lg:flex items-center gap-[12px] shrink-0 justify-self-end">
           <LangSwitcher compact={compact} />
           <Link
             href="https://hub.getgrowthrocket.com/"

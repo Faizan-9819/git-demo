@@ -208,8 +208,8 @@ export default function Footer2({
                 Your website and everyday business tools.
               </h2>
               <p className="mt-[8px] max-w-[680px] font-sans text-[16px] leading-[1.65] text-[#c9c2d4]">
-                Together, for a business that’s going places. For freelancers and
-                small businesses that want to get found, get booked and stay
+                Together, for a business that’s going places. For freelancers
+                and small businesses that want to get found, get booked and stay
                 organised without handling the technical side.
               </p>
             </div>
@@ -220,7 +220,7 @@ export default function Footer2({
                 href: "/pricing",
                 localize: false,
               })}
-              className="arrow-cta inline-flex min-h-[52px] w-fit md:w-full items-center justify-center gap-[8px] rounded-full bg-[#e4fa65] px-[20px] py-[13px] font-sans text-[15px] font-bold leading-none whitespace-nowrap text-[#0a0516] xs:w-max"
+              className="arrow-cta inline-flex lg:min-h-[52px] w-fit md:w-full items-center justify-center gap-[8px] rounded-full bg-[#e4fa65] px-[20px] py-[13px] font-sans text-[15px] font-bold leading-none whitespace-nowrap text-[#0a0516] xs:w-max"
             >
               View full pricing
               <ArrowIcon
@@ -296,13 +296,19 @@ export default function Footer2({
                 ))}
               </p>
 
-              <a href={`mailto:${CONTACT_INFO.emails[0]}`} className={LINK_CLASS}>
+              <a
+                href={`mailto:${CONTACT_INFO.emails[0]}`}
+                className={LINK_CLASS}
+              >
                 <IconChip>
                   <Mail strokeWidth={1.8} />
                 </IconChip>
                 {CONTACT_INFO.emails[0]}
               </a>
-              <a href={`mailto:${CONTACT_INFO.emails[1]}`} className={LINK_CLASS}>
+              <a
+                href={`mailto:${CONTACT_INFO.emails[1]}`}
+                className={LINK_CLASS}
+              >
                 <IconChip>
                   <Headset strokeWidth={1.8} />
                 </IconChip>

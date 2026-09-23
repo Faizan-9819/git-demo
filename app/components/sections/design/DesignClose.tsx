@@ -47,7 +47,7 @@ export default function DesignClose({
   )}`;
 
   const button =
-    "arrow-cta inline-flex min-h-[52px] w-full items-center justify-between gap-[28px] rounded-[100px] px-[23px] py-[15px] font-sans text-[14px] leading-[1.4] font-semibold min-[701px]:w-auto";
+    "arrow-cta inline-flex min-h-[52px] w-fit items-center justify-between gap-[8px] rounded-[100px] px-[23px] py-[15px] font-sans text-[14px] leading-[1.4] font-semibold min-[701px]:w-auto";
 
   return (
     <section

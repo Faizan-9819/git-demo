@@ -111,7 +111,7 @@ export default function DesignBenefits({
         <RevealGroup
           amount={0.1}
           stagger={0.05}
-          className="grid grid-cols-2 gap-x-[20px] gap-y-[28px] min-[701px]:gap-[32px] min-[1001px]:grid-cols-4"
+          className="grid grid-cols-1 gap-x-[20px] gap-y-[28px] min-[701px]:gap-[32px] min-[1001px]:grid-cols-4"
         >
           {benefits.map(({ icon, title, body }) => (
             <RevealItem key={title} as="article" className="min-w-0">

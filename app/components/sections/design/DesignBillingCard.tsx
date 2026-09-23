@@ -181,7 +181,7 @@ export default function DesignBillingCard({
           clobber Tailwind's `transition-colors`. */}
       <a
         href={ctaHref}
-        className="arrow-cta mt-[24px] flex min-h-[56px] w-fit items-center justify-center gap-[10px] rounded-[50px] border border-transparent bg-[#e4fa65] px-[23px] py-[14px] font-sans text-[14px] leading-[1.35] font-semibold text-[#0a0516] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white"
+        className="arrow-cta mt-[24px] flex lg:min-h-[56px] w-fit items-center justify-center gap-[10px] rounded-[50px] border border-transparent bg-[#e4fa65] px-[23px] py-[14px] font-sans text-[14px] leading-[1.35] font-semibold text-[#0a0516] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white"
       >
         {ctaLabel}
         <ArrowIcon direction="up-right" size={18} />
